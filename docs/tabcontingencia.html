@@ -195,9 +195,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="estparynopar.html"><a href="estparynopar.html#kw-sexo"><i class="fa fa-check"></i><b>2.4</b> Kruskal-Wallis de la edad según el sexo</a>
 <ul>
-<li class="chapter" data-level="2.4.1" data-path="estparynopar.html"><a href="estparynopar.html#cálculo-paso-a-paso-1"><i class="fa fa-check"></i><b>2.4.1</b> Cálculo paso a paso</a></li>
-<li class="chapter" data-level="2.4.2" data-path="estparynopar.html"><a href="estparynopar.html#prueba-con-la-función-kruskal.test"><i class="fa fa-check"></i><b>2.4.2</b> Prueba con la función <code>kruskal.test()</code></a></li>
-<li class="chapter" data-level="2.4.3" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-post-hoc"><i class="fa fa-check"></i><b>2.4.3</b> Comparaciones post-hoc</a></li>
+<li class="chapter" data-level="2.4.1" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-post-hoc"><i class="fa fa-check"></i><b>2.4.1</b> Comparaciones post-hoc</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="tabcontingencia.html"><a href="tabcontingencia.html"><i class="fa fa-check"></i><b>3</b> Tabla de contingencia</a>
@@ -220,12 +218,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.1.1" data-path="correglin.html"><a href="correglin.html#contraste-para-rho-rho_0-neq-0"><i class="fa fa-check"></i><b>4.1.1</b> Contraste para <span class="math inline">\(\rho = \rho_0 \neq 0\)</span></a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="correglin.html"><a href="correglin.html#correlación-de-spearman"><i class="fa fa-check"></i><b>4.2</b> Correlación de Spearman</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="correglin.html"><a href="correglin.html#correlación-de-la-edad-con-todas-las-medidas"><i class="fa fa-check"></i><b>4.2.1</b> Correlación de la edad con todas las medidas</a></li>
-</ul></li>
+<li class="chapter" data-level="4.2" data-path="correglin.html"><a href="correglin.html#correlación-de-spearman"><i class="fa fa-check"></i><b>4.2</b> Correlación de Spearman</a></li>
 <li class="chapter" data-level="4.3" data-path="correglin.html"><a href="correglin.html#correlación-de-kendall"><i class="fa fa-check"></i><b>4.3</b> Correlación de Kendall</a></li>
-<li class="chapter" data-level="4.4" data-path="correglin.html"><a href="correglin.html#correlación-entre-las-variables-independientes"><i class="fa fa-check"></i><b>4.4</b> Correlación entre las variables independientes</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>5</b> Conclusiones</a></li>
 <li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
@@ -258,61 +252,61 @@ div.csl-indent {
 </ul>
 <p>En la base de cangrejos la única variable categórica es el sexo, así que primero es necesario construir otras variables categóricas a partir de las numéricas.</p>
 <p>Carguemos los datos con la misma limpieza de los capítulos anteriores:</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="tabcontingencia.html#cb123-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb123-2"><a href="tabcontingencia.html#cb123-2" tabindex="-1"></a></span>
-<span id="cb123-3"><a href="tabcontingencia.html#cb123-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;datos/train.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb123-4"><a href="tabcontingencia.html#cb123-4" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
-<span id="cb123-5"><a href="tabcontingencia.html#cb123-5" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
-<span id="cb123-6"><a href="tabcontingencia.html#cb123-6" tabindex="-1"></a>    <span class="at">sexo           =</span> Sex,</span>
-<span id="cb123-7"><a href="tabcontingencia.html#cb123-7" tabindex="-1"></a>    <span class="at">largo          =</span> Length,</span>
-<span id="cb123-8"><a href="tabcontingencia.html#cb123-8" tabindex="-1"></a>    <span class="at">diametro       =</span> Diameter,</span>
-<span id="cb123-9"><a href="tabcontingencia.html#cb123-9" tabindex="-1"></a>    <span class="at">altura         =</span> Height,</span>
-<span id="cb123-10"><a href="tabcontingencia.html#cb123-10" tabindex="-1"></a>    <span class="at">peso           =</span> Weight,</span>
-<span id="cb123-11"><a href="tabcontingencia.html#cb123-11" tabindex="-1"></a>    <span class="at">peso_carne     =</span> Shucked.Weight,</span>
-<span id="cb123-12"><a href="tabcontingencia.html#cb123-12" tabindex="-1"></a>    <span class="at">peso_visceras  =</span> Viscera.Weight,</span>
-<span id="cb123-13"><a href="tabcontingencia.html#cb123-13" tabindex="-1"></a>    <span class="at">peso_caparazon =</span> Shell.Weight,</span>
-<span id="cb123-14"><a href="tabcontingencia.html#cb123-14" tabindex="-1"></a>    <span class="at">edad           =</span> Age</span>
-<span id="cb123-15"><a href="tabcontingencia.html#cb123-15" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb123-16"><a href="tabcontingencia.html#cb123-16" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb123-17"><a href="tabcontingencia.html#cb123-17" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(altura <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, altura),</span>
-<span id="cb123-18"><a href="tabcontingencia.html#cb123-18" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(altura), <span class="fu">mean</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), altura),</span>
-<span id="cb123-19"><a href="tabcontingencia.html#cb123-19" tabindex="-1"></a>    <span class="at">sexo =</span> <span class="fu">factor</span>(sexo,</span>
-<span id="cb123-20"><a href="tabcontingencia.html#cb123-20" tabindex="-1"></a>                  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;I&quot;</span>),</span>
-<span id="cb123-21"><a href="tabcontingencia.html#cb123-21" tabindex="-1"></a>                  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Hembra&quot;</span>, <span class="st">&quot;Macho&quot;</span>, <span class="st">&quot;Indeterminado&quot;</span>))</span>
-<span id="cb123-22"><a href="tabcontingencia.html#cb123-22" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="tabcontingencia.html#cb112-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb112-2"><a href="tabcontingencia.html#cb112-2" tabindex="-1"></a></span>
+<span id="cb112-3"><a href="tabcontingencia.html#cb112-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;datos/train.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb112-4"><a href="tabcontingencia.html#cb112-4" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb112-5"><a href="tabcontingencia.html#cb112-5" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb112-6"><a href="tabcontingencia.html#cb112-6" tabindex="-1"></a>    <span class="at">sexo           =</span> Sex,</span>
+<span id="cb112-7"><a href="tabcontingencia.html#cb112-7" tabindex="-1"></a>    <span class="at">largo          =</span> Length,</span>
+<span id="cb112-8"><a href="tabcontingencia.html#cb112-8" tabindex="-1"></a>    <span class="at">diametro       =</span> Diameter,</span>
+<span id="cb112-9"><a href="tabcontingencia.html#cb112-9" tabindex="-1"></a>    <span class="at">altura         =</span> Height,</span>
+<span id="cb112-10"><a href="tabcontingencia.html#cb112-10" tabindex="-1"></a>    <span class="at">peso           =</span> Weight,</span>
+<span id="cb112-11"><a href="tabcontingencia.html#cb112-11" tabindex="-1"></a>    <span class="at">peso_carne     =</span> Shucked.Weight,</span>
+<span id="cb112-12"><a href="tabcontingencia.html#cb112-12" tabindex="-1"></a>    <span class="at">peso_visceras  =</span> Viscera.Weight,</span>
+<span id="cb112-13"><a href="tabcontingencia.html#cb112-13" tabindex="-1"></a>    <span class="at">peso_caparazon =</span> Shell.Weight,</span>
+<span id="cb112-14"><a href="tabcontingencia.html#cb112-14" tabindex="-1"></a>    <span class="at">edad           =</span> Age</span>
+<span id="cb112-15"><a href="tabcontingencia.html#cb112-15" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb112-16"><a href="tabcontingencia.html#cb112-16" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb112-17"><a href="tabcontingencia.html#cb112-17" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(altura <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, altura),</span>
+<span id="cb112-18"><a href="tabcontingencia.html#cb112-18" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(altura), <span class="fu">mean</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), altura),</span>
+<span id="cb112-19"><a href="tabcontingencia.html#cb112-19" tabindex="-1"></a>    <span class="at">sexo =</span> <span class="fu">factor</span>(sexo,</span>
+<span id="cb112-20"><a href="tabcontingencia.html#cb112-20" tabindex="-1"></a>                  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;I&quot;</span>),</span>
+<span id="cb112-21"><a href="tabcontingencia.html#cb112-21" tabindex="-1"></a>                  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Hembra&quot;</span>, <span class="st">&quot;Macho&quot;</span>, <span class="st">&quot;Indeterminado&quot;</span>))</span>
+<span id="cb112-22"><a href="tabcontingencia.html#cb112-22" tabindex="-1"></a>  )</span></code></pre></div>
 <div id="creación-de-las-variables-categóricas" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Creación de las variables categóricas<a href="tabcontingencia.html#creación-de-las-variables-categóricas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>Grupo de edad.</strong> Para clasificar a los cangrejos según su edad usamos los cuartiles de la variable <code>edad</code>:</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="tabcontingencia.html#cb124-1" tabindex="-1"></a><span class="fu">quantile</span>(df<span class="sc">$</span>edad, <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="tabcontingencia.html#cb113-1" tabindex="-1"></a><span class="fu">quantile</span>(df<span class="sc">$</span>edad, <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>))</span></code></pre></div>
 <pre><code>## 25% 75% 
 ##   8  11</code></pre>
 <p>Con estos valores se definen tres grupos: <em>Joven</em> para los cangrejos de hasta <span class="math inline">\(8\)</span> meses (hasta el primer cuartil), <em>Adulto</em> para los que tienen entre <span class="math inline">\(9\)</span> y <span class="math inline">\(11\)</span> meses (entre el primer y el tercer cuartil) y <em>Mayor</em> para los de <span class="math inline">\(12\)</span> meses o más (por encima del tercer cuartil).</p>
 <p><strong>Grupo de tamaño.</strong> Para el tamaño usamos el largo del cangrejo dividido en terciles, de forma que cada grupo tenga aproximadamente la tercera parte de los datos:</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="tabcontingencia.html#cb126-1" tabindex="-1"></a><span class="fu">quantile</span>(df<span class="sc">$</span>largo, <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="tabcontingencia.html#cb115-1" tabindex="-1"></a><span class="fu">quantile</span>(df<span class="sc">$</span>largo, <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span>))</span></code></pre></div>
 <pre><code>##        0% 33.33333% 66.66667%      100% 
 ##  0.187500  1.250000  1.487500  2.012815</code></pre>
 <p>Así, los cangrejos con largo hasta <span class="math inline">\(1{,}25\)</span> pies son <em>Pequeños</em>, los que están entre <span class="math inline">\(1{,}25\)</span> y <span class="math inline">\(1{,}4875\)</span> pies son <em>Medianos</em> y los de más de <span class="math inline">\(1{,}4875\)</span> pies son <em>Grandes</em>. Creemos las dos variables:</p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="tabcontingencia.html#cb128-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb128-2"><a href="tabcontingencia.html#cb128-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb128-3"><a href="tabcontingencia.html#cb128-3" tabindex="-1"></a>    <span class="at">grupo_edad =</span> <span class="fu">cut</span>(edad,</span>
-<span id="cb128-4"><a href="tabcontingencia.html#cb128-4" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">8</span>, <span class="dv">11</span>, <span class="cn">Inf</span>),</span>
-<span id="cb128-5"><a href="tabcontingencia.html#cb128-5" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Joven&quot;</span>, <span class="st">&quot;Adulto&quot;</span>, <span class="st">&quot;Mayor&quot;</span>)),</span>
-<span id="cb128-6"><a href="tabcontingencia.html#cb128-6" tabindex="-1"></a>    <span class="at">grupo_tamano =</span> <span class="fu">cut</span>(largo,</span>
-<span id="cb128-7"><a href="tabcontingencia.html#cb128-7" tabindex="-1"></a>                       <span class="at">breaks =</span> <span class="fu">quantile</span>(largo, <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span>)),</span>
-<span id="cb128-8"><a href="tabcontingencia.html#cb128-8" tabindex="-1"></a>                       <span class="at">include.lowest =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb128-9"><a href="tabcontingencia.html#cb128-9" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Pequeño&quot;</span>, <span class="st">&quot;Mediano&quot;</span>, <span class="st">&quot;Grande&quot;</span>))</span>
-<span id="cb128-10"><a href="tabcontingencia.html#cb128-10" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="tabcontingencia.html#cb117-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb117-2"><a href="tabcontingencia.html#cb117-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb117-3"><a href="tabcontingencia.html#cb117-3" tabindex="-1"></a>    <span class="at">grupo_edad =</span> <span class="fu">cut</span>(edad,</span>
+<span id="cb117-4"><a href="tabcontingencia.html#cb117-4" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">8</span>, <span class="dv">11</span>, <span class="cn">Inf</span>),</span>
+<span id="cb117-5"><a href="tabcontingencia.html#cb117-5" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Joven&quot;</span>, <span class="st">&quot;Adulto&quot;</span>, <span class="st">&quot;Mayor&quot;</span>)),</span>
+<span id="cb117-6"><a href="tabcontingencia.html#cb117-6" tabindex="-1"></a>    <span class="at">grupo_tamano =</span> <span class="fu">cut</span>(largo,</span>
+<span id="cb117-7"><a href="tabcontingencia.html#cb117-7" tabindex="-1"></a>                       <span class="at">breaks =</span> <span class="fu">quantile</span>(largo, <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span>)),</span>
+<span id="cb117-8"><a href="tabcontingencia.html#cb117-8" tabindex="-1"></a>                       <span class="at">include.lowest =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb117-9"><a href="tabcontingencia.html#cb117-9" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Pequeño&quot;</span>, <span class="st">&quot;Mediano&quot;</span>, <span class="st">&quot;Grande&quot;</span>))</span>
+<span id="cb117-10"><a href="tabcontingencia.html#cb117-10" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Veamos la frecuencia de cada grupo:</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="tabcontingencia.html#cb129-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
-<span id="cb129-2"><a href="tabcontingencia.html#cb129-2" tabindex="-1"></a>  <span class="fu">count</span>(grupo_edad, <span class="at">name =</span> <span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb129-3"><a href="tabcontingencia.html#cb129-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="tabcontingencia.html#cb118-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb118-2"><a href="tabcontingencia.html#cb118-2" tabindex="-1"></a>  <span class="fu">count</span>(grupo_edad, <span class="at">name =</span> <span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb118-3"><a href="tabcontingencia.html#cb118-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>))</span></code></pre></div>
 <pre><code>##   grupo_edad Frecuencia Porcentaje
 ## 1      Joven      24176      32.65
 ## 2     Adulto      32699      44.16
 ## 3      Mayor      17176      23.19</code></pre>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="tabcontingencia.html#cb131-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
-<span id="cb131-2"><a href="tabcontingencia.html#cb131-2" tabindex="-1"></a>  <span class="fu">count</span>(grupo_tamano, <span class="at">name =</span> <span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb131-3"><a href="tabcontingencia.html#cb131-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="tabcontingencia.html#cb120-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb120-2"><a href="tabcontingencia.html#cb120-2" tabindex="-1"></a>  <span class="fu">count</span>(grupo_tamano, <span class="at">name =</span> <span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb120-3"><a href="tabcontingencia.html#cb120-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>))</span></code></pre></div>
 <pre><code>##   grupo_tamano Frecuencia Porcentaje
 ## 1      Pequeño      25914      34.99
 ## 2      Mediano      23987      32.39
@@ -345,115 +339,78 @@ H_1: \text{al menos una de las proporciones es diferente}
 <div id="solución-paso-a-paso" class="section level3 hasAnchor" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Solución paso a paso<a href="tabcontingencia.html#solución-paso-a-paso" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Construyamos la tabla de contingencia con las frecuencias observadas:</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="tabcontingencia.html#cb133-1" tabindex="-1"></a>observados <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Sexo =</span> df<span class="sc">$</span>sexo, <span class="at">Edad =</span> df<span class="sc">$</span>grupo_edad)</span>
-<span id="cb133-2"><a href="tabcontingencia.html#cb133-2" tabindex="-1"></a>observados</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="tabcontingencia.html#cb122-1" tabindex="-1"></a>observados <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Sexo =</span> df<span class="sc">$</span>sexo, <span class="at">Edad =</span> df<span class="sc">$</span>grupo_edad)</span>
+<span id="cb122-2"><a href="tabcontingencia.html#cb122-2" tabindex="-1"></a>observados</span></code></pre></div>
 <pre><code>##                Edad
 ## Sexo            Joven Adulto Mayor
 ##   Hembra         2242  12562  8206
 ##   Macho          3885  15314  7885
 ##   Indeterminado 18049   4823  1085</code></pre>
 <p>Calculemos los totales por fila, columna y el total general:</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="tabcontingencia.html#cb135-1" tabindex="-1"></a>fila_totales <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(observados)</span>
-<span id="cb135-2"><a href="tabcontingencia.html#cb135-2" tabindex="-1"></a>col_totales <span class="ot">&lt;-</span> <span class="fu">colSums</span>(observados)</span>
-<span id="cb135-3"><a href="tabcontingencia.html#cb135-3" tabindex="-1"></a>total_general <span class="ot">&lt;-</span> <span class="fu">sum</span>(observados)</span>
-<span id="cb135-4"><a href="tabcontingencia.html#cb135-4" tabindex="-1"></a></span>
-<span id="cb135-5"><a href="tabcontingencia.html#cb135-5" tabindex="-1"></a>fila_totales</span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="tabcontingencia.html#cb124-1" tabindex="-1"></a>fila_totales <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(observados)</span>
+<span id="cb124-2"><a href="tabcontingencia.html#cb124-2" tabindex="-1"></a>col_totales <span class="ot">&lt;-</span> <span class="fu">colSums</span>(observados)</span>
+<span id="cb124-3"><a href="tabcontingencia.html#cb124-3" tabindex="-1"></a>total_general <span class="ot">&lt;-</span> <span class="fu">sum</span>(observados)</span>
+<span id="cb124-4"><a href="tabcontingencia.html#cb124-4" tabindex="-1"></a></span>
+<span id="cb124-5"><a href="tabcontingencia.html#cb124-5" tabindex="-1"></a>fila_totales</span></code></pre></div>
 <pre><code>##        Hembra         Macho Indeterminado 
 ##         23010         27084         23957</code></pre>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="tabcontingencia.html#cb137-1" tabindex="-1"></a>col_totales</span></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="tabcontingencia.html#cb126-1" tabindex="-1"></a>col_totales</span></code></pre></div>
 <pre><code>##  Joven Adulto  Mayor 
 ##  24176  32699  17176</code></pre>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="tabcontingencia.html#cb139-1" tabindex="-1"></a>total_general</span></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="tabcontingencia.html#cb128-1" tabindex="-1"></a>total_general</span></code></pre></div>
 <pre><code>## [1] 74051</code></pre>
 <p>Ahora, hallemos las frecuencias esperadas bajo <span class="math inline">\(H_0\)</span>:</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="tabcontingencia.html#cb141-1" tabindex="-1"></a>esperados <span class="ot">&lt;-</span> <span class="fu">outer</span>(fila_totales, col_totales, <span class="at">FUN =</span> <span class="cf">function</span>(f, c) f <span class="sc">*</span> c <span class="sc">/</span> total_general)</span>
-<span id="cb141-2"><a href="tabcontingencia.html#cb141-2" tabindex="-1"></a><span class="fu">dimnames</span>(esperados) <span class="ot">&lt;-</span> <span class="fu">dimnames</span>(observados)</span>
-<span id="cb141-3"><a href="tabcontingencia.html#cb141-3" tabindex="-1"></a><span class="fu">round</span>(esperados, <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="tabcontingencia.html#cb130-1" tabindex="-1"></a>esperados <span class="ot">&lt;-</span> <span class="fu">outer</span>(fila_totales, col_totales, <span class="at">FUN =</span> <span class="cf">function</span>(f, c) f <span class="sc">*</span> c <span class="sc">/</span> total_general)</span>
+<span id="cb130-2"><a href="tabcontingencia.html#cb130-2" tabindex="-1"></a><span class="fu">dimnames</span>(esperados) <span class="ot">&lt;-</span> <span class="fu">dimnames</span>(observados)</span>
+<span id="cb130-3"><a href="tabcontingencia.html#cb130-3" tabindex="-1"></a><span class="fu">round</span>(esperados, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##                Edad
 ## Sexo              Joven   Adulto   Mayor
 ##   Hembra        7512.25 10160.62 5337.13
 ##   Macho         8842.32 11959.59 6282.09
 ##   Indeterminado 7821.43 10578.79 5556.78</code></pre>
 <p>Verifiquemos que todas las frecuencias esperadas son mayores o iguales a <span class="math inline">\(5\)</span>:</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="tabcontingencia.html#cb143-1" tabindex="-1"></a><span class="fu">all</span>(esperados <span class="sc">&gt;=</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="tabcontingencia.html#cb132-1" tabindex="-1"></a><span class="fu">all</span>(esperados <span class="sc">&gt;=</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>La condición se cumple, pues la frecuencia esperada más pequeña es de <span class="math inline">\(5337{,}13\)</span>. Seguido calculemos el estadístico <span class="math inline">\(\chi^2\)</span>:</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="tabcontingencia.html#cb145-1" tabindex="-1"></a>chi_cuadrado <span class="ot">&lt;-</span> <span class="fu">sum</span>((observados <span class="sc">-</span> esperados)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> esperados)</span>
-<span id="cb145-2"><a href="tabcontingencia.html#cb145-2" tabindex="-1"></a>chi_cuadrado</span></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="tabcontingencia.html#cb134-1" tabindex="-1"></a>chi_cuadrado <span class="ot">&lt;-</span> <span class="fu">sum</span>((observados <span class="sc">-</span> esperados)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> esperados)</span>
+<span id="cb134-2"><a href="tabcontingencia.html#cb134-2" tabindex="-1"></a>chi_cuadrado</span></code></pre></div>
 <pre><code>## [1] 30040.34</code></pre>
 <p>Determinemos los grados de libertad:</p>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="tabcontingencia.html#cb147-1" tabindex="-1"></a>gl <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(observados) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(observados) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb147-2"><a href="tabcontingencia.html#cb147-2" tabindex="-1"></a>gl</span></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="tabcontingencia.html#cb136-1" tabindex="-1"></a>gl <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(observados) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(observados) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb136-2"><a href="tabcontingencia.html#cb136-2" tabindex="-1"></a>gl</span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>Ahora, el valor crítico y la decisión al <span class="math inline">\(5\%\)</span>:</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="tabcontingencia.html#cb149-1" tabindex="-1"></a>alfa <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb149-2"><a href="tabcontingencia.html#cb149-2" tabindex="-1"></a>valor_critico <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="dv">1</span> <span class="sc">-</span> alfa, gl)</span>
-<span id="cb149-3"><a href="tabcontingencia.html#cb149-3" tabindex="-1"></a>valor_critico</span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="tabcontingencia.html#cb138-1" tabindex="-1"></a>alfa <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb138-2"><a href="tabcontingencia.html#cb138-2" tabindex="-1"></a>valor_critico <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="dv">1</span> <span class="sc">-</span> alfa, gl)</span>
+<span id="cb138-3"><a href="tabcontingencia.html#cb138-3" tabindex="-1"></a>valor_critico</span></code></pre></div>
 <pre><code>## [1] 9.487729</code></pre>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="tabcontingencia.html#cb151-1" tabindex="-1"></a>rechaza_H0 <span class="ot">&lt;-</span> chi_cuadrado <span class="sc">&gt;</span> valor_critico</span>
-<span id="cb151-2"><a href="tabcontingencia.html#cb151-2" tabindex="-1"></a>rechaza_H0</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="tabcontingencia.html#cb140-1" tabindex="-1"></a>rechaza_H0 <span class="ot">&lt;-</span> chi_cuadrado <span class="sc">&gt;</span> valor_critico</span>
+<span id="cb140-2"><a href="tabcontingencia.html#cb140-2" tabindex="-1"></a>rechaza_H0</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Concluimos que</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="tabcontingencia.html#cb153-1" tabindex="-1"></a><span class="cf">if</span> (rechaza_H0) {</span>
-<span id="cb153-2"><a href="tabcontingencia.html#cb153-2" tabindex="-1"></a>  conclusion <span class="ot">&lt;-</span> <span class="st">&quot;Se rechaza H0: la distribución de los grupos de edad no es la misma en los tres sexos.&quot;</span></span>
-<span id="cb153-3"><a href="tabcontingencia.html#cb153-3" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb153-4"><a href="tabcontingencia.html#cb153-4" tabindex="-1"></a>  conclusion <span class="ot">&lt;-</span> <span class="st">&quot;No se rechaza H0: no hay evidencia suficiente para afirmar que la distribución de los grupos de edad cambia según el sexo.&quot;</span></span>
-<span id="cb153-5"><a href="tabcontingencia.html#cb153-5" tabindex="-1"></a>}</span>
-<span id="cb153-6"><a href="tabcontingencia.html#cb153-6" tabindex="-1"></a>conclusion</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="tabcontingencia.html#cb142-1" tabindex="-1"></a><span class="cf">if</span> (rechaza_H0) {</span>
+<span id="cb142-2"><a href="tabcontingencia.html#cb142-2" tabindex="-1"></a>  conclusion <span class="ot">&lt;-</span> <span class="st">&quot;Se rechaza H0: la distribución de los grupos de edad no es la misma en los tres sexos.&quot;</span></span>
+<span id="cb142-3"><a href="tabcontingencia.html#cb142-3" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb142-4"><a href="tabcontingencia.html#cb142-4" tabindex="-1"></a>  conclusion <span class="ot">&lt;-</span> <span class="st">&quot;No se rechaza H0: no hay evidencia suficiente para afirmar que la distribución de los grupos de edad cambia según el sexo.&quot;</span></span>
+<span id="cb142-5"><a href="tabcontingencia.html#cb142-5" tabindex="-1"></a>}</span>
+<span id="cb142-6"><a href="tabcontingencia.html#cb142-6" tabindex="-1"></a>conclusion</span></code></pre></div>
 <pre><code>## [1] &quot;Se rechaza H0: la distribución de los grupos de edad no es la misma en los tres sexos.&quot;</code></pre>
 <p>Si calculamos el p-valor</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="tabcontingencia.html#cb155-1" tabindex="-1"></a>valor_p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(chi_cuadrado, gl, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb155-2"><a href="tabcontingencia.html#cb155-2" tabindex="-1"></a>valor_p</span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="tabcontingencia.html#cb144-1" tabindex="-1"></a>valor_p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(chi_cuadrado, gl, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb144-2"><a href="tabcontingencia.html#cb144-2" tabindex="-1"></a>valor_p</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <p>El p-valor es tan pequeño que R lo muestra como cero.</p>
 </div>
 <div id="prueba-con-la-función-chisq.test" class="section level3 hasAnchor" number="3.2.2">
 <h3><span class="header-section-number">3.2.2</span> Prueba con la función <code>chisq.test()</code><a href="tabcontingencia.html#prueba-con-la-función-chisq.test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="tabcontingencia.html#cb157-1" tabindex="-1"></a>prueba_homogeneidad <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(observados)</span>
-<span id="cb157-2"><a href="tabcontingencia.html#cb157-2" tabindex="-1"></a>prueba_homogeneidad</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="tabcontingencia.html#cb146-1" tabindex="-1"></a><span class="fu">chisq.test</span>(observados)</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
 ## 
 ## data:  observados
 ## X-squared = 30040, df = 4, p-value &lt; 2.2e-16</code></pre>
 <p>La prueba chi-cuadrado indica que, con una confianza del <span class="math inline">\(95\%\)</span>, la distribución de los grupos de edad <strong>no es homogénea</strong> entre hembras, machos e indeterminados (<span class="math inline">\(\chi^2_{(4)} = 30040,\ p\text{-valor} &lt; 0{,}001\)</span>). El resultado coincide con el cálculo manual.</p>
-<p>Para ver en qué consiste la diferencia, revisemos las proporciones de cada grupo de edad dentro de cada sexo:</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="tabcontingencia.html#cb159-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(observados, <span class="at">margin =</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span></code></pre></div>
-<pre><code>##                Edad
-## Sexo            Joven Adulto Mayor
-##   Hembra         9.74  54.59 35.66
-##   Macho         14.34  56.54 29.11
-##   Indeterminado 75.34  20.13  4.53</code></pre>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="tabcontingencia.html#cb161-1" tabindex="-1"></a><span class="fu">as.data.frame</span>(observados) <span class="sc">%&gt;%</span></span>
-<span id="cb161-2"><a href="tabcontingencia.html#cb161-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Sexo) <span class="sc">%&gt;%</span></span>
-<span id="cb161-3"><a href="tabcontingencia.html#cb161-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> Freq <span class="sc">/</span> <span class="fu">sum</span>(Freq) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb161-4"><a href="tabcontingencia.html#cb161-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sexo, <span class="at">y =</span> Porcentaje, <span class="at">fill =</span> Edad)) <span class="sc">+</span></span>
-<span id="cb161-5"><a href="tabcontingencia.html#cb161-5" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb161-6"><a href="tabcontingencia.html#cb161-6" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(Porcentaje, <span class="dv">1</span>), <span class="st">&quot;%&quot;</span>)),</span>
-<span id="cb161-7"><a href="tabcontingencia.html#cb161-7" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
-<span id="cb161-8"><a href="tabcontingencia.html#cb161-8" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>) <span class="sc">+</span></span>
-<span id="cb161-9"><a href="tabcontingencia.html#cb161-9" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb161-10"><a href="tabcontingencia.html#cb161-10" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Grupos de edad según el sexo&quot;</span>,</span>
-<span id="cb161-11"><a href="tabcontingencia.html#cb161-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Sexo&quot;</span>,</span>
-<span id="cb161-12"><a href="tabcontingencia.html#cb161-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Porcentaje&quot;</span>,</span>
-<span id="cb161-13"><a href="tabcontingencia.html#cb161-13" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Grupo de edad&quot;</span></span>
-<span id="cb161-14"><a href="tabcontingencia.html#cb161-14" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb161-15"><a href="tabcontingencia.html#cb161-15" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-84"></span>
-<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-84-1.png" alt="Distribución de los grupos de edad según el sexo" width="672" />
-<p class="caption">
-Figura 3.1: Distribución de los grupos de edad según el sexo
-</p>
-</div>
-<p>Las hembras y los machos tienen una distribución parecida: en ambos predominan los adultos (<span class="math inline">\(54{,}59\%\)</span> y <span class="math inline">\(56{,}54\%\)</span>), seguidos por los mayores (<span class="math inline">\(35{,}66\%\)</span> y <span class="math inline">\(29{,}11\%\)</span>), y los jóvenes son pocos (<span class="math inline">\(9{,}74\%\)</span> y <span class="math inline">\(14{,}34\%\)</span>). En cambio, en los indeterminados el <span class="math inline">\(75{,}34\%\)</span> son jóvenes y solo el <span class="math inline">\(4{,}53\%\)</span> son mayores. Esta es la principal fuente de la falta de homogeneidad.</p>
-<p>Los residuales de la prueba, que se calculan como <span class="math inline">\(\dfrac{O_{ij} - \hat{E}_{ij}}{\sqrt{\hat{E}_{ij}}}\)</span>, muestran qué celdas aportan más al estadístico <span class="math inline">\(\chi^2\)</span>:</p>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="tabcontingencia.html#cb162-1" tabindex="-1"></a><span class="fu">round</span>(prueba_homogeneidad<span class="sc">$</span>residuals, <span class="dv">2</span>)</span></code></pre></div>
-<pre><code>##                Edad
-## Sexo             Joven Adulto  Mayor
-##   Hembra        -60.81  23.82  39.27
-##   Macho         -52.72  30.67  20.22
-##   Indeterminado 115.65 -55.96 -59.99</code></pre>
-<p>El residual más grande es el de los indeterminados jóvenes (<span class="math inline">\(115{,}65\)</span>), lo que quiere decir que hay muchos más cangrejos en esa celda de los que se esperarían si la distribución fuera la misma en los tres sexos. Por el contrario, las hembras y los machos jóvenes tienen residuales negativos, es decir, hay menos de los esperados. Este resultado es consistente con lo encontrado en el capítulo <a href="estparynopar.html#estparynopar">2</a>, donde los indeterminados resultaron ser el grupo más joven.</p>
+<p>Si se mira la tabla de frecuencias observadas, se nota de dónde viene la diferencia: en las hembras y en los machos la mayoría de los cangrejos son adultos (<span class="math inline">\(12.562\)</span> de <span class="math inline">\(23.010\)</span> y <span class="math inline">\(15.314\)</span> de <span class="math inline">\(27.084\)</span>, respectivamente), mientras que en los indeterminados la gran mayoría son jóvenes (<span class="math inline">\(18.049\)</span> de <span class="math inline">\(23.957\)</span>). Esto es consistente con lo encontrado en el capítulo <a href="estparynopar.html#estparynopar">2</a>, donde los indeterminados resultaron ser el grupo más joven.</p>
 </div>
 </div>
 <div id="prueba-de-independencia" class="section level2 hasAnchor" number="3.3">
@@ -478,91 +435,55 @@ H_1: \text{el grupo de edad y el tamaño no son independientes}
 <div id="solución-paso-a-paso-1" class="section level3 hasAnchor" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> Solución paso a paso<a href="tabcontingencia.html#solución-paso-a-paso-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Construyamos la tabla de contingencia:</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="tabcontingencia.html#cb164-1" tabindex="-1"></a>observados2 <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Edad =</span> df<span class="sc">$</span>grupo_edad, <span class="at">Tamano =</span> df<span class="sc">$</span>grupo_tamano)</span>
-<span id="cb164-2"><a href="tabcontingencia.html#cb164-2" tabindex="-1"></a>observados2</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="tabcontingencia.html#cb148-1" tabindex="-1"></a>observados2 <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Edad =</span> df<span class="sc">$</span>grupo_edad, <span class="at">Tamano =</span> df<span class="sc">$</span>grupo_tamano)</span>
+<span id="cb148-2"><a href="tabcontingencia.html#cb148-2" tabindex="-1"></a>observados2</span></code></pre></div>
 <pre><code>##         Tamano
 ## Edad     Pequeño Mediano Grande
 ##   Joven    19166    4239    771
 ##   Adulto    4996   13548  14155
 ##   Mayor     1752    6200   9224</code></pre>
 <p>Hallemos los totales y los valores esperados:</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="tabcontingencia.html#cb166-1" tabindex="-1"></a>fila_totales2 <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(observados2)</span>
-<span id="cb166-2"><a href="tabcontingencia.html#cb166-2" tabindex="-1"></a>col_totales2 <span class="ot">&lt;-</span> <span class="fu">colSums</span>(observados2)</span>
-<span id="cb166-3"><a href="tabcontingencia.html#cb166-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(observados2)</span>
-<span id="cb166-4"><a href="tabcontingencia.html#cb166-4" tabindex="-1"></a></span>
-<span id="cb166-5"><a href="tabcontingencia.html#cb166-5" tabindex="-1"></a>esperados2 <span class="ot">&lt;-</span> <span class="fu">outer</span>(fila_totales2, col_totales2) <span class="sc">/</span> n</span>
-<span id="cb166-6"><a href="tabcontingencia.html#cb166-6" tabindex="-1"></a><span class="fu">round</span>(esperados2, <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="tabcontingencia.html#cb150-1" tabindex="-1"></a>fila_totales2 <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(observados2)</span>
+<span id="cb150-2"><a href="tabcontingencia.html#cb150-2" tabindex="-1"></a>col_totales2 <span class="ot">&lt;-</span> <span class="fu">colSums</span>(observados2)</span>
+<span id="cb150-3"><a href="tabcontingencia.html#cb150-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(observados2)</span>
+<span id="cb150-4"><a href="tabcontingencia.html#cb150-4" tabindex="-1"></a></span>
+<span id="cb150-5"><a href="tabcontingencia.html#cb150-5" tabindex="-1"></a>esperados2 <span class="ot">&lt;-</span> <span class="fu">outer</span>(fila_totales2, col_totales2) <span class="sc">/</span> n</span>
+<span id="cb150-6"><a href="tabcontingencia.html#cb150-6" tabindex="-1"></a><span class="fu">round</span>(esperados2, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##         Pequeño  Mediano   Grande
 ## Joven   8460.34  7831.22  7884.44
 ## Adulto 11442.95 10592.04 10664.01
 ## Mayor   6010.71  5563.74  5601.55</code></pre>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="tabcontingencia.html#cb168-1" tabindex="-1"></a><span class="fu">all</span>(esperados2 <span class="sc">&gt;=</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="tabcontingencia.html#cb152-1" tabindex="-1"></a><span class="fu">all</span>(esperados2 <span class="sc">&gt;=</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Todas las frecuencias esperadas son mayores a <span class="math inline">\(5\)</span> (la menor es <span class="math inline">\(5563{,}74\)</span>). Calculemos el estadístico chi-cuadrado y los grados de libertad:</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="tabcontingencia.html#cb170-1" tabindex="-1"></a>chi_cuadrado2 <span class="ot">&lt;-</span> <span class="fu">sum</span>((observados2 <span class="sc">-</span> esperados2)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> esperados2)</span>
-<span id="cb170-2"><a href="tabcontingencia.html#cb170-2" tabindex="-1"></a>chi_cuadrado2</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="tabcontingencia.html#cb154-1" tabindex="-1"></a>chi_cuadrado2 <span class="ot">&lt;-</span> <span class="fu">sum</span>((observados2 <span class="sc">-</span> esperados2)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> esperados2)</span>
+<span id="cb154-2"><a href="tabcontingencia.html#cb154-2" tabindex="-1"></a>chi_cuadrado2</span></code></pre></div>
 <pre><code>## [1] 32645.15</code></pre>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="tabcontingencia.html#cb172-1" tabindex="-1"></a>gl2 <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(observados2) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(observados2) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb172-2"><a href="tabcontingencia.html#cb172-2" tabindex="-1"></a>gl2</span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="tabcontingencia.html#cb156-1" tabindex="-1"></a>gl2 <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(observados2) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(observados2) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb156-2"><a href="tabcontingencia.html#cb156-2" tabindex="-1"></a>gl2</span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>Ahora, el valor crítico y la decisión al <span class="math inline">\(5\%\)</span>:</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="tabcontingencia.html#cb174-1" tabindex="-1"></a>valor_critico2 <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="dv">1</span> <span class="sc">-</span> alfa, gl2)</span>
-<span id="cb174-2"><a href="tabcontingencia.html#cb174-2" tabindex="-1"></a>valor_critico2</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="tabcontingencia.html#cb158-1" tabindex="-1"></a>valor_critico2 <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="dv">1</span> <span class="sc">-</span> alfa, gl2)</span>
+<span id="cb158-2"><a href="tabcontingencia.html#cb158-2" tabindex="-1"></a>valor_critico2</span></code></pre></div>
 <pre><code>## [1] 9.487729</code></pre>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="tabcontingencia.html#cb176-1" tabindex="-1"></a>rechaza_H0_2 <span class="ot">&lt;-</span> chi_cuadrado2 <span class="sc">&gt;</span> valor_critico2</span>
-<span id="cb176-2"><a href="tabcontingencia.html#cb176-2" tabindex="-1"></a>rechaza_H0_2</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="tabcontingencia.html#cb160-1" tabindex="-1"></a>rechaza_H0_2 <span class="ot">&lt;-</span> chi_cuadrado2 <span class="sc">&gt;</span> valor_critico2</span>
+<span id="cb160-2"><a href="tabcontingencia.html#cb160-2" tabindex="-1"></a>rechaza_H0_2</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Si calculamos el p-valor</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="tabcontingencia.html#cb178-1" tabindex="-1"></a>valor_p2 <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(chi_cuadrado2, gl2, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb178-2"><a href="tabcontingencia.html#cb178-2" tabindex="-1"></a>valor_p2</span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="tabcontingencia.html#cb162-1" tabindex="-1"></a>valor_p2 <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(chi_cuadrado2, gl2, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb162-2"><a href="tabcontingencia.html#cb162-2" tabindex="-1"></a>valor_p2</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 </div>
 <div id="prueba-con-la-función-chisq.test-1" class="section level3 hasAnchor" number="3.3.2">
 <h3><span class="header-section-number">3.3.2</span> Prueba con la función <code>chisq.test()</code><a href="tabcontingencia.html#prueba-con-la-función-chisq.test-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="tabcontingencia.html#cb180-1" tabindex="-1"></a>prueba_independencia <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(observados2)</span>
-<span id="cb180-2"><a href="tabcontingencia.html#cb180-2" tabindex="-1"></a>prueba_independencia</span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="tabcontingencia.html#cb164-1" tabindex="-1"></a><span class="fu">chisq.test</span>(observados2)</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
 ## 
 ## data:  observados2
 ## X-squared = 32645, df = 4, p-value &lt; 2.2e-16</code></pre>
 <p>La prueba chi-cuadrado nos indica que el grupo de edad y el grupo de tamaño <strong>no son independientes</strong> (<span class="math inline">\(\chi^2_{(4)} = 32645,\ p\text{-valor} &lt; 0{,}001\)</span>). Es decir, el tamaño de un cangrejo está asociado con su grupo de edad.</p>
-<p>Veamos las proporciones de cada tamaño dentro de cada grupo de edad:</p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="tabcontingencia.html#cb182-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(observados2, <span class="at">margin =</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span></code></pre></div>
-<pre><code>##         Tamano
-## Edad     Pequeño Mediano Grande
-##   Joven    79.28   17.53   3.19
-##   Adulto   15.28   41.43  43.29
-##   Mayor    10.20   36.10  53.70</code></pre>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="tabcontingencia.html#cb184-1" tabindex="-1"></a><span class="fu">as.data.frame</span>(observados2) <span class="sc">%&gt;%</span></span>
-<span id="cb184-2"><a href="tabcontingencia.html#cb184-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Edad) <span class="sc">%&gt;%</span></span>
-<span id="cb184-3"><a href="tabcontingencia.html#cb184-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> Freq <span class="sc">/</span> <span class="fu">sum</span>(Freq) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb184-4"><a href="tabcontingencia.html#cb184-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Edad, <span class="at">y =</span> Porcentaje, <span class="at">fill =</span> Tamano)) <span class="sc">+</span></span>
-<span id="cb184-5"><a href="tabcontingencia.html#cb184-5" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb184-6"><a href="tabcontingencia.html#cb184-6" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(Porcentaje, <span class="dv">1</span>), <span class="st">&quot;%&quot;</span>)),</span>
-<span id="cb184-7"><a href="tabcontingencia.html#cb184-7" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
-<span id="cb184-8"><a href="tabcontingencia.html#cb184-8" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Blues&quot;</span>) <span class="sc">+</span></span>
-<span id="cb184-9"><a href="tabcontingencia.html#cb184-9" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb184-10"><a href="tabcontingencia.html#cb184-10" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Grupos de tamaño según el grupo de edad&quot;</span>,</span>
-<span id="cb184-11"><a href="tabcontingencia.html#cb184-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Grupo de edad&quot;</span>,</span>
-<span id="cb184-12"><a href="tabcontingencia.html#cb184-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Porcentaje&quot;</span>,</span>
-<span id="cb184-13"><a href="tabcontingencia.html#cb184-13" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Tamaño&quot;</span></span>
-<span id="cb184-14"><a href="tabcontingencia.html#cb184-14" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb184-15"><a href="tabcontingencia.html#cb184-15" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-96"></span>
-<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-96-1.png" alt="Distribución del tamaño según el grupo de edad" width="672" />
-<p class="caption">
-Figura 3.2: Distribución del tamaño según el grupo de edad
-</p>
-</div>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="tabcontingencia.html#cb185-1" tabindex="-1"></a><span class="fu">round</span>(prueba_independencia<span class="sc">$</span>residuals, <span class="dv">2</span>)</span></code></pre></div>
-<pre><code>##         Tamano
-## Edad     Pequeño Mediano Grande
-##   Joven   116.39  -40.59 -80.11
-##   Adulto  -60.27   28.72  33.81
-##   Mayor   -54.93    8.53  48.40</code></pre>
-<p>La asociación es clara: el <span class="math inline">\(79{,}28\%\)</span> de los cangrejos jóvenes son pequeños y apenas el <span class="math inline">\(3{,}19\%\)</span> son grandes. En los adultos los tamaños mediano y grande se reparten casi por igual (<span class="math inline">\(41{,}43\%\)</span> y <span class="math inline">\(43{,}29\%\)</span>), y en los mayores predominan los grandes (<span class="math inline">\(53{,}70\%\)</span>). Los residuales confirman este patrón, con valores positivos muy altos en las celdas <em>Joven-Pequeño</em> (<span class="math inline">\(116{,}39\)</span>) y <em>Mayor-Grande</em> (<span class="math inline">\(48{,}40\)</span>), y negativos en <em>Joven-Grande</em> (<span class="math inline">\(-80{,}11\)</span>) y <em>Mayor-Pequeño</em> (<span class="math inline">\(-54{,}93\)</span>).</p>
-<p>Sin embargo, también se observa que entre los mayores hay un <span class="math inline">\(10{,}20\%\)</span> de cangrejos pequeños y un <span class="math inline">\(36{,}10\%\)</span> de medianos, lo que muestra que el tamaño por sí solo no determina la edad. Esto coincide con lo visto en los diagramas de dispersión del capítulo <a href="eda.html#eda">1</a>, donde cangrejos del mismo largo podían tener edades muy distintas.</p>
+<p>En la tabla de frecuencias observadas se ve la asociación: de los <span class="math inline">\(24.176\)</span> cangrejos jóvenes, <span class="math inline">\(19.166\)</span> son pequeños y solo <span class="math inline">\(771\)</span> son grandes, mientras que de los <span class="math inline">\(17.176\)</span> cangrejos mayores, <span class="math inline">\(9.224\)</span> son grandes. Sin embargo, entre los mayores también hay <span class="math inline">\(1.752\)</span> cangrejos pequeños y <span class="math inline">\(6.200\)</span> medianos, lo que muestra que el tamaño por sí solo no determina la edad. Esto coincide con lo visto en los diagramas de dispersión del capítulo <a href="eda.html#eda">1</a>, donde cangrejos del mismo largo podían tener edades muy distintas.</p>
 
 </div>
 </div>

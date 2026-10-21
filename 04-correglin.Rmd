@@ -228,24 +228,6 @@ $$
 H_0: \rho_S = 0 \quad \text{vs} \quad H_1: \rho_S \neq 0
 $$
 
-Como hay muchos empates, $\rho_S$ se calcula como el coeficiente de Pearson aplicado a los rangos. Hagámoslo paso a paso:
-
-```{r}
-# rangos (los empates reciben el rango promedio)
-rx <- rank(x)
-ry <- rank(y)
-
-rho_s <- sum((rx - mean(rx)) * (ry - mean(ry))) /
-         sqrt(sum((rx - mean(rx))^2) * sum((ry - mean(ry))^2))
-rho_s
-
-# estadístico t aproximado para n > 10
-t_s <- rho_s * sqrt((n - 2) / (1 - rho_s^2))
-t_s
-
-2 * pt(-abs(t_s), df = n - 2)
-```
-
 Veamos el coeficiente de correlación y su significancia con `cor.test()`:
 
 ```{r}
@@ -253,55 +235,6 @@ cor.test(x, y, method = "spearman", exact = FALSE)
 ```
 
 El análisis de correlación de Spearman entre el peso del caparazón y la edad mostró un coeficiente $\rho_S = 0{,}7365$, que corresponde a una **correlación positiva moderada**, muy cerca del límite de una correlación muy fuerte. La prueba de significancia ($S = 1{,}7834 \times 10^{13},\ p\text{-valor} < 0{,}001$) permite rechazar la hipótesis nula de ausencia de correlación. El valor de Spearman es mayor que el de Pearson ($0{,}6635$), lo que confirma que la relación es monótona pero no del todo lineal, tal como se veía en el diagrama de dispersión.
-
-### Correlación de la edad con todas las medidas
-
-Calculemos los coeficientes de Pearson y Spearman entre la edad y cada una de las medidas físicas:
-
-```{r}
-variables <- c("largo", "diametro", "altura", "peso",
-               "peso_carne", "peso_visceras", "peso_caparazon")
-
-tabla_cor <- map_dfr(variables, function(v) {
-  pearson <- cor.test(df[[v]], df$edad, method = "pearson")
-  spearman <- cor.test(df[[v]], df$edad, method = "spearman", exact = FALSE)
-  tibble(
-    variable = v,
-    r_pearson = unname(pearson$estimate),
-    p_pearson = pearson$p.value,
-    rho_spearman = unname(spearman$estimate),
-    p_spearman = spearman$p.value
-  )
-}) %>%
-  arrange(desc(rho_spearman))
-
-tabla_cor
-```
-
-```{r fig.cap="Coeficientes de Pearson y Spearman entre la edad y cada medida"}
-tabla_cor %>%
-  pivot_longer(c(r_pearson, rho_spearman),
-               names_to = "coeficiente", values_to = "valor") %>%
-  mutate(coeficiente = ifelse(coeficiente == "r_pearson", "Pearson", "Spearman")) %>%
-  ggplot(aes(x = reorder(variable, valor, FUN = max), y = valor, fill = coeficiente)) +
-  geom_col(position = position_dodge(width = 0.7), width = 0.6) +
-  geom_text(aes(label = round(valor, 3)),
-            position = position_dodge(width = 0.7), hjust = -0.1, size = 3.2) +
-  coord_flip() +
-  scale_y_continuous(limits = c(0, 0.85)) +
-  scale_fill_brewer(palette = "Set1") +
-  labs(
-    title = "Correlación de cada medida con la edad",
-    x = "",
-    y = "Coeficiente de correlación",
-    fill = "Coeficiente"
-  ) +
-  theme_bw()
-```
-
-Todas las correlaciones son positivas y significativas ($p\text{-valor} < 0{,}001$ en todos los casos). Según Spearman, las variables más relacionadas con la edad son el peso del caparazón ($0{,}736$) y la altura ($0{,}704$), seguidas del peso total ($0{,}690$), el diámetro ($0{,}679$), el peso de las vísceras ($0{,}677$) y el largo ($0{,}669$). La variable con menor relación es el peso de la carne ($0{,}613$). Todas se ubican en el rango de correlación positiva moderada.
-
-En todas las variables el coeficiente de Spearman es mayor que el de Pearson. La diferencia es más marcada en los pesos (por ejemplo, en el peso de las vísceras pasa de $0{,}577$ a $0{,}677$), lo que indica que la relación de los pesos con la edad se aleja más de una línea recta. En la altura, la diferencia también se debe en parte a los valores extremos, que afectan a Pearson pero no a Spearman, porque este trabaja con rangos.
 
 ## Correlación de Kendall
 
@@ -320,51 +253,9 @@ $$
 Con $74.051$ observaciones hay más de $2.700$ millones de pares posibles, por lo que el siguiente cálculo puede tardar uno o dos minutos:
 
 ```{r}
-kendall <- cor.test(x, y, method = "kendall")
-kendall
+cor.test(x, y, method = "kendall")
 ```
 
 El coeficiente de Kendall entre el peso del caparazón y la edad es $\tau = 0{,}5817$, que indica una **correlación positiva moderada** y significativa ($z = 225{,}27,\ p\text{-valor} < 0{,}001$). Este valor quiere decir que, si se toman dos cangrejos al azar, es bastante más probable que el de mayor peso de caparazón sea también el de mayor edad que lo contrario. La función `cor.test()` calcula la versión $\tau_b$, que ajusta el denominador por los empates.
 
-El valor de Kendall es menor que el de Spearman, lo cual es habitual porque los dos coeficientes están en escalas diferentes. En conjunto, los tres coeficientes coinciden en que existe una relación positiva, moderada y significativa entre el peso del caparazón y la edad:
-
-```{r}
-tibble(
-  coeficiente = c("Pearson", "Spearman", "Kendall"),
-  valor = c(cor(x, y, method = "pearson"),
-            cor(x, y, method = "spearman"),
-            unname(kendall$estimate))
-)
-```
-
-## Correlación entre las variables independientes
-
-Por último, revisemos la correlación de Spearman entre las medidas físicas:
-
-```{r}
-matriz_cor <- df %>%
-  select(all_of(variables)) %>%
-  cor(method = "spearman")
-
-round(matriz_cor, 3)
-```
-
-```{r fig.cap="Matriz de correlación de Spearman entre las medidas físicas", fig.width=8, fig.height=6}
-as.data.frame(matriz_cor) %>%
-  rownames_to_column("var1") %>%
-  pivot_longer(-var1, names_to = "var2", values_to = "rho") %>%
-  ggplot(aes(x = var1, y = var2, fill = rho)) +
-  geom_tile(color = "white") +
-  geom_text(aes(label = round(rho, 2)), size = 3.5) +
-  scale_fill_gradient(low = "#deebf7", high = "#08519c", limits = c(0.85, 1)) +
-  labs(
-    title = "Correlación de Spearman entre las medidas físicas",
-    x = "",
-    y = "",
-    fill = "rho"
-  ) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-Todas las medidas físicas tienen correlaciones de Spearman entre $0{,}89$ y $0{,}98$ entre sí, lo que corresponde a correlaciones positivas muy fuertes. Las más altas son las del largo con el diámetro ($0{,}984$) y las del peso total con el largo, el diámetro y los demás pesos (todas por encima de $0{,}97$). Esto quiere decir que estas variables aportan información muy parecida sobre el tamaño del cangrejo. Si en el futuro se construye un modelo de regresión para predecir la edad, no sería conveniente incluirlas todas al mismo tiempo, ya que podría presentarse un problema de multicolinealidad.
+El valor de Kendall es menor que el de Spearman, lo cual es habitual porque los dos coeficientes están en escalas diferentes. En conjunto, los tres coeficientes ($r = 0{,}6635$, $\rho_S = 0{,}7365$ y $\tau = 0{,}5817$) coinciden en que existe una relación positiva, moderada y significativa entre el peso del caparazón y la edad.

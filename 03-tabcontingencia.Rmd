@@ -197,45 +197,12 @@ El p-valor es tan pequeño que R lo muestra como cero.
 ### Prueba con la función `chisq.test()`
 
 ```{r}
-prueba_homogeneidad <- chisq.test(observados)
-prueba_homogeneidad
+chisq.test(observados)
 ```
 
 La prueba chi-cuadrado indica que, con una confianza del $95\%$, la distribución de los grupos de edad **no es homogénea** entre hembras, machos e indeterminados ($\chi^2_{(4)} = 30040,\ p\text{-valor} < 0{,}001$). El resultado coincide con el cálculo manual.
 
-Para ver en qué consiste la diferencia, revisemos las proporciones de cada grupo de edad dentro de cada sexo:
-
-```{r}
-round(prop.table(observados, margin = 1) * 100, 2)
-```
-
-```{r fig.cap="Distribución de los grupos de edad según el sexo"}
-as.data.frame(observados) %>%
-  group_by(Sexo) %>%
-  mutate(Porcentaje = Freq / sum(Freq) * 100) %>%
-  ggplot(aes(x = Sexo, y = Porcentaje, fill = Edad)) +
-  geom_col(width = 0.6) +
-  geom_text(aes(label = paste0(round(Porcentaje, 1), "%")),
-            position = position_stack(vjust = 0.5), size = 3.5) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(
-    title = "Grupos de edad según el sexo",
-    x = "Sexo",
-    y = "Porcentaje",
-    fill = "Grupo de edad"
-  ) +
-  theme_bw()
-```
-
-Las hembras y los machos tienen una distribución parecida: en ambos predominan los adultos ($54{,}59\%$ y $56{,}54\%$), seguidos por los mayores ($35{,}66\%$ y $29{,}11\%$), y los jóvenes son pocos ($9{,}74\%$ y $14{,}34\%$). En cambio, en los indeterminados el $75{,}34\%$ son jóvenes y solo el $4{,}53\%$ son mayores. Esta es la principal fuente de la falta de homogeneidad.
-
-Los residuales de la prueba, que se calculan como $\dfrac{O_{ij} - \hat{E}_{ij}}{\sqrt{\hat{E}_{ij}}}$, muestran qué celdas aportan más al estadístico $\chi^2$:
-
-```{r}
-round(prueba_homogeneidad$residuals, 2)
-```
-
-El residual más grande es el de los indeterminados jóvenes ($115{,}65$), lo que quiere decir que hay muchos más cangrejos en esa celda de los que se esperarían si la distribución fuera la misma en los tres sexos. Por el contrario, las hembras y los machos jóvenes tienen residuales negativos, es decir, hay menos de los esperados. Este resultado es consistente con lo encontrado en el capítulo \@ref(estparynopar), donde los indeterminados resultaron ser el grupo más joven.
+Si se mira la tabla de frecuencias observadas, se nota de dónde viene la diferencia: en las hembras y en los machos la mayoría de los cangrejos son adultos ($12.562$ de $23.010$ y $15.314$ de $27.084$, respectivamente), mientras que en los indeterminados la gran mayoría son jóvenes ($18.049$ de $23.957$). Esto es consistente con lo encontrado en el capítulo \@ref(estparynopar), donde los indeterminados resultaron ser el grupo más joven.
 
 ## Prueba de independencia
 
@@ -320,40 +287,9 @@ valor_p2
 ### Prueba con la función `chisq.test()`
 
 ```{r}
-prueba_independencia <- chisq.test(observados2)
-prueba_independencia
+chisq.test(observados2)
 ```
 
 La prueba chi-cuadrado nos indica que el grupo de edad y el grupo de tamaño **no son independientes** ($\chi^2_{(4)} = 32645,\ p\text{-valor} < 0{,}001$). Es decir, el tamaño de un cangrejo está asociado con su grupo de edad.
 
-Veamos las proporciones de cada tamaño dentro de cada grupo de edad:
-
-```{r}
-round(prop.table(observados2, margin = 1) * 100, 2)
-```
-
-```{r fig.cap="Distribución del tamaño según el grupo de edad"}
-as.data.frame(observados2) %>%
-  group_by(Edad) %>%
-  mutate(Porcentaje = Freq / sum(Freq) * 100) %>%
-  ggplot(aes(x = Edad, y = Porcentaje, fill = Tamano)) +
-  geom_col(width = 0.6) +
-  geom_text(aes(label = paste0(round(Porcentaje, 1), "%")),
-            position = position_stack(vjust = 0.5), size = 3.5) +
-  scale_fill_brewer(palette = "Blues") +
-  labs(
-    title = "Grupos de tamaño según el grupo de edad",
-    x = "Grupo de edad",
-    y = "Porcentaje",
-    fill = "Tamaño"
-  ) +
-  theme_bw()
-```
-
-```{r}
-round(prueba_independencia$residuals, 2)
-```
-
-La asociación es clara: el $79{,}28\%$ de los cangrejos jóvenes son pequeños y apenas el $3{,}19\%$ son grandes. En los adultos los tamaños mediano y grande se reparten casi por igual ($41{,}43\%$ y $43{,}29\%$), y en los mayores predominan los grandes ($53{,}70\%$). Los residuales confirman este patrón, con valores positivos muy altos en las celdas *Joven-Pequeño* ($116{,}39$) y *Mayor-Grande* ($48{,}40$), y negativos en *Joven-Grande* ($-80{,}11$) y *Mayor-Pequeño* ($-54{,}93$).
-
-Sin embargo, también se observa que entre los mayores hay un $10{,}20\%$ de cangrejos pequeños y un $36{,}10\%$ de medianos, lo que muestra que el tamaño por sí solo no determina la edad. Esto coincide con lo visto en los diagramas de dispersión del capítulo \@ref(eda), donde cangrejos del mismo largo podían tener edades muy distintas.
+En la tabla de frecuencias observadas se ve la asociación: de los $24.176$ cangrejos jóvenes, $19.166$ son pequeños y solo $771$ son grandes, mientras que de los $17.176$ cangrejos mayores, $9.224$ son grandes. Sin embargo, entre los mayores también hay $1.752$ cangrejos pequeños y $6.200$ medianos, lo que muestra que el tamaño por sí solo no determina la edad. Esto coincide con lo visto en los diagramas de dispersión del capítulo \@ref(eda), donde cangrejos del mismo largo podían tener edades muy distintas.

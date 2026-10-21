@@ -90,13 +90,7 @@ library(Amelia)
 missmap(df)
 ```
 
-La base no tiene valores ausentes. Revisemos ahora si hay registros duplicados:
-
-```{r}
-sum(duplicated(df))
-```
-
-Tampoco hay registros duplicados. Sin embargo, que no haya NA no significa que todos los valores tengan sentido. Revisemos si alguna medida física toma el valor cero, lo cual no es posible en un cangrejo real:
+La base no tiene valores ausentes. Sin embargo, que no haya NA no significa que todos los valores tengan sentido. Revisemos si alguna medida física toma el valor cero, lo cual no es posible en un cangrejo real:
 
 ```{r}
 df %>%
@@ -412,21 +406,35 @@ El gráfico confirma lo anterior: los machos concentran $27.084$ registros ($36{
 A continuación, analizaremos la relación entre la variable objetivo `edad` y las variables numéricas por medio de diagramas de dispersión. Como la base es muy grande, los puntos se dibujan con transparencia para poder ver dónde se concentran.
 
 ```{r fig.cap="Dispersión entre la edad y las medidas del caparazón", fig.width=10, fig.height=4}
-# Función para no repetir el mismo código en cada gráfico
-dispersion_edad <- function(variable, etiqueta) {
-  df %>%
-    ggplot(aes(x = .data[[variable]], y = edad)) +
-    geom_point(alpha = 0.1, color = "#1E90FF", size = 0.6) +
-    labs(
-      x = etiqueta,
-      y = "Edad (meses)"
-    ) +
-    theme_bw()
-}
+# Dispersión de largo vs edad
+d1 <- df %>%
+  ggplot(aes(x = largo, y = edad)) +
+  geom_point(alpha = 0.1, color = "#1E90FF", size = 0.6) +
+  labs(
+    x = "Largo (pies)",
+    y = "Edad (meses)"
+  ) +
+  theme_bw()
 
-d1 <- dispersion_edad("largo", "Largo (pies)")
-d2 <- dispersion_edad("diametro", "Diámetro (pies)")
-d3 <- dispersion_edad("altura", "Altura (pies)")
+# Dispersión de diámetro vs edad
+d2 <- df %>%
+  ggplot(aes(x = diametro, y = edad)) +
+  geom_point(alpha = 0.1, color = "#1E90FF", size = 0.6) +
+  labs(
+    x = "Diámetro (pies)",
+    y = "Edad (meses)"
+  ) +
+  theme_bw()
+
+# Dispersión de altura vs edad
+d3 <- df %>%
+  ggplot(aes(x = altura, y = edad)) +
+  geom_point(alpha = 0.1, color = "#1E90FF", size = 0.6) +
+  labs(
+    x = "Altura (pies)",
+    y = "Edad (meses)"
+  ) +
+  theme_bw()
 
 d1 + d2 + d3
 ```
@@ -434,10 +442,45 @@ d1 + d2 + d3
 En las tres medidas del caparazón se observa una tendencia ascendente: a mayor largo, diámetro o altura, mayor tiende a ser la edad del cangrejo. Sin embargo, la relación no es del todo lineal. Para los cangrejos pequeños la edad aumenta rápido con el tamaño, pero a partir de cierto punto (alrededor de $1{,}5$ pies de largo) la nube de puntos se abre mucho hacia arriba, es decir, cangrejos del mismo tamaño pueden tener edades muy distintas. En el gráfico de la altura se ven claramente los valores atípicos cerca de $2{,}8$ pies, que quedan aislados del resto de los datos y hacen que la mayor parte de la nube se vea comprimida a la izquierda.
 
 ```{r fig.cap="Dispersión entre la edad y los pesos", fig.width=10, fig.height=7}
-d4 <- dispersion_edad("peso", "Peso total (onzas)")
-d5 <- dispersion_edad("peso_carne", "Peso de la carne (onzas)")
-d6 <- dispersion_edad("peso_visceras", "Peso de las vísceras (onzas)")
-d7 <- dispersion_edad("peso_caparazon", "Peso del caparazón (onzas)")
+# Dispersión de peso total vs edad
+d4 <- df %>%
+  ggplot(aes(x = peso, y = edad)) +
+  geom_point(alpha = 0.1, color = "#1E90FF", size = 0.6) +
+  labs(
+    x = "Peso total (onzas)",
+    y = "Edad (meses)"
+  ) +
+  theme_bw()
+
+# Dispersión de peso de la carne vs edad
+d5 <- df %>%
+  ggplot(aes(x = peso_carne, y = edad)) +
+  geom_point(alpha = 0.1, color = "#1E90FF", size = 0.6) +
+  labs(
+    x = "Peso de la carne (onzas)",
+    y = "Edad (meses)"
+  ) +
+  theme_bw()
+
+# Dispersión de peso de las vísceras vs edad
+d6 <- df %>%
+  ggplot(aes(x = peso_visceras, y = edad)) +
+  geom_point(alpha = 0.1, color = "#1E90FF", size = 0.6) +
+  labs(
+    x = "Peso de las vísceras (onzas)",
+    y = "Edad (meses)"
+  ) +
+  theme_bw()
+
+# Dispersión de peso del caparazón vs edad
+d7 <- df %>%
+  ggplot(aes(x = peso_caparazon, y = edad)) +
+  geom_point(alpha = 0.1, color = "#1E90FF", size = 0.6) +
+  labs(
+    x = "Peso del caparazón (onzas)",
+    y = "Edad (meses)"
+  ) +
+  theme_bw()
 
 (d4 + d5) / (d6 + d7)
 ```

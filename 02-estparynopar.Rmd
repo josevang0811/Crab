@@ -411,13 +411,13 @@ La función `aov()` da los mismos resultados que el cálculo manual. El ANOVA mu
 
 ### Comparaciones múltiples con el método de Tukey
 
-El ANOVA no dice cuáles grupos son diferentes, así que aplicamos el método de Tukey. Como los tamaños de muestra son distintos, se usa la versión de Tukey-Kramer, en la que la diferencia honestamente significativa para el par $(i, j)$ es:
+El ANOVA no dice cuáles grupos son diferentes, así que aplicamos el método de Tukey. Como los tamaños de muestra son distintos, la diferencia honestamente significativa para cada par de grupos $(i, j)$ es:
 
 $$
-HSD_{ij} = q_{\alpha}(k, N - k) \cdot \sqrt{\frac{CME}{2} \left( \frac{1}{n_i} + \frac{1}{n_j} \right)}
+HSD = q_{\alpha}(k, N - k) \cdot \sqrt{CME \left( \frac{1}{n_i} + \frac{1}{n_j} \right)}
 $$
 
-Cuando $n_i = n_j = n$, esta expresión se reduce a $q_{\alpha}(k, N-k)\sqrt{CME/n}$, que es la fórmula de las notas de clase para tamaños iguales. Hagamos el cálculo:
+y dos medias son significativamente diferentes si la diferencia entre ellas es mayor que el $HSD$. Hagamos el cálculo:
 
 ```{r}
 q <- qtukey(p = 1 - alpha, nmeans = k, df = N - k)
@@ -432,7 +432,7 @@ comparaciones <- combn(1:k, 2, function(idx) {
   i <- idx[1]
   j <- idx[2]
   dif <- medias[i] - medias[j]
-  HSD <- q * sqrt(MSE / 2 * (1 / tamanos[i] + 1 / tamanos[j]))
+  HSD <- q * sqrt(MSE * (1 / tamanos[i] + 1 / tamanos[j]))
   c(Grupo_1 = grupos[i],
     Grupo_2 = grupos[j],
     Diferencia = round(dif, 4),
@@ -449,26 +449,10 @@ comparacion_tukey
 Ahora con la función `TukeyHSD()`:
 
 ```{r}
-resultado_tukey <- TukeyHSD(modelo)
-resultado_tukey
+TukeyHSD(modelo)
 ```
 
-Las dos formas coinciden: la amplitud de los intervalos de `TukeyHSD()` es igual al $HSD$ calculado para cada par, y en los tres casos la diferencia de medias es mucho mayor que ese umbral. Por lo tanto, **los tres grupos difieren entre sí**. Los indeterminados son en promedio $3{,}74$ meses más jóvenes que las hembras ($IC_{95\%} = (-3{,}80;\ -3{,}68)$) y $3{,}30$ meses más jóvenes que los machos ($IC_{95\%} = (-3{,}35;\ -3{,}24)$). Entre machos y hembras la diferencia es de apenas $0{,}45$ meses ($IC_{95\%} = (-0{,}50;\ -0{,}39)$), que es significativa pero pequeña, como ya se había visto con el tamaño del efecto.
-
-```{r fig.cap="Intervalos de confianza de Tukey para las diferencias de edad"}
-as.data.frame(resultado_tukey$sexo) %>%
-  rownames_to_column("comparacion") %>%
-  ggplot(aes(x = diff, y = comparacion)) +
-  geom_vline(xintercept = 0, linetype = "dashed", color = "gray40") +
-  geom_errorbar(aes(xmin = lwr, xmax = upr), width = 0.2, color = "#1f78b4") +
-  geom_point(size = 3, color = "red") +
-  labs(
-    title = "Comparaciones múltiples de Tukey",
-    x = "Diferencia de medias (meses)",
-    y = ""
-  ) +
-  theme_bw()
-```
+En los tres casos la diferencia de medias es mucho mayor que el $HSD$, y la función `TukeyHSD()` lleva a la misma conclusión, ya que ninguno de los intervalos contiene el cero. Por lo tanto, **los tres grupos difieren entre sí**. Los indeterminados son en promedio $3{,}74$ meses más jóvenes que las hembras ($IC_{95\%} = (-3{,}80;\ -3{,}68)$) y $3{,}30$ meses más jóvenes que los machos ($IC_{95\%} = (-3{,}35;\ -3{,}24)$). Entre machos y hembras la diferencia es de apenas $0{,}45$ meses ($IC_{95\%} = (-0{,}50;\ -0{,}39)$), que es significativa pero pequeña, como ya se había visto con el tamaño del efecto.
 
 ## Kruskal-Wallis de la edad según el sexo {#kw-sexo}
 
@@ -490,60 +474,13 @@ donde $N$ es el número total de observaciones, $k$ el número de grupos, $R_i$ 
 
 </div>
 
-### Cálculo paso a paso
-
-```{r}
-# rangos de todas las observaciones (los empates reciben el rango promedio)
-rangos <- rank(df$edad)
-
-# suma de rangos y tamaño de cada grupo
-R_i <- tapply(rangos, df$sexo, sum)
-n_i <- tapply(rangos, df$sexo, length)
-
-data.frame(sexo = names(R_i),
-           n_i = as.numeric(n_i),
-           R_i = as.numeric(R_i),
-           rango_promedio = as.numeric(R_i / n_i))
-```
-
-Los indeterminados tienen un rango promedio mucho menor que los otros dos grupos, lo que indica que sus edades tienden a ubicarse en la parte baja del ordenamiento. Calculemos el estadístico $H$:
-
-```{r}
-H <- 12 / (N * (N + 1)) * sum(R_i^2 / n_i) - 3 * (N + 1)
-H
-```
-
-Como la edad tiene muchos valores repetidos, el estadístico se corrige por empates dividiéndolo entre $C = 1 - \dfrac{\sum (t^3 - t)}{N^3 - N}$, donde $t$ es el número de observaciones empatadas en cada valor. Esta es la corrección que aplica la función `kruskal.test()`:
-
-```{r}
-t_empates <- table(df$edad)
-C <- 1 - sum(t_empates^3 - t_empates) / (N^3 - N)
-
-H_corregido <- H / C
-
-chi_critico <- qchisq(1 - alpha, df = k - 1)
-p_H <- pchisq(H_corregido, df = k - 1, lower.tail = FALSE)
-
-data.frame(H, C, H_corregido, chi_critico, p_valor = p_H,
-           decision = ifelse(H_corregido > chi_critico, "Se rechaza H_0", "No se rechaza H_0"))
-```
-
-### Prueba con la función `kruskal.test()`
+Veamos si hay diferencias en la edad de los tres grupos:
 
 ```{r}
 kruskal.test(edad ~ sexo, data = df)
 ```
 
-La prueba de Kruskal-Wallis indica que existen diferencias estadísticamente significativas en la edad entre al menos dos de los grupos ($\chi^2_{(2)} = 27724,\ p\text{-valor} < 0{,}001$). El valor coincide con el $H$ corregido por empates que se calculó a mano; sin la corrección el resultado sería $H = 27335{,}9$, que lleva a la misma conclusión.
-
-Para complementar, veamos el tamaño del efecto de la prueba con la función `kruskal_effsize()` del paquete `rstatix`, que calcula $\eta^2_H = \dfrac{H - k + 1}{N - k}$:
-
-```{r}
-df %>%
-  kruskal_effsize(edad ~ sexo)
-```
-
-El tamaño del efecto es $\eta^2_H = 0{,}374$, clasificado como grande. A diferencia de la comparación entre hembras y machos, aquí la diferencia sí es relevante en la práctica, y se debe principalmente al grupo de los indeterminados.
+La prueba de Kruskal-Wallis indica que existen diferencias estadísticamente significativas en la edad entre al menos dos de los grupos ($\chi^2_{(2)} = 27724,\ p\text{-valor} < 0{,}001$).
 
 ### Comparaciones post-hoc
 

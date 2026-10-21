@@ -195,9 +195,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="estparynopar.html"><a href="estparynopar.html#kw-sexo"><i class="fa fa-check"></i><b>2.4</b> Kruskal-Wallis de la edad según el sexo</a>
 <ul>
-<li class="chapter" data-level="2.4.1" data-path="estparynopar.html"><a href="estparynopar.html#cálculo-paso-a-paso-1"><i class="fa fa-check"></i><b>2.4.1</b> Cálculo paso a paso</a></li>
-<li class="chapter" data-level="2.4.2" data-path="estparynopar.html"><a href="estparynopar.html#prueba-con-la-función-kruskal.test"><i class="fa fa-check"></i><b>2.4.2</b> Prueba con la función <code>kruskal.test()</code></a></li>
-<li class="chapter" data-level="2.4.3" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-post-hoc"><i class="fa fa-check"></i><b>2.4.3</b> Comparaciones post-hoc</a></li>
+<li class="chapter" data-level="2.4.1" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-post-hoc"><i class="fa fa-check"></i><b>2.4.1</b> Comparaciones post-hoc</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="tabcontingencia.html"><a href="tabcontingencia.html"><i class="fa fa-check"></i><b>3</b> Tabla de contingencia</a>
@@ -220,12 +218,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.1.1" data-path="correglin.html"><a href="correglin.html#contraste-para-rho-rho_0-neq-0"><i class="fa fa-check"></i><b>4.1.1</b> Contraste para <span class="math inline">\(\rho = \rho_0 \neq 0\)</span></a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="correglin.html"><a href="correglin.html#correlación-de-spearman"><i class="fa fa-check"></i><b>4.2</b> Correlación de Spearman</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="correglin.html"><a href="correglin.html#correlación-de-la-edad-con-todas-las-medidas"><i class="fa fa-check"></i><b>4.2.1</b> Correlación de la edad con todas las medidas</a></li>
-</ul></li>
+<li class="chapter" data-level="4.2" data-path="correglin.html"><a href="correglin.html#correlación-de-spearman"><i class="fa fa-check"></i><b>4.2</b> Correlación de Spearman</a></li>
 <li class="chapter" data-level="4.3" data-path="correglin.html"><a href="correglin.html#correlación-de-kendall"><i class="fa fa-check"></i><b>4.3</b> Correlación de Kendall</a></li>
-<li class="chapter" data-level="4.4" data-path="correglin.html"><a href="correglin.html#correlación-entre-las-variables-independientes"><i class="fa fa-check"></i><b>4.4</b> Correlación entre las variables independientes</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>5</b> Conclusiones</a></li>
 <li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
@@ -292,26 +286,26 @@ div.csl-indent {
 </tbody>
 </table>
 <p>Carguemos las librerías y los datos:</p>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="correglin.html#cb187-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb187-2"><a href="correglin.html#cb187-2" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
-<span id="cb187-3"><a href="correglin.html#cb187-3" tabindex="-1"></a></span>
-<span id="cb187-4"><a href="correglin.html#cb187-4" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;datos/train.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb187-5"><a href="correglin.html#cb187-5" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
-<span id="cb187-6"><a href="correglin.html#cb187-6" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
-<span id="cb187-7"><a href="correglin.html#cb187-7" tabindex="-1"></a>    <span class="at">sexo           =</span> Sex,</span>
-<span id="cb187-8"><a href="correglin.html#cb187-8" tabindex="-1"></a>    <span class="at">largo          =</span> Length,</span>
-<span id="cb187-9"><a href="correglin.html#cb187-9" tabindex="-1"></a>    <span class="at">diametro       =</span> Diameter,</span>
-<span id="cb187-10"><a href="correglin.html#cb187-10" tabindex="-1"></a>    <span class="at">altura         =</span> Height,</span>
-<span id="cb187-11"><a href="correglin.html#cb187-11" tabindex="-1"></a>    <span class="at">peso           =</span> Weight,</span>
-<span id="cb187-12"><a href="correglin.html#cb187-12" tabindex="-1"></a>    <span class="at">peso_carne     =</span> Shucked.Weight,</span>
-<span id="cb187-13"><a href="correglin.html#cb187-13" tabindex="-1"></a>    <span class="at">peso_visceras  =</span> Viscera.Weight,</span>
-<span id="cb187-14"><a href="correglin.html#cb187-14" tabindex="-1"></a>    <span class="at">peso_caparazon =</span> Shell.Weight,</span>
-<span id="cb187-15"><a href="correglin.html#cb187-15" tabindex="-1"></a>    <span class="at">edad           =</span> Age</span>
-<span id="cb187-16"><a href="correglin.html#cb187-16" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb187-17"><a href="correglin.html#cb187-17" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb187-18"><a href="correglin.html#cb187-18" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(altura <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, altura),</span>
-<span id="cb187-19"><a href="correglin.html#cb187-19" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(altura), <span class="fu">mean</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), altura)</span>
-<span id="cb187-20"><a href="correglin.html#cb187-20" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="correglin.html#cb166-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb166-2"><a href="correglin.html#cb166-2" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
+<span id="cb166-3"><a href="correglin.html#cb166-3" tabindex="-1"></a></span>
+<span id="cb166-4"><a href="correglin.html#cb166-4" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;datos/train.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb166-5"><a href="correglin.html#cb166-5" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb166-6"><a href="correglin.html#cb166-6" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb166-7"><a href="correglin.html#cb166-7" tabindex="-1"></a>    <span class="at">sexo           =</span> Sex,</span>
+<span id="cb166-8"><a href="correglin.html#cb166-8" tabindex="-1"></a>    <span class="at">largo          =</span> Length,</span>
+<span id="cb166-9"><a href="correglin.html#cb166-9" tabindex="-1"></a>    <span class="at">diametro       =</span> Diameter,</span>
+<span id="cb166-10"><a href="correglin.html#cb166-10" tabindex="-1"></a>    <span class="at">altura         =</span> Height,</span>
+<span id="cb166-11"><a href="correglin.html#cb166-11" tabindex="-1"></a>    <span class="at">peso           =</span> Weight,</span>
+<span id="cb166-12"><a href="correglin.html#cb166-12" tabindex="-1"></a>    <span class="at">peso_carne     =</span> Shucked.Weight,</span>
+<span id="cb166-13"><a href="correglin.html#cb166-13" tabindex="-1"></a>    <span class="at">peso_visceras  =</span> Viscera.Weight,</span>
+<span id="cb166-14"><a href="correglin.html#cb166-14" tabindex="-1"></a>    <span class="at">peso_caparazon =</span> Shell.Weight,</span>
+<span id="cb166-15"><a href="correglin.html#cb166-15" tabindex="-1"></a>    <span class="at">edad           =</span> Age</span>
+<span id="cb166-16"><a href="correglin.html#cb166-16" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb166-17"><a href="correglin.html#cb166-17" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb166-18"><a href="correglin.html#cb166-18" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(altura <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, altura),</span>
+<span id="cb166-19"><a href="correglin.html#cb166-19" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(altura), <span class="fu">mean</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), altura)</span>
+<span id="cb166-20"><a href="correglin.html#cb166-20" tabindex="-1"></a>  )</span></code></pre></div>
 <div id="correlación-de-pearson" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Correlación de Pearson<a href="correglin.html#correlación-de-pearson" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Para el análisis de Pearson se toma el peso del caparazón, que en el análisis exploratorio fue la variable con la relación más clara con la edad. Las preguntas a resolver son:</p>
@@ -323,17 +317,17 @@ div.csl-indent {
 <li>Calcular el intervalo de confianza para el coeficiente de correlación.</li>
 </ol>
 <p><strong>1. Diagrama de dispersión</strong></p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="correglin.html#cb188-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
-<span id="cb188-2"><a href="correglin.html#cb188-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> peso_caparazon, <span class="at">y =</span> edad)) <span class="sc">+</span></span>
-<span id="cb188-3"><a href="correglin.html#cb188-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb188-4"><a href="correglin.html#cb188-4" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb188-5"><a href="correglin.html#cb188-5" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Relación entre la edad y el peso del caparazón&quot;</span>,</span>
-<span id="cb188-6"><a href="correglin.html#cb188-6" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Peso del caparazón (onzas)&quot;</span>,</span>
-<span id="cb188-7"><a href="correglin.html#cb188-7" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Edad (meses)&quot;</span></span>
-<span id="cb188-8"><a href="correglin.html#cb188-8" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb188-9"><a href="correglin.html#cb188-9" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-99"></span>
-<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-99-1.png" alt="Relación entre la edad y el peso del caparazón" width="672" />
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="correglin.html#cb167-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb167-2"><a href="correglin.html#cb167-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> peso_caparazon, <span class="at">y =</span> edad)) <span class="sc">+</span></span>
+<span id="cb167-3"><a href="correglin.html#cb167-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb167-4"><a href="correglin.html#cb167-4" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb167-5"><a href="correglin.html#cb167-5" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Relación entre la edad y el peso del caparazón&quot;</span>,</span>
+<span id="cb167-6"><a href="correglin.html#cb167-6" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Peso del caparazón (onzas)&quot;</span>,</span>
+<span id="cb167-7"><a href="correglin.html#cb167-7" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Edad (meses)&quot;</span></span>
+<span id="cb167-8"><a href="correglin.html#cb167-8" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb167-9"><a href="correglin.html#cb167-9" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-87"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-87-1.png" alt="Relación entre la edad y el peso del caparazón" width="672" />
 <p class="caption">
 Figura 4.1: Relación entre la edad y el peso del caparazón
 </p>
@@ -341,27 +335,27 @@ Figura 4.1: Relación entre la edad y el peso del caparazón
 <p>El diagrama muestra una relación positiva: los cangrejos con caparazón más pesado tienden a ser mayores. La tendencia es aproximadamente lineal para pesos bajos y medios, pero la dispersión de la edad aumenta a medida que aumenta el peso, lo que indica que no hay homocedasticidad.</p>
 <p><strong>2. Normalidad</strong></p>
 <p>Como la muestra tiene más de <span class="math inline">\(5.000\)</span> datos, usamos las pruebas de Kolmogorov-Smirnov y Lilliefors:</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="correglin.html#cb189-1" tabindex="-1"></a><span class="fu">ks.test</span>(<span class="fu">scale</span>(df<span class="sc">$</span>peso_caparazon), <span class="st">&quot;pnorm&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="correglin.html#cb168-1" tabindex="-1"></a><span class="fu">ks.test</span>(<span class="fu">scale</span>(df<span class="sc">$</span>peso_caparazon), <span class="st">&quot;pnorm&quot;</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  scale(df$peso_caparazon)
 ## D = 0.03897, p-value &lt; 2.2e-16
 ## alternative hypothesis: two-sided</code></pre>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="correglin.html#cb191-1" tabindex="-1"></a><span class="fu">lillie.test</span>(df<span class="sc">$</span>peso_caparazon)</span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="correglin.html#cb170-1" tabindex="-1"></a><span class="fu">lillie.test</span>(df<span class="sc">$</span>peso_caparazon)</span></code></pre></div>
 <pre><code>## 
 ##  Lilliefors (Kolmogorov-Smirnov) normality test
 ## 
 ## data:  df$peso_caparazon
 ## D = 0.03897, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="correglin.html#cb193-1" tabindex="-1"></a><span class="fu">ks.test</span>(<span class="fu">scale</span>(df<span class="sc">$</span>edad), <span class="st">&quot;pnorm&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="correglin.html#cb172-1" tabindex="-1"></a><span class="fu">ks.test</span>(<span class="fu">scale</span>(df<span class="sc">$</span>edad), <span class="st">&quot;pnorm&quot;</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Asymptotic one-sample Kolmogorov-Smirnov test
 ## 
 ## data:  scale(df$edad)
 ## D = 0.1459, p-value &lt; 2.2e-16
 ## alternative hypothesis: two-sided</code></pre>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="correglin.html#cb195-1" tabindex="-1"></a><span class="fu">lillie.test</span>(df<span class="sc">$</span>edad)</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="correglin.html#cb174-1" tabindex="-1"></a><span class="fu">lillie.test</span>(df<span class="sc">$</span>edad)</span></code></pre></div>
 <pre><code>## 
 ##  Lilliefors (Kolmogorov-Smirnov) normality test
 ## 
@@ -373,64 +367,64 @@ Figura 4.1: Relación entre la edad y el peso del caparazón
 <p><span class="math display">\[
 r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}} = \frac{S_{xy}}{\sqrt{S_{xx} S_{yy}}}
 \]</span></p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="correglin.html#cb197-1" tabindex="-1"></a><span class="co"># 1) Vectores y tamaño muestral</span></span>
-<span id="cb197-2"><a href="correglin.html#cb197-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> df<span class="sc">$</span>peso_caparazon</span>
-<span id="cb197-3"><a href="correglin.html#cb197-3" tabindex="-1"></a>y <span class="ot">&lt;-</span> df<span class="sc">$</span>edad</span>
-<span id="cb197-4"><a href="correglin.html#cb197-4" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
-<span id="cb197-5"><a href="correglin.html#cb197-5" tabindex="-1"></a></span>
-<span id="cb197-6"><a href="correglin.html#cb197-6" tabindex="-1"></a><span class="co"># 2) promedios</span></span>
-<span id="cb197-7"><a href="correglin.html#cb197-7" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> n</span>
-<span id="cb197-8"><a href="correglin.html#cb197-8" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">sum</span>(y) <span class="sc">/</span> n</span>
-<span id="cb197-9"><a href="correglin.html#cb197-9" tabindex="-1"></a></span>
-<span id="cb197-10"><a href="correglin.html#cb197-10" tabindex="-1"></a><span class="co"># 3) desviaciones</span></span>
-<span id="cb197-11"><a href="correglin.html#cb197-11" tabindex="-1"></a>xc <span class="ot">&lt;-</span> x <span class="sc">-</span> xbar</span>
-<span id="cb197-12"><a href="correglin.html#cb197-12" tabindex="-1"></a>yc <span class="ot">&lt;-</span> y <span class="sc">-</span> ybar</span>
-<span id="cb197-13"><a href="correglin.html#cb197-13" tabindex="-1"></a></span>
-<span id="cb197-14"><a href="correglin.html#cb197-14" tabindex="-1"></a>Sxy <span class="ot">&lt;-</span> <span class="fu">sum</span>(xc <span class="sc">*</span> yc)          <span class="co"># sumatoria de productos centrados</span></span>
-<span id="cb197-15"><a href="correglin.html#cb197-15" tabindex="-1"></a>Sxx <span class="ot">&lt;-</span> <span class="fu">sum</span>(xc<span class="sc">^</span><span class="dv">2</span>)             <span class="co"># sumatoria de cuadrados centrados de x</span></span>
-<span id="cb197-16"><a href="correglin.html#cb197-16" tabindex="-1"></a>Syy <span class="ot">&lt;-</span> <span class="fu">sum</span>(yc<span class="sc">^</span><span class="dv">2</span>)             <span class="co"># sumatoria de cuadrados centrados de y</span></span>
-<span id="cb197-17"><a href="correglin.html#cb197-17" tabindex="-1"></a></span>
-<span id="cb197-18"><a href="correglin.html#cb197-18" tabindex="-1"></a><span class="co"># 4) Coeficiente de correlación de Pearson</span></span>
-<span id="cb197-19"><a href="correglin.html#cb197-19" tabindex="-1"></a>r <span class="ot">&lt;-</span> Sxy <span class="sc">/</span> <span class="fu">sqrt</span>(Sxx <span class="sc">*</span> Syy)</span>
-<span id="cb197-20"><a href="correglin.html#cb197-20" tabindex="-1"></a></span>
-<span id="cb197-21"><a href="correglin.html#cb197-21" tabindex="-1"></a><span class="co"># 5) Resultados obtenidos y r</span></span>
-<span id="cb197-22"><a href="correglin.html#cb197-22" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb197-23"><a href="correglin.html#cb197-23" tabindex="-1"></a>  <span class="at">n =</span> n,</span>
-<span id="cb197-24"><a href="correglin.html#cb197-24" tabindex="-1"></a>  <span class="at">prom_peso_caparazon =</span> xbar,</span>
-<span id="cb197-25"><a href="correglin.html#cb197-25" tabindex="-1"></a>  <span class="at">prom_edad =</span> ybar,</span>
-<span id="cb197-26"><a href="correglin.html#cb197-26" tabindex="-1"></a>  <span class="at">Sxy =</span> Sxy,</span>
-<span id="cb197-27"><a href="correglin.html#cb197-27" tabindex="-1"></a>  <span class="at">Sxx =</span> Sxx,</span>
-<span id="cb197-28"><a href="correglin.html#cb197-28" tabindex="-1"></a>  <span class="at">Syy =</span> Syy,</span>
-<span id="cb197-29"><a href="correglin.html#cb197-29" tabindex="-1"></a>  <span class="at">r_pearson =</span> r</span>
-<span id="cb197-30"><a href="correglin.html#cb197-30" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="correglin.html#cb176-1" tabindex="-1"></a><span class="co"># 1) Vectores y tamaño muestral</span></span>
+<span id="cb176-2"><a href="correglin.html#cb176-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> df<span class="sc">$</span>peso_caparazon</span>
+<span id="cb176-3"><a href="correglin.html#cb176-3" tabindex="-1"></a>y <span class="ot">&lt;-</span> df<span class="sc">$</span>edad</span>
+<span id="cb176-4"><a href="correglin.html#cb176-4" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb176-5"><a href="correglin.html#cb176-5" tabindex="-1"></a></span>
+<span id="cb176-6"><a href="correglin.html#cb176-6" tabindex="-1"></a><span class="co"># 2) promedios</span></span>
+<span id="cb176-7"><a href="correglin.html#cb176-7" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> n</span>
+<span id="cb176-8"><a href="correglin.html#cb176-8" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">sum</span>(y) <span class="sc">/</span> n</span>
+<span id="cb176-9"><a href="correglin.html#cb176-9" tabindex="-1"></a></span>
+<span id="cb176-10"><a href="correglin.html#cb176-10" tabindex="-1"></a><span class="co"># 3) desviaciones</span></span>
+<span id="cb176-11"><a href="correglin.html#cb176-11" tabindex="-1"></a>xc <span class="ot">&lt;-</span> x <span class="sc">-</span> xbar</span>
+<span id="cb176-12"><a href="correglin.html#cb176-12" tabindex="-1"></a>yc <span class="ot">&lt;-</span> y <span class="sc">-</span> ybar</span>
+<span id="cb176-13"><a href="correglin.html#cb176-13" tabindex="-1"></a></span>
+<span id="cb176-14"><a href="correglin.html#cb176-14" tabindex="-1"></a>Sxy <span class="ot">&lt;-</span> <span class="fu">sum</span>(xc <span class="sc">*</span> yc)          <span class="co"># sumatoria de productos centrados</span></span>
+<span id="cb176-15"><a href="correglin.html#cb176-15" tabindex="-1"></a>Sxx <span class="ot">&lt;-</span> <span class="fu">sum</span>(xc<span class="sc">^</span><span class="dv">2</span>)             <span class="co"># sumatoria de cuadrados centrados de x</span></span>
+<span id="cb176-16"><a href="correglin.html#cb176-16" tabindex="-1"></a>Syy <span class="ot">&lt;-</span> <span class="fu">sum</span>(yc<span class="sc">^</span><span class="dv">2</span>)             <span class="co"># sumatoria de cuadrados centrados de y</span></span>
+<span id="cb176-17"><a href="correglin.html#cb176-17" tabindex="-1"></a></span>
+<span id="cb176-18"><a href="correglin.html#cb176-18" tabindex="-1"></a><span class="co"># 4) Coeficiente de correlación de Pearson</span></span>
+<span id="cb176-19"><a href="correglin.html#cb176-19" tabindex="-1"></a>r <span class="ot">&lt;-</span> Sxy <span class="sc">/</span> <span class="fu">sqrt</span>(Sxx <span class="sc">*</span> Syy)</span>
+<span id="cb176-20"><a href="correglin.html#cb176-20" tabindex="-1"></a></span>
+<span id="cb176-21"><a href="correglin.html#cb176-21" tabindex="-1"></a><span class="co"># 5) Resultados obtenidos y r</span></span>
+<span id="cb176-22"><a href="correglin.html#cb176-22" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb176-23"><a href="correglin.html#cb176-23" tabindex="-1"></a>  <span class="at">n =</span> n,</span>
+<span id="cb176-24"><a href="correglin.html#cb176-24" tabindex="-1"></a>  <span class="at">prom_peso_caparazon =</span> xbar,</span>
+<span id="cb176-25"><a href="correglin.html#cb176-25" tabindex="-1"></a>  <span class="at">prom_edad =</span> ybar,</span>
+<span id="cb176-26"><a href="correglin.html#cb176-26" tabindex="-1"></a>  <span class="at">Sxy =</span> Sxy,</span>
+<span id="cb176-27"><a href="correglin.html#cb176-27" tabindex="-1"></a>  <span class="at">Sxx =</span> Sxx,</span>
+<span id="cb176-28"><a href="correglin.html#cb176-28" tabindex="-1"></a>  <span class="at">Syy =</span> Syy,</span>
+<span id="cb176-29"><a href="correglin.html#cb176-29" tabindex="-1"></a>  <span class="at">r_pearson =</span> r</span>
+<span id="cb176-30"><a href="correglin.html#cb176-30" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>##       n prom_peso_caparazon prom_edad      Sxy      Sxx      Syy r_pearson
 ## 1 74051             6.72387  9.967806 559153.7 951373.9 746559.2 0.6634733</code></pre>
 <p>Usando la función <code>cor()</code> tenemos</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="correglin.html#cb199-1" tabindex="-1"></a><span class="fu">cor</span>(x, y, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="correglin.html#cb178-1" tabindex="-1"></a><span class="fu">cor</span>(x, y, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0.6634733</code></pre>
 <p><strong>4. Significancia de la correlación</strong></p>
 <p>Para <span class="math inline">\(H_0: \rho = 0\)</span> vs <span class="math inline">\(H_1: \rho \neq 0\)</span>, el estadístico de prueba es <span class="math inline">\(t_0 = \dfrac{r\sqrt{n-2}}{\sqrt{1-r^2}}\)</span> y se rechaza <span class="math inline">\(H_0\)</span> si <span class="math inline">\(|t_0| &gt; t_{\alpha/2,\, n-2}\)</span>.</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="correglin.html#cb201-1" tabindex="-1"></a><span class="co"># 6) Estadístico t para H0: rho = 0</span></span>
-<span id="cb201-2"><a href="correglin.html#cb201-2" tabindex="-1"></a>gl <span class="ot">&lt;-</span> n <span class="sc">-</span> <span class="dv">2</span></span>
-<span id="cb201-3"><a href="correglin.html#cb201-3" tabindex="-1"></a>t_0 <span class="ot">&lt;-</span> r <span class="sc">*</span> <span class="fu">sqrt</span>(gl) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb201-4"><a href="correglin.html#cb201-4" tabindex="-1"></a>t_0</span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="correglin.html#cb180-1" tabindex="-1"></a><span class="co"># 6) Estadístico t para H0: rho = 0</span></span>
+<span id="cb180-2"><a href="correglin.html#cb180-2" tabindex="-1"></a>gl <span class="ot">&lt;-</span> n <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb180-3"><a href="correglin.html#cb180-3" tabindex="-1"></a>t_0 <span class="ot">&lt;-</span> r <span class="sc">*</span> <span class="fu">sqrt</span>(gl) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb180-4"><a href="correglin.html#cb180-4" tabindex="-1"></a>t_0</span></code></pre></div>
 <pre><code>## [1] 241.3045</code></pre>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="correglin.html#cb203-1" tabindex="-1"></a><span class="co"># 7) Valor crítico t_(α/2, gl) para α = 0.05 (bilateral)</span></span>
-<span id="cb203-2"><a href="correglin.html#cb203-2" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb203-3"><a href="correglin.html#cb203-3" tabindex="-1"></a>t_tab <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha<span class="sc">/</span><span class="dv">2</span>, <span class="at">df =</span> gl)</span>
-<span id="cb203-4"><a href="correglin.html#cb203-4" tabindex="-1"></a>t_tab</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="correglin.html#cb182-1" tabindex="-1"></a><span class="co"># 7) Valor crítico t_(α/2, gl) para α = 0.05 (bilateral)</span></span>
+<span id="cb182-2"><a href="correglin.html#cb182-2" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb182-3"><a href="correglin.html#cb182-3" tabindex="-1"></a>t_tab <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha<span class="sc">/</span><span class="dv">2</span>, <span class="at">df =</span> gl)</span>
+<span id="cb182-4"><a href="correglin.html#cb182-4" tabindex="-1"></a>t_tab</span></code></pre></div>
 <pre><code>## [1] 1.959996</code></pre>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="correglin.html#cb205-1" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">abs</span>(t_0) <span class="sc">&gt;</span> t_tab) {</span>
-<span id="cb205-2"><a href="correglin.html#cb205-2" tabindex="-1"></a>  decision <span class="ot">&lt;-</span> <span class="st">&quot;Rechazar H0: la correlación es significativa&quot;</span></span>
-<span id="cb205-3"><a href="correglin.html#cb205-3" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb205-4"><a href="correglin.html#cb205-4" tabindex="-1"></a>  decision <span class="ot">&lt;-</span> <span class="st">&quot;No rechazar H0: no hay evidencia suficiente de correlación&quot;</span></span>
-<span id="cb205-5"><a href="correglin.html#cb205-5" tabindex="-1"></a>}</span>
-<span id="cb205-6"><a href="correglin.html#cb205-6" tabindex="-1"></a></span>
-<span id="cb205-7"><a href="correglin.html#cb205-7" tabindex="-1"></a>decision</span></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="correglin.html#cb184-1" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">abs</span>(t_0) <span class="sc">&gt;</span> t_tab) {</span>
+<span id="cb184-2"><a href="correglin.html#cb184-2" tabindex="-1"></a>  decision <span class="ot">&lt;-</span> <span class="st">&quot;Rechazar H0: la correlación es significativa&quot;</span></span>
+<span id="cb184-3"><a href="correglin.html#cb184-3" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb184-4"><a href="correglin.html#cb184-4" tabindex="-1"></a>  decision <span class="ot">&lt;-</span> <span class="st">&quot;No rechazar H0: no hay evidencia suficiente de correlación&quot;</span></span>
+<span id="cb184-5"><a href="correglin.html#cb184-5" tabindex="-1"></a>}</span>
+<span id="cb184-6"><a href="correglin.html#cb184-6" tabindex="-1"></a></span>
+<span id="cb184-7"><a href="correglin.html#cb184-7" tabindex="-1"></a>decision</span></code></pre></div>
 <pre><code>## [1] &quot;Rechazar H0: la correlación es significativa&quot;</code></pre>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="correglin.html#cb207-1" tabindex="-1"></a><span class="co"># p-valor (bilateral) desde la t de Student</span></span>
-<span id="cb207-2"><a href="correglin.html#cb207-2" tabindex="-1"></a>p_valor <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(t_0), <span class="at">df =</span> gl)</span>
-<span id="cb207-3"><a href="correglin.html#cb207-3" tabindex="-1"></a>p_valor</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="correglin.html#cb186-1" tabindex="-1"></a><span class="co"># p-valor (bilateral) desde la t de Student</span></span>
+<span id="cb186-2"><a href="correglin.html#cb186-2" tabindex="-1"></a>p_valor <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(t_0), <span class="at">df =</span> gl)</span>
+<span id="cb186-3"><a href="correglin.html#cb186-3" tabindex="-1"></a>p_valor</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <p><strong>5. Intervalo de confianza</strong></p>
 <p>Usando la transformación <span class="math inline">\(Z\)</span> de Fisher, un intervalo de confianza del <span class="math inline">\(95\%\)</span> para <span class="math inline">\(\rho\)</span> es:</p>
@@ -439,24 +433,24 @@ r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x
 \leq \rho \leq
 \tanh\left( \operatorname{arctanh}(r) + \frac{Z_{1-\alpha/2}}{\sqrt{n-3}} \right)
 \]</span></p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="correglin.html#cb209-1" tabindex="-1"></a><span class="co"># 8) Intervalo de confianza del 95% vía Fisher z</span></span>
-<span id="cb209-2"><a href="correglin.html#cb209-2" tabindex="-1"></a>z0 <span class="ot">&lt;-</span> <span class="fu">atanh</span>(r)</span>
-<span id="cb209-3"><a href="correglin.html#cb209-3" tabindex="-1"></a></span>
-<span id="cb209-4"><a href="correglin.html#cb209-4" tabindex="-1"></a><span class="co"># Error estándar de z</span></span>
-<span id="cb209-5"><a href="correglin.html#cb209-5" tabindex="-1"></a>se_z <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(n <span class="sc">-</span> <span class="dv">3</span>)</span>
-<span id="cb209-6"><a href="correglin.html#cb209-6" tabindex="-1"></a></span>
-<span id="cb209-7"><a href="correglin.html#cb209-7" tabindex="-1"></a><span class="co"># Valor crítico z_(1-α/2)</span></span>
-<span id="cb209-8"><a href="correglin.html#cb209-8" tabindex="-1"></a>z_tab <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb209-9"><a href="correglin.html#cb209-9" tabindex="-1"></a></span>
-<span id="cb209-10"><a href="correglin.html#cb209-10" tabindex="-1"></a><span class="co"># Intervalo en la escala z</span></span>
-<span id="cb209-11"><a href="correglin.html#cb209-11" tabindex="-1"></a>ci_z <span class="ot">&lt;-</span> <span class="fu">c</span>(z0 <span class="sc">-</span> z_tab <span class="sc">*</span> se_z, z0 <span class="sc">+</span> z_tab <span class="sc">*</span> se_z)</span>
-<span id="cb209-12"><a href="correglin.html#cb209-12" tabindex="-1"></a></span>
-<span id="cb209-13"><a href="correglin.html#cb209-13" tabindex="-1"></a><span class="co"># límite inferior y superior del IC para rho</span></span>
-<span id="cb209-14"><a href="correglin.html#cb209-14" tabindex="-1"></a>ci_r <span class="ot">&lt;-</span> <span class="fu">tanh</span>(ci_z)</span>
-<span id="cb209-15"><a href="correglin.html#cb209-15" tabindex="-1"></a>ci_r</span></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="correglin.html#cb188-1" tabindex="-1"></a><span class="co"># 8) Intervalo de confianza del 95% vía Fisher z</span></span>
+<span id="cb188-2"><a href="correglin.html#cb188-2" tabindex="-1"></a>z0 <span class="ot">&lt;-</span> <span class="fu">atanh</span>(r)</span>
+<span id="cb188-3"><a href="correglin.html#cb188-3" tabindex="-1"></a></span>
+<span id="cb188-4"><a href="correglin.html#cb188-4" tabindex="-1"></a><span class="co"># Error estándar de z</span></span>
+<span id="cb188-5"><a href="correglin.html#cb188-5" tabindex="-1"></a>se_z <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(n <span class="sc">-</span> <span class="dv">3</span>)</span>
+<span id="cb188-6"><a href="correglin.html#cb188-6" tabindex="-1"></a></span>
+<span id="cb188-7"><a href="correglin.html#cb188-7" tabindex="-1"></a><span class="co"># Valor crítico z_(1-α/2)</span></span>
+<span id="cb188-8"><a href="correglin.html#cb188-8" tabindex="-1"></a>z_tab <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb188-9"><a href="correglin.html#cb188-9" tabindex="-1"></a></span>
+<span id="cb188-10"><a href="correglin.html#cb188-10" tabindex="-1"></a><span class="co"># Intervalo en la escala z</span></span>
+<span id="cb188-11"><a href="correglin.html#cb188-11" tabindex="-1"></a>ci_z <span class="ot">&lt;-</span> <span class="fu">c</span>(z0 <span class="sc">-</span> z_tab <span class="sc">*</span> se_z, z0 <span class="sc">+</span> z_tab <span class="sc">*</span> se_z)</span>
+<span id="cb188-12"><a href="correglin.html#cb188-12" tabindex="-1"></a></span>
+<span id="cb188-13"><a href="correglin.html#cb188-13" tabindex="-1"></a><span class="co"># límite inferior y superior del IC para rho</span></span>
+<span id="cb188-14"><a href="correglin.html#cb188-14" tabindex="-1"></a>ci_r <span class="ot">&lt;-</span> <span class="fu">tanh</span>(ci_z)</span>
+<span id="cb188-15"><a href="correglin.html#cb188-15" tabindex="-1"></a>ci_r</span></code></pre></div>
 <pre><code>## [1] 0.6594219 0.6674861</code></pre>
 <p>Usando la función <code>cor.test()</code> nos queda:</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="correglin.html#cb211-1" tabindex="-1"></a><span class="fu">cor.test</span>(x, y, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="correglin.html#cb190-1" tabindex="-1"></a><span class="fu">cor.test</span>(x, y, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s product-moment correlation
 ## 
@@ -476,17 +470,17 @@ r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x
 H_0: \rho = 0{,}6 \quad \text{vs} \quad H_1: \rho \neq 0{,}6
 \]</span></p>
 <p>El estadístico de prueba es <span class="math inline">\(Z_0 = \left[ \operatorname{arctanh}(r) - \operatorname{arctanh}(\rho_0) \right] \sqrt{n - 3}\)</span> y se rechaza <span class="math inline">\(H_0\)</span> si <span class="math inline">\(|Z_0| &gt; Z_{\alpha/2}\)</span>:</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="correglin.html#cb213-1" tabindex="-1"></a>rho_0 <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
-<span id="cb213-2"><a href="correglin.html#cb213-2" tabindex="-1"></a></span>
-<span id="cb213-3"><a href="correglin.html#cb213-3" tabindex="-1"></a>Z_0 <span class="ot">&lt;-</span> (<span class="fu">atanh</span>(r) <span class="sc">-</span> <span class="fu">atanh</span>(rho_0)) <span class="sc">*</span> <span class="fu">sqrt</span>(n <span class="sc">-</span> <span class="dv">3</span>)</span>
-<span id="cb213-4"><a href="correglin.html#cb213-4" tabindex="-1"></a>Z_0</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="correglin.html#cb192-1" tabindex="-1"></a>rho_0 <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb192-2"><a href="correglin.html#cb192-2" tabindex="-1"></a></span>
+<span id="cb192-3"><a href="correglin.html#cb192-3" tabindex="-1"></a>Z_0 <span class="ot">&lt;-</span> (<span class="fu">atanh</span>(r) <span class="sc">-</span> <span class="fu">atanh</span>(rho_0)) <span class="sc">*</span> <span class="fu">sqrt</span>(n <span class="sc">-</span> <span class="dv">3</span>)</span>
+<span id="cb192-4"><a href="correglin.html#cb192-4" tabindex="-1"></a>Z_0</span></code></pre></div>
 <pre><code>## [1] 28.80244</code></pre>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="correglin.html#cb215-1" tabindex="-1"></a>z_tab</span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="correglin.html#cb194-1" tabindex="-1"></a>z_tab</span></code></pre></div>
 <pre><code>## [1] 1.959964</code></pre>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="correglin.html#cb217-1" tabindex="-1"></a>p_valor_Z <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(Z_0))</span>
-<span id="cb217-2"><a href="correglin.html#cb217-2" tabindex="-1"></a>p_valor_Z</span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="correglin.html#cb196-1" tabindex="-1"></a>p_valor_Z <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(Z_0))</span>
+<span id="cb196-2"><a href="correglin.html#cb196-2" tabindex="-1"></a>p_valor_Z</span></code></pre></div>
 <pre><code>## [1] 1.999073e-182</code></pre>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="correglin.html#cb219-1" tabindex="-1"></a><span class="fu">ifelse</span>(<span class="fu">abs</span>(Z_0) <span class="sc">&gt;</span> z_tab, <span class="st">&quot;Se rechaza H0&quot;</span>, <span class="st">&quot;No se rechaza H0&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="correglin.html#cb198-1" tabindex="-1"></a><span class="fu">ifelse</span>(<span class="fu">abs</span>(Z_0) <span class="sc">&gt;</span> z_tab, <span class="st">&quot;Se rechaza H0&quot;</span>, <span class="st">&quot;No se rechaza H0&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Se rechaza H0&quot;</code></pre>
 <p>Como <span class="math inline">\(|Z_0| = 28{,}80 &gt; 1{,}96\)</span>, se rechaza la hipótesis nula (<span class="math inline">\(p\text{-valor} &lt; 0{,}001\)</span>). La correlación entre el peso del caparazón y la edad es significativamente distinta de <span class="math inline">\(0{,}6\)</span>, y como <span class="math inline">\(r = 0{,}6635\)</span> y el intervalo de confianza está completamente por encima de <span class="math inline">\(0{,}6\)</span>, se puede afirmar que la correlación es mayor a ese valor.</p>
 </div>
@@ -497,23 +491,8 @@ H_0: \rho = 0{,}6 \quad \text{vs} \quad H_1: \rho \neq 0{,}6
 <p><span class="math display">\[
 H_0: \rho_S = 0 \quad \text{vs} \quad H_1: \rho_S \neq 0
 \]</span></p>
-<p>Como hay muchos empates, <span class="math inline">\(\rho_S\)</span> se calcula como el coeficiente de Pearson aplicado a los rangos. Hagámoslo paso a paso:</p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="correglin.html#cb221-1" tabindex="-1"></a><span class="co"># rangos (los empates reciben el rango promedio)</span></span>
-<span id="cb221-2"><a href="correglin.html#cb221-2" tabindex="-1"></a>rx <span class="ot">&lt;-</span> <span class="fu">rank</span>(x)</span>
-<span id="cb221-3"><a href="correglin.html#cb221-3" tabindex="-1"></a>ry <span class="ot">&lt;-</span> <span class="fu">rank</span>(y)</span>
-<span id="cb221-4"><a href="correglin.html#cb221-4" tabindex="-1"></a></span>
-<span id="cb221-5"><a href="correglin.html#cb221-5" tabindex="-1"></a>rho_s <span class="ot">&lt;-</span> <span class="fu">sum</span>((rx <span class="sc">-</span> <span class="fu">mean</span>(rx)) <span class="sc">*</span> (ry <span class="sc">-</span> <span class="fu">mean</span>(ry))) <span class="sc">/</span></span>
-<span id="cb221-6"><a href="correglin.html#cb221-6" tabindex="-1"></a>         <span class="fu">sqrt</span>(<span class="fu">sum</span>((rx <span class="sc">-</span> <span class="fu">mean</span>(rx))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> <span class="fu">sum</span>((ry <span class="sc">-</span> <span class="fu">mean</span>(ry))<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb221-7"><a href="correglin.html#cb221-7" tabindex="-1"></a>rho_s</span></code></pre></div>
-<pre><code>## [1] 0.736481</code></pre>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="correglin.html#cb223-1" tabindex="-1"></a><span class="co"># estadístico t aproximado para n &gt; 10</span></span>
-<span id="cb223-2"><a href="correglin.html#cb223-2" tabindex="-1"></a>t_s <span class="ot">&lt;-</span> rho_s <span class="sc">*</span> <span class="fu">sqrt</span>((n <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> rho_s<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb223-3"><a href="correglin.html#cb223-3" tabindex="-1"></a>t_s</span></code></pre></div>
-<pre><code>## [1] 296.2649</code></pre>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="correglin.html#cb225-1" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(t_s), <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">2</span>)</span></code></pre></div>
-<pre><code>## [1] 0</code></pre>
 <p>Veamos el coeficiente de correlación y su significancia con <code>cor.test()</code>:</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="correglin.html#cb227-1" tabindex="-1"></a><span class="fu">cor.test</span>(x, y, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">exact =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="correglin.html#cb200-1" tabindex="-1"></a><span class="fu">cor.test</span>(x, y, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">exact =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Spearman&#39;s rank correlation rho
 ## 
@@ -524,63 +503,6 @@ H_0: \rho_S = 0 \quad \text{vs} \quad H_1: \rho_S \neq 0
 ##      rho 
 ## 0.736481</code></pre>
 <p>El análisis de correlación de Spearman entre el peso del caparazón y la edad mostró un coeficiente <span class="math inline">\(\rho_S = 0{,}7365\)</span>, que corresponde a una <strong>correlación positiva moderada</strong>, muy cerca del límite de una correlación muy fuerte. La prueba de significancia (<span class="math inline">\(S = 1{,}7834 \times 10^{13},\ p\text{-valor} &lt; 0{,}001\)</span>) permite rechazar la hipótesis nula de ausencia de correlación. El valor de Spearman es mayor que el de Pearson (<span class="math inline">\(0{,}6635\)</span>), lo que confirma que la relación es monótona pero no del todo lineal, tal como se veía en el diagrama de dispersión.</p>
-<div id="correlación-de-la-edad-con-todas-las-medidas" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Correlación de la edad con todas las medidas<a href="correglin.html#correlación-de-la-edad-con-todas-las-medidas" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Calculemos los coeficientes de Pearson y Spearman entre la edad y cada una de las medidas físicas:</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="correglin.html#cb229-1" tabindex="-1"></a>variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;largo&quot;</span>, <span class="st">&quot;diametro&quot;</span>, <span class="st">&quot;altura&quot;</span>, <span class="st">&quot;peso&quot;</span>,</span>
-<span id="cb229-2"><a href="correglin.html#cb229-2" tabindex="-1"></a>               <span class="st">&quot;peso_carne&quot;</span>, <span class="st">&quot;peso_visceras&quot;</span>, <span class="st">&quot;peso_caparazon&quot;</span>)</span>
-<span id="cb229-3"><a href="correglin.html#cb229-3" tabindex="-1"></a></span>
-<span id="cb229-4"><a href="correglin.html#cb229-4" tabindex="-1"></a>tabla_cor <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(variables, <span class="cf">function</span>(v) {</span>
-<span id="cb229-5"><a href="correglin.html#cb229-5" tabindex="-1"></a>  pearson <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(df[[v]], df<span class="sc">$</span>edad, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>)</span>
-<span id="cb229-6"><a href="correglin.html#cb229-6" tabindex="-1"></a>  spearman <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(df[[v]], df<span class="sc">$</span>edad, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">exact =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb229-7"><a href="correglin.html#cb229-7" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
-<span id="cb229-8"><a href="correglin.html#cb229-8" tabindex="-1"></a>    <span class="at">variable =</span> v,</span>
-<span id="cb229-9"><a href="correglin.html#cb229-9" tabindex="-1"></a>    <span class="at">r_pearson =</span> <span class="fu">unname</span>(pearson<span class="sc">$</span>estimate),</span>
-<span id="cb229-10"><a href="correglin.html#cb229-10" tabindex="-1"></a>    <span class="at">p_pearson =</span> pearson<span class="sc">$</span>p.value,</span>
-<span id="cb229-11"><a href="correglin.html#cb229-11" tabindex="-1"></a>    <span class="at">rho_spearman =</span> <span class="fu">unname</span>(spearman<span class="sc">$</span>estimate),</span>
-<span id="cb229-12"><a href="correglin.html#cb229-12" tabindex="-1"></a>    <span class="at">p_spearman =</span> spearman<span class="sc">$</span>p.value</span>
-<span id="cb229-13"><a href="correglin.html#cb229-13" tabindex="-1"></a>  )</span>
-<span id="cb229-14"><a href="correglin.html#cb229-14" tabindex="-1"></a>}) <span class="sc">%&gt;%</span></span>
-<span id="cb229-15"><a href="correglin.html#cb229-15" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(rho_spearman))</span>
-<span id="cb229-16"><a href="correglin.html#cb229-16" tabindex="-1"></a></span>
-<span id="cb229-17"><a href="correglin.html#cb229-17" tabindex="-1"></a>tabla_cor</span></code></pre></div>
-<pre><code>## # A tibble: 7 × 5
-##   variable       r_pearson p_pearson rho_spearman p_spearman
-##   &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
-## 1 peso_caparazon     0.663         0        0.736          0
-## 2 altura             0.637         0        0.704          0
-## 3 peso               0.601         0        0.690          0
-## 4 diametro           0.621         0        0.679          0
-## 5 peso_visceras      0.577         0        0.677          0
-## 6 largo              0.613         0        0.669          0
-## 7 peso_carne         0.503         0        0.613          0</code></pre>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="correglin.html#cb231-1" tabindex="-1"></a>tabla_cor <span class="sc">%&gt;%</span></span>
-<span id="cb231-2"><a href="correglin.html#cb231-2" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(r_pearson, rho_spearman),</span>
-<span id="cb231-3"><a href="correglin.html#cb231-3" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;coeficiente&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;valor&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb231-4"><a href="correglin.html#cb231-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">coeficiente =</span> <span class="fu">ifelse</span>(coeficiente <span class="sc">==</span> <span class="st">&quot;r_pearson&quot;</span>, <span class="st">&quot;Pearson&quot;</span>, <span class="st">&quot;Spearman&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb231-5"><a href="correglin.html#cb231-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(variable, valor, <span class="at">FUN =</span> max), <span class="at">y =</span> valor, <span class="at">fill =</span> coeficiente)) <span class="sc">+</span></span>
-<span id="cb231-6"><a href="correglin.html#cb231-6" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.7</span>), <span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb231-7"><a href="correglin.html#cb231-7" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(valor, <span class="dv">3</span>)),</span>
-<span id="cb231-8"><a href="correglin.html#cb231-8" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.7</span>), <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">size =</span> <span class="fl">3.2</span>) <span class="sc">+</span></span>
-<span id="cb231-9"><a href="correglin.html#cb231-9" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb231-10"><a href="correglin.html#cb231-10" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.85</span>)) <span class="sc">+</span></span>
-<span id="cb231-11"><a href="correglin.html#cb231-11" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set1&quot;</span>) <span class="sc">+</span></span>
-<span id="cb231-12"><a href="correglin.html#cb231-12" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb231-13"><a href="correglin.html#cb231-13" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Correlación de cada medida con la edad&quot;</span>,</span>
-<span id="cb231-14"><a href="correglin.html#cb231-14" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb231-15"><a href="correglin.html#cb231-15" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Coeficiente de correlación&quot;</span>,</span>
-<span id="cb231-16"><a href="correglin.html#cb231-16" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Coeficiente&quot;</span></span>
-<span id="cb231-17"><a href="correglin.html#cb231-17" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb231-18"><a href="correglin.html#cb231-18" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-112"></span>
-<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-112-1.png" alt="Coeficientes de Pearson y Spearman entre la edad y cada medida" width="672" />
-<p class="caption">
-Figura 4.2: Coeficientes de Pearson y Spearman entre la edad y cada medida
-</p>
-</div>
-<p>Todas las correlaciones son positivas y significativas (<span class="math inline">\(p\text{-valor} &lt; 0{,}001\)</span> en todos los casos). Según Spearman, las variables más relacionadas con la edad son el peso del caparazón (<span class="math inline">\(0{,}736\)</span>) y la altura (<span class="math inline">\(0{,}704\)</span>), seguidas del peso total (<span class="math inline">\(0{,}690\)</span>), el diámetro (<span class="math inline">\(0{,}679\)</span>), el peso de las vísceras (<span class="math inline">\(0{,}677\)</span>) y el largo (<span class="math inline">\(0{,}669\)</span>). La variable con menor relación es el peso de la carne (<span class="math inline">\(0{,}613\)</span>). Todas se ubican en el rango de correlación positiva moderada.</p>
-<p>En todas las variables el coeficiente de Spearman es mayor que el de Pearson. La diferencia es más marcada en los pesos (por ejemplo, en el peso de las vísceras pasa de <span class="math inline">\(0{,}577\)</span> a <span class="math inline">\(0{,}677\)</span>), lo que indica que la relación de los pesos con la edad se aleja más de una línea recta. En la altura, la diferencia también se debe en parte a los valores extremos, que afectan a Pearson pero no a Spearman, porque este trabaja con rangos.</p>
-</div>
 </div>
 <div id="correlación-de-kendall" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> Correlación de Kendall<a href="correglin.html#correlación-de-kendall" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -593,8 +515,7 @@ Figura 4.2: Coeficientes de Pearson y Spearman entre la edad y cada medida
 H_0: \tau = 0 \quad \text{vs} \quad H_1: \tau \neq 0
 \]</span></p>
 <p>Con <span class="math inline">\(74.051\)</span> observaciones hay más de <span class="math inline">\(2.700\)</span> millones de pares posibles, por lo que el siguiente cálculo puede tardar uno o dos minutos:</p>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="correglin.html#cb232-1" tabindex="-1"></a>kendall <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(x, y, <span class="at">method =</span> <span class="st">&quot;kendall&quot;</span>)</span>
-<span id="cb232-2"><a href="correglin.html#cb232-2" tabindex="-1"></a>kendall</span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="correglin.html#cb202-1" tabindex="-1"></a><span class="fu">cor.test</span>(x, y, <span class="at">method =</span> <span class="st">&quot;kendall&quot;</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Kendall&#39;s rank correlation tau
 ## 
@@ -605,66 +526,7 @@ H_0: \tau = 0 \quad \text{vs} \quad H_1: \tau \neq 0
 ##       tau 
 ## 0.5816657</code></pre>
 <p>El coeficiente de Kendall entre el peso del caparazón y la edad es <span class="math inline">\(\tau = 0{,}5817\)</span>, que indica una <strong>correlación positiva moderada</strong> y significativa (<span class="math inline">\(z = 225{,}27,\ p\text{-valor} &lt; 0{,}001\)</span>). Este valor quiere decir que, si se toman dos cangrejos al azar, es bastante más probable que el de mayor peso de caparazón sea también el de mayor edad que lo contrario. La función <code>cor.test()</code> calcula la versión <span class="math inline">\(\tau_b\)</span>, que ajusta el denominador por los empates.</p>
-<p>El valor de Kendall es menor que el de Spearman, lo cual es habitual porque los dos coeficientes están en escalas diferentes. En conjunto, los tres coeficientes coinciden en que existe una relación positiva, moderada y significativa entre el peso del caparazón y la edad:</p>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="correglin.html#cb234-1" tabindex="-1"></a><span class="fu">tibble</span>(</span>
-<span id="cb234-2"><a href="correglin.html#cb234-2" tabindex="-1"></a>  <span class="at">coeficiente =</span> <span class="fu">c</span>(<span class="st">&quot;Pearson&quot;</span>, <span class="st">&quot;Spearman&quot;</span>, <span class="st">&quot;Kendall&quot;</span>),</span>
-<span id="cb234-3"><a href="correglin.html#cb234-3" tabindex="-1"></a>  <span class="at">valor =</span> <span class="fu">c</span>(<span class="fu">cor</span>(x, y, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>),</span>
-<span id="cb234-4"><a href="correglin.html#cb234-4" tabindex="-1"></a>            <span class="fu">cor</span>(x, y, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>),</span>
-<span id="cb234-5"><a href="correglin.html#cb234-5" tabindex="-1"></a>            <span class="fu">unname</span>(kendall<span class="sc">$</span>estimate))</span>
-<span id="cb234-6"><a href="correglin.html#cb234-6" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>## # A tibble: 3 × 2
-##   coeficiente valor
-##   &lt;chr&gt;       &lt;dbl&gt;
-## 1 Pearson     0.663
-## 2 Spearman    0.736
-## 3 Kendall     0.582</code></pre>
-</div>
-<div id="correlación-entre-las-variables-independientes" class="section level2 hasAnchor" number="4.4">
-<h2><span class="header-section-number">4.4</span> Correlación entre las variables independientes<a href="correglin.html#correlación-entre-las-variables-independientes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Por último, revisemos la correlación de Spearman entre las medidas físicas:</p>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="correglin.html#cb236-1" tabindex="-1"></a>matriz_cor <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb236-2"><a href="correglin.html#cb236-2" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(variables)) <span class="sc">%&gt;%</span></span>
-<span id="cb236-3"><a href="correglin.html#cb236-3" tabindex="-1"></a>  <span class="fu">cor</span>(<span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
-<span id="cb236-4"><a href="correglin.html#cb236-4" tabindex="-1"></a></span>
-<span id="cb236-5"><a href="correglin.html#cb236-5" tabindex="-1"></a><span class="fu">round</span>(matriz_cor, <span class="dv">3</span>)</span></code></pre></div>
-<pre><code>##                largo diametro altura  peso peso_carne peso_visceras
-## largo          1.000    0.984  0.908 0.977      0.960         0.958
-## diametro       0.984    1.000  0.912 0.977      0.956         0.957
-## altura         0.908    0.912  1.000 0.926      0.890         0.910
-## peso           0.977    0.977  0.926 1.000      0.975         0.975
-## peso_carne     0.960    0.956  0.890 0.975      1.000         0.950
-## peso_visceras  0.958    0.957  0.910 0.975      0.950         1.000
-## peso_caparazon 0.954    0.959  0.930 0.972      0.926         0.947
-##                peso_caparazon
-## largo                   0.954
-## diametro                0.959
-## altura                  0.930
-## peso                    0.972
-## peso_carne              0.926
-## peso_visceras           0.947
-## peso_caparazon          1.000</code></pre>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="correglin.html#cb238-1" tabindex="-1"></a><span class="fu">as.data.frame</span>(matriz_cor) <span class="sc">%&gt;%</span></span>
-<span id="cb238-2"><a href="correglin.html#cb238-2" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">&quot;var1&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb238-3"><a href="correglin.html#cb238-3" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>var1, <span class="at">names_to =</span> <span class="st">&quot;var2&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;rho&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb238-4"><a href="correglin.html#cb238-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> var1, <span class="at">y =</span> var2, <span class="at">fill =</span> rho)) <span class="sc">+</span></span>
-<span id="cb238-5"><a href="correglin.html#cb238-5" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">&quot;white&quot;</span>) <span class="sc">+</span></span>
-<span id="cb238-6"><a href="correglin.html#cb238-6" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(rho, <span class="dv">2</span>)), <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
-<span id="cb238-7"><a href="correglin.html#cb238-7" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#deebf7&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#08519c&quot;</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.85</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb238-8"><a href="correglin.html#cb238-8" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb238-9"><a href="correglin.html#cb238-9" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Correlación de Spearman entre las medidas físicas&quot;</span>,</span>
-<span id="cb238-10"><a href="correglin.html#cb238-10" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb238-11"><a href="correglin.html#cb238-11" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb238-12"><a href="correglin.html#cb238-12" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;rho&quot;</span></span>
-<span id="cb238-13"><a href="correglin.html#cb238-13" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb238-14"><a href="correglin.html#cb238-14" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb238-15"><a href="correglin.html#cb238-15" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-116"></span>
-<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-116-1.png" alt="Matriz de correlación de Spearman entre las medidas físicas" width="768" />
-<p class="caption">
-Figura 4.3: Matriz de correlación de Spearman entre las medidas físicas
-</p>
-</div>
-<p>Todas las medidas físicas tienen correlaciones de Spearman entre <span class="math inline">\(0{,}89\)</span> y <span class="math inline">\(0{,}98\)</span> entre sí, lo que corresponde a correlaciones positivas muy fuertes. Las más altas son las del largo con el diámetro (<span class="math inline">\(0{,}984\)</span>) y las del peso total con el largo, el diámetro y los demás pesos (todas por encima de <span class="math inline">\(0{,}97\)</span>). Esto quiere decir que estas variables aportan información muy parecida sobre el tamaño del cangrejo. Si en el futuro se construye un modelo de regresión para predecir la edad, no sería conveniente incluirlas todas al mismo tiempo, ya que podría presentarse un problema de multicolinealidad.</p>
+<p>El valor de Kendall es menor que el de Spearman, lo cual es habitual porque los dos coeficientes están en escalas diferentes. En conjunto, los tres coeficientes (<span class="math inline">\(r = 0{,}6635\)</span>, <span class="math inline">\(\rho_S = 0{,}7365\)</span> y <span class="math inline">\(\tau = 0{,}5817\)</span>) coinciden en que existe una relación positiva, moderada y significativa entre el peso del caparazón y la edad.</p>
 
 </div>
 </div>
