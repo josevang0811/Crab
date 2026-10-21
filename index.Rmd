@@ -8,7 +8,6 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 lang: es
-toc-title: "Índice"
 description: "Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle."
 ---
 
@@ -20,11 +19,6 @@ knitr::opts_chunk$set(
   cache = FALSE,
   fig.align = "center"
 )
-
-# En el PDF los gráficos van como imagen para que el archivo no quede tan pesado
-if (knitr::is_latex_output()) {
-  knitr::opts_chunk$set(dev = "png", dpi = 150)
-}
 ```
 
 # Presentación {-}
