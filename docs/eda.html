@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Análisis exploratorio de datos (EDA) | Análisis estadístico de la edad de cangrejos</title>
+  <meta name="description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Análisis exploratorio de datos (EDA) | Análisis estadístico de la edad de cangrejos" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Análisis exploratorio de datos (EDA) | Análisis estadístico de la edad de cangrejos" />
+  
+  <meta name="twitter:description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  
+
+<meta name="author" content="Jairo Hernández Carvajal, Jose Van Strahlen García" />
+
+
+<meta name="date" content="2026-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="estparynopar.html"/>
+<script src="libs/jquery-3.6.1/jquery-3.6.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Análisis estadístico de la edad de cangrejos</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Presentación</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#base-de-datos"><i class="fa fa-check"></i>Base de datos</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#objetivo"><i class="fa fa-check"></i>Objetivo</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#herramientas"><i class="fa fa-check"></i>Herramientas</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="eda.html"><a href="eda.html"><i class="fa fa-check"></i><b>1</b> Análisis exploratorio de datos (EDA)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="eda.html"><a href="eda.html#contexto-de-los-datos-de-cangrejos"><i class="fa fa-check"></i><b>1.1</b> Contexto de los datos de cangrejos</a></li>
+<li class="chapter" data-level="1.2" data-path="eda.html"><a href="eda.html#extracción-transformación-y-carga-etl"><i class="fa fa-check"></i><b>1.2</b> Extracción, transformación y carga (ETL)</a></li>
+<li class="chapter" data-level="1.3" data-path="eda.html"><a href="eda.html#análisis-de-la-variable-edad-target"><i class="fa fa-check"></i><b>1.3</b> Análisis de la variable <code>edad</code> (Target)</a></li>
+<li class="chapter" data-level="1.4" data-path="eda.html"><a href="eda.html#análisis-de-las-variables-características-independientes"><i class="fa fa-check"></i><b>1.4</b> Análisis de las variables características (independientes)</a></li>
+<li class="chapter" data-level="1.5" data-path="eda.html"><a href="eda.html#análisis-exploratorio-bivariado"><i class="fa fa-check"></i><b>1.5</b> Análisis exploratorio bivariado</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="estparynopar.html"><a href="estparynopar.html"><i class="fa fa-check"></i><b>2</b> Análisis de estadística paramétrica y no paramétrica</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="estparynopar.html"><a href="estparynopar.html#comparación-de-la-edad-entre-hembras-y-machos-con-estadística-paramétrica"><i class="fa fa-check"></i><b>2.1</b> Comparación de la edad entre hembras y machos con estadística paramétrica</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="estparynopar.html"><a href="estparynopar.html#verificación-de-supuestos"><i class="fa fa-check"></i><b>2.1.1</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="2.1.2" data-path="estparynopar.html"><a href="estparynopar.html#prueba-t-de-welch"><i class="fa fa-check"></i><b>2.1.2</b> Prueba <em>t</em> de Welch</a></li>
+<li class="chapter" data-level="2.1.3" data-path="estparynopar.html"><a href="estparynopar.html#tamaño-del-efecto"><i class="fa fa-check"></i><b>2.1.3</b> Tamaño del efecto</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="estparynopar.html"><a href="estparynopar.html#mw-hembras-machos"><i class="fa fa-check"></i><b>2.2</b> Comparación de la edad entre hembras y machos con estadística no paramétrica</a></li>
+<li class="chapter" data-level="2.3" data-path="estparynopar.html"><a href="estparynopar.html#anova-de-la-edad-según-el-sexo"><i class="fa fa-check"></i><b>2.3</b> ANOVA de la edad según el sexo</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="estparynopar.html"><a href="estparynopar.html#verificación-de-supuestos-1"><i class="fa fa-check"></i><b>2.3.1</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="2.3.2" data-path="estparynopar.html"><a href="estparynopar.html#cálculo-paso-a-paso"><i class="fa fa-check"></i><b>2.3.2</b> Cálculo paso a paso</a></li>
+<li class="chapter" data-level="2.3.3" data-path="estparynopar.html"><a href="estparynopar.html#anova-con-la-función-aov"><i class="fa fa-check"></i><b>2.3.3</b> ANOVA con la función <code>aov()</code></a></li>
+<li class="chapter" data-level="2.3.4" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-múltiples-con-el-método-de-tukey"><i class="fa fa-check"></i><b>2.3.4</b> Comparaciones múltiples con el método de Tukey</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="estparynopar.html"><a href="estparynopar.html#kw-sexo"><i class="fa fa-check"></i><b>2.4</b> Kruskal-Wallis de la edad según el sexo</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="estparynopar.html"><a href="estparynopar.html#cálculo-paso-a-paso-1"><i class="fa fa-check"></i><b>2.4.1</b> Cálculo paso a paso</a></li>
+<li class="chapter" data-level="2.4.2" data-path="estparynopar.html"><a href="estparynopar.html#prueba-con-la-función-kruskal.test"><i class="fa fa-check"></i><b>2.4.2</b> Prueba con la función <code>kruskal.test()</code></a></li>
+<li class="chapter" data-level="2.4.3" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-post-hoc"><i class="fa fa-check"></i><b>2.4.3</b> Comparaciones post-hoc</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="tabcontingencia.html"><a href="tabcontingencia.html"><i class="fa fa-check"></i><b>3</b> Tabla de contingencia</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#creación-de-las-variables-categóricas"><i class="fa fa-check"></i><b>3.1</b> Creación de las variables categóricas</a></li>
+<li class="chapter" data-level="3.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-de-homogeneidad"><i class="fa fa-check"></i><b>3.2</b> Prueba de homogeneidad</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#solución-paso-a-paso"><i class="fa fa-check"></i><b>3.2.1</b> Solución paso a paso</a></li>
+<li class="chapter" data-level="3.2.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-con-la-función-chisq.test"><i class="fa fa-check"></i><b>3.2.2</b> Prueba con la función <code>chisq.test()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-de-independencia"><i class="fa fa-check"></i><b>3.3</b> Prueba de independencia</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#solución-paso-a-paso-1"><i class="fa fa-check"></i><b>3.3.1</b> Solución paso a paso</a></li>
+<li class="chapter" data-level="3.3.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-con-la-función-chisq.test-1"><i class="fa fa-check"></i><b>3.3.2</b> Prueba con la función <code>chisq.test()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="correglin.html"><a href="correglin.html"><i class="fa fa-check"></i><b>4</b> Correlación lineal</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="correglin.html"><a href="correglin.html#correlación-de-pearson"><i class="fa fa-check"></i><b>4.1</b> Correlación de Pearson</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="correglin.html"><a href="correglin.html#contraste-para-rho-rho_0-neq-0"><i class="fa fa-check"></i><b>4.1.1</b> Contraste para <span class="math inline">\(\rho = \rho_0 \neq 0\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="correglin.html"><a href="correglin.html#correlación-de-spearman"><i class="fa fa-check"></i><b>4.2</b> Correlación de Spearman</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="correglin.html"><a href="correglin.html#correlación-de-la-edad-con-todas-las-medidas"><i class="fa fa-check"></i><b>4.2.1</b> Correlación de la edad con todas las medidas</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="correglin.html"><a href="correglin.html#correlación-de-kendall"><i class="fa fa-check"></i><b>4.3</b> Correlación de Kendall</a></li>
+<li class="chapter" data-level="4.4" data-path="correglin.html"><a href="correglin.html#correlación-entre-las-variables-independientes"><i class="fa fa-check"></i><b>4.4</b> Correlación entre las variables independientes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>5</b> Conclusiones</a></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Análisis estadístico de la edad de cangrejos</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="eda" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> Análisis exploratorio de datos (EDA)<a href="eda.html#eda" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Antes de aplicar cualquier prueba de hipótesis es necesario conocer bien los datos. En este capítulo se hace el análisis exploratorio de la base de cangrejos siguiendo la ruta de las notas de clase para una variable respuesta numérica: primero el contexto de los datos, luego la extracción, transformación y carga (ETL), después el análisis de la variable objetivo, el de las variables características y por último el análisis bivariado.</p>
+<div id="contexto-de-los-datos-de-cangrejos" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Contexto de los datos de cangrejos<a href="eda.html#contexto-de-los-datos-de-cangrejos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>El cangrejo es un crustáceo de gran importancia comercial en muchos países. En la cría y pesca de cangrejos conocer la edad del animal es útil para decidir el momento de su captura, ya que después de cierta edad su crecimiento es muy lento y no compensa seguir manteniéndolo. El problema es que la edad no se puede observar directamente, mientras que las medidas físicas del cangrejo sí se obtienen con facilidad. De ahí surge el interés de estudiar la relación entre la edad y esas medidas.</p>
+<p>Las variables del conjunto de datos son:</p>
+<ul>
+<li><code>id</code>: identificador de cada registro.</li>
+<li><code>Sex</code>: sexo del cangrejo. Toma los valores <code>F</code> (hembra), <code>M</code> (macho) e <code>I</code> (indeterminado).</li>
+<li><code>Length</code>: largo del cangrejo (en pies).</li>
+<li><code>Diameter</code>: diámetro del cangrejo (en pies).</li>
+<li><code>Height</code>: altura del cangrejo (en pies).</li>
+<li><code>Weight</code>: peso total del cangrejo (en onzas).</li>
+<li><code>Shucked Weight</code>: peso de la carne, es decir, sin el caparazón (en onzas).</li>
+<li><code>Viscera Weight</code>: peso de las vísceras (en onzas).</li>
+<li><code>Shell Weight</code>: peso del caparazón (en onzas).</li>
+<li><code>Age</code>: edad del cangrejo (en meses).</li>
+</ul>
+<p>Las unidades corresponden a las indicadas en la descripción del conjunto original <em>Crab Age Prediction</em>. La variable objetivo es la edad (<code>Age</code>). En este capítulo se busca entender su comportamiento, identificar valores atípicos o inconsistentes y ver qué variables parecen estar más relacionadas con ella.</p>
+</div>
+<div id="extracción-transformación-y-carga-etl" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Extracción, transformación y carga (ETL)<a href="eda.html#extracción-transformación-y-carga-etl" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Carguemos las librerías y el conjunto de datos:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="eda.html#cb2-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="eda.html#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="eda.html#cb2-3" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;datos/train.csv&quot;</span>)</span></code></pre></div>
+<p>Verifiquemos que leímos bien los datos viendo el encabezado y la cola de los datos:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="eda.html#cb3-1" tabindex="-1"></a><span class="fu">head</span>(datos, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##   id Sex Length Diameter Height   Weight Shucked.Weight Viscera.Weight
+## 1  0   I 1.5250   1.1750 0.3750 28.97319      12.728926       6.647958
+## 2  1   I 1.1000   0.8250 0.2750 10.41844       4.521745       2.324659
+## 3  2   M 1.3875   1.1125 0.3750 24.77746      11.339800       5.556502
+## 4  3   F 1.7000   1.4125 0.5000 50.66056      20.354941      10.991839
+## 5  4   I 1.2500   1.0125 0.3375 23.28911      11.977664       4.507570
+##   Shell.Weight Age
+## 1     8.348928   9
+## 2     3.401940   8
+## 3     6.662133   9
+## 4    14.996885  11
+## 5     5.953395   8</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="eda.html#cb5-1" tabindex="-1"></a><span class="fu">tail</span>(datos, <span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##          id Sex Length Diameter Height    Weight Shucked.Weight Viscera.Weight
+## 74047 74046   F 1.6625   1.2625 0.4375 50.660556      20.680960      10.361742
+## 74048 74047   I 1.0750   0.8625 0.2750 10.446791       4.323299       2.296310
+## 74049 74048   F 1.4875   1.2000 0.4125 29.483480      12.303683       7.540967
+## 74050 74049   I 1.2125   0.9625 0.3125 16.768729       8.972617       2.919999
+## 74051 74050   I 0.9125   0.6750 0.2000  5.386405       2.055339       1.034757
+##       Shell.Weight Age
+## 74047    12.332033  10
+## 74048     3.543687   6
+## 74049     8.079607  10
+## 74050     4.280774   8
+## 74051     1.700970   6</code></pre>
+<p>Las dimensiones, los nombres de las columnas y la estructura de la base de datos se obtienen con los códigos:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="eda.html#cb7-1" tabindex="-1"></a><span class="fu">dim</span>(datos)</span></code></pre></div>
+<pre><code>## [1] 74051    10</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="eda.html#cb9-1" tabindex="-1"></a><span class="fu">colnames</span>(datos)</span></code></pre></div>
+<pre><code>##  [1] &quot;id&quot;             &quot;Sex&quot;            &quot;Length&quot;         &quot;Diameter&quot;      
+##  [5] &quot;Height&quot;         &quot;Weight&quot;         &quot;Shucked.Weight&quot; &quot;Viscera.Weight&quot;
+##  [9] &quot;Shell.Weight&quot;   &quot;Age&quot;</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="eda.html#cb11-1" tabindex="-1"></a><span class="fu">str</span>(datos)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    74051 obs. of  10 variables:
+##  $ id            : int  0 1 2 3 4 5 6 7 8 9 ...
+##  $ Sex           : chr  &quot;I&quot; &quot;I&quot; &quot;M&quot; &quot;F&quot; ...
+##  $ Length        : num  1.52 1.1 1.39 1.7 1.25 ...
+##  $ Diameter      : num  1.175 0.825 1.113 1.413 1.012 ...
+##  $ Height        : num  0.375 0.275 0.375 0.5 0.338 ...
+##  $ Weight        : num  29 10.4 24.8 50.7 23.3 ...
+##  $ Shucked.Weight: num  12.73 4.52 11.34 20.35 11.98 ...
+##  $ Viscera.Weight: num  6.65 2.32 5.56 10.99 4.51 ...
+##  $ Shell.Weight  : num  8.35 3.4 6.66 15 5.95 ...
+##  $ Age           : int  9 8 9 11 8 10 11 11 12 11 ...</code></pre>
+<p>La base tiene <span class="math inline">\(74.051\)</span> registros y <span class="math inline">\(10\)</span> variables. La función <code>read.csv()</code> cambió los espacios de los nombres por puntos (por ejemplo, <code>Shucked Weight</code> quedó como <code>Shucked.Weight</code>). Para trabajar más cómodos quitamos el identificador, que no aporta información para el análisis, y renombramos las columnas en español:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="eda.html#cb13-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="eda.html#cb13-2" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="eda.html#cb13-3" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb13-4"><a href="eda.html#cb13-4" tabindex="-1"></a>    <span class="at">sexo           =</span> Sex,</span>
+<span id="cb13-5"><a href="eda.html#cb13-5" tabindex="-1"></a>    <span class="at">largo          =</span> Length,</span>
+<span id="cb13-6"><a href="eda.html#cb13-6" tabindex="-1"></a>    <span class="at">diametro       =</span> Diameter,</span>
+<span id="cb13-7"><a href="eda.html#cb13-7" tabindex="-1"></a>    <span class="at">altura         =</span> Height,</span>
+<span id="cb13-8"><a href="eda.html#cb13-8" tabindex="-1"></a>    <span class="at">peso           =</span> Weight,</span>
+<span id="cb13-9"><a href="eda.html#cb13-9" tabindex="-1"></a>    <span class="at">peso_carne     =</span> Shucked.Weight,</span>
+<span id="cb13-10"><a href="eda.html#cb13-10" tabindex="-1"></a>    <span class="at">peso_visceras  =</span> Viscera.Weight,</span>
+<span id="cb13-11"><a href="eda.html#cb13-11" tabindex="-1"></a>    <span class="at">peso_caparazon =</span> Shell.Weight,</span>
+<span id="cb13-12"><a href="eda.html#cb13-12" tabindex="-1"></a>    <span class="at">edad           =</span> Age</span>
+<span id="cb13-13"><a href="eda.html#cb13-13" tabindex="-1"></a>  )</span>
+<span id="cb13-14"><a href="eda.html#cb13-14" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="eda.html#cb13-15" tabindex="-1"></a><span class="fu">head</span>(df)</span></code></pre></div>
+<pre><code>##   sexo  largo diametro altura     peso peso_carne peso_visceras peso_caparazon
+## 1    I 1.5250   1.1750 0.3750 28.97319  12.728926      6.647958       8.348928
+## 2    I 1.1000   0.8250 0.2750 10.41844   4.521745      2.324659       3.401940
+## 3    M 1.3875   1.1125 0.3750 24.77746  11.339800      5.556502       6.662133
+## 4    F 1.7000   1.4125 0.5000 50.66056  20.354941     10.991839      14.996885
+## 5    I 1.2500   1.0125 0.3375 23.28911  11.977664      4.507570       5.953395
+## 6    M 1.5000   1.1750 0.4125 28.84562  13.409313      6.789705       7.937860
+##   edad
+## 1    9
+## 2    8
+## 3    9
+## 4   11
+## 5    8
+## 6   10</code></pre>
+<p>Identifiquemos los valores NA por columna:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="eda.html#cb15-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="eda.html#cb15-2" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.)), <span class="at">.names =</span> <span class="st">&quot;NA_{.col}&quot;</span>))</span></code></pre></div>
+<pre><code>##   NA_sexo NA_largo NA_diametro NA_altura NA_peso NA_peso_carne NA_peso_visceras
+## 1       0        0           0         0       0             0                0
+##   NA_peso_caparazon NA_edad
+## 1                 0       0</code></pre>
+<p>Otra forma de hacerlo es:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="eda.html#cb17-1" tabindex="-1"></a><span class="fu">library</span>(Amelia)</span>
+<span id="cb17-2"><a href="eda.html#cb17-2" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="eda.html#cb17-3" tabindex="-1"></a><span class="fu">missmap</span>(df)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-11-1.png" alt="Mapa de valores ausentes de la base de cangrejos" width="672" />
+<p class="caption">
+Figura 1.1: Mapa de valores ausentes de la base de cangrejos
+</p>
+</div>
+<p>La base no tiene valores ausentes. Revisemos ahora si hay registros duplicados:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="eda.html#cb18-1" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(df))</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<p>Tampoco hay registros duplicados. Sin embargo, que no haya NA no significa que todos los valores tengan sentido. Revisemos si alguna medida física toma el valor cero, lo cual no es posible en un cangrejo real:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="eda.html#cb20-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="eda.html#cb20-2" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span> <span class="fu">sum</span>(. <span class="sc">==</span> <span class="dv">0</span>), <span class="at">.names =</span> <span class="st">&quot;ceros_{.col}&quot;</span>))</span></code></pre></div>
+<pre><code>##   ceros_largo ceros_diametro ceros_altura ceros_peso ceros_peso_carne
+## 1           0              0           24          0                0
+##   ceros_peso_visceras ceros_peso_caparazon ceros_edad
+## 1                   0                    0          0</code></pre>
+<p>Hay <span class="math inline">\(24\)</span> cangrejos con altura igual a cero. Estos valores son errores de registro, así que los convertimos en NA y, al igual que se hace en las notas de clase con los valores ausentes, los llenamos con el promedio:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="eda.html#cb22-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="eda.html#cb22-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">altura =</span> <span class="fu">ifelse</span>(altura <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, altura))</span>
+<span id="cb22-3"><a href="eda.html#cb22-3" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="eda.html#cb22-4" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb22-5"><a href="eda.html#cb22-5" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb22-6"><a href="eda.html#cb22-6" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb22-7"><a href="eda.html#cb22-7" tabindex="-1"></a>      <span class="fu">where</span>(is.numeric),</span>
+<span id="cb22-8"><a href="eda.html#cb22-8" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(.), <span class="fu">mean</span>(., <span class="at">na.rm =</span> <span class="cn">TRUE</span>), .)</span>
+<span id="cb22-9"><a href="eda.html#cb22-9" tabindex="-1"></a>    )</span>
+<span id="cb22-10"><a href="eda.html#cb22-10" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Verifiquemos que ya no quedan ceros ni NA en la altura:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="eda.html#cb23-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="eda.html#cb23-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb23-3"><a href="eda.html#cb23-3" tabindex="-1"></a>    <span class="at">NA_altura =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(altura)),</span>
+<span id="cb23-4"><a href="eda.html#cb23-4" tabindex="-1"></a>    <span class="at">ceros_altura =</span> <span class="fu">sum</span>(altura <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb23-5"><a href="eda.html#cb23-5" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##   NA_altura ceros_altura
+## 1         0            0</code></pre>
+<p>Por último, convertimos el sexo en factor y le ponemos etiquetas más claras:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="eda.html#cb25-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="eda.html#cb25-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-3"><a href="eda.html#cb25-3" tabindex="-1"></a>    <span class="at">sexo =</span> <span class="fu">factor</span>(sexo,</span>
+<span id="cb25-4"><a href="eda.html#cb25-4" tabindex="-1"></a>                  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;I&quot;</span>),</span>
+<span id="cb25-5"><a href="eda.html#cb25-5" tabindex="-1"></a>                  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Hembra&quot;</span>, <span class="st">&quot;Macho&quot;</span>, <span class="st">&quot;Indeterminado&quot;</span>))</span>
+<span id="cb25-6"><a href="eda.html#cb25-6" tabindex="-1"></a>  )</span>
+<span id="cb25-7"><a href="eda.html#cb25-7" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="eda.html#cb25-8" tabindex="-1"></a><span class="fu">str</span>(df)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    74051 obs. of  9 variables:
+##  $ sexo          : Factor w/ 3 levels &quot;Hembra&quot;,&quot;Macho&quot;,..: 3 3 2 1 3 2 2 3 1 2 ...
+##  $ largo         : num  1.52 1.1 1.39 1.7 1.25 ...
+##  $ diametro      : num  1.175 0.825 1.113 1.413 1.012 ...
+##  $ altura        : num  0.375 0.275 0.375 0.5 0.338 ...
+##  $ peso          : num  29 10.4 24.8 50.7 23.3 ...
+##  $ peso_carne    : num  12.73 4.52 11.34 20.35 11.98 ...
+##  $ peso_visceras : num  6.65 2.32 5.56 10.99 4.51 ...
+##  $ peso_caparazon: num  8.35 3.4 6.66 15 5.95 ...
+##  $ edad          : int  9 8 9 11 8 10 11 11 12 11 ...</code></pre>
+</div>
+<div id="análisis-de-la-variable-edad-target" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Análisis de la variable <code>edad</code> (Target)<a href="eda.html#análisis-de-la-variable-edad-target" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Consideremos el resumen estadístico de la variable objetivo <code>edad</code>, que representa la edad en meses de cada cangrejo:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="eda.html#cb27-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="eda.html#cb27-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb27-3"><a href="eda.html#cb27-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(edad),</span>
+<span id="cb27-4"><a href="eda.html#cb27-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(edad),</span>
+<span id="cb27-5"><a href="eda.html#cb27-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(edad),</span>
+<span id="cb27-6"><a href="eda.html#cb27-6" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(edad),</span>
+<span id="cb27-7"><a href="eda.html#cb27-7" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(edad),</span>
+<span id="cb27-8"><a href="eda.html#cb27-8" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(edad),</span>
+<span id="cb27-9"><a href="eda.html#cb27-9" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(edad, <span class="fl">0.25</span>),</span>
+<span id="cb27-10"><a href="eda.html#cb27-10" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(edad, <span class="fl">0.75</span>),</span>
+<span id="cb27-11"><a href="eda.html#cb27-11" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(edad)</span>
+<span id="cb27-12"><a href="eda.html#cb27-12" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##       n    media       ds mediana minimo maximo Q1 Q3 IQR
+## 1 74051 9.967806 3.175189      10      1     29  8 11   3</code></pre>
+<p>La variable <code>edad</code> fue analizada en <span class="math inline">\(74.051\)</span> cangrejos. La edad promedio es de aproximadamente <span class="math inline">\(9{,}97\)</span> meses (<span class="math inline">\(DS = 3{,}18\)</span> meses) y el <span class="math inline">\(50\%\)</span> de los cangrejos tiene <span class="math inline">\(10\)</span> meses o menos. La edad mínima registrada es de <span class="math inline">\(1\)</span> mes y la máxima de <span class="math inline">\(29\)</span> meses, lo que muestra un rango bastante amplio.</p>
+<p>El rango intercuartílico indica que el <span class="math inline">\(50\%\)</span> central de los cangrejos tiene entre <span class="math inline">\(8\)</span> y <span class="math inline">\(11\)</span> meses, con una amplitud de apenas <span class="math inline">\(3\)</span> meses. Es decir, la mayoría de los cangrejos se concentra en un intervalo de edad corto, mientras que unos pocos alcanzan edades mucho mayores. Como la media y la mediana son muy parecidas, la asimetría no se nota en estas dos medidas, pero la distancia entre el tercer cuartil (<span class="math inline">\(11\)</span>) y el máximo (<span class="math inline">\(29\)</span>) sugiere una cola larga hacia la derecha.</p>
+<p>Veamos un histograma</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="eda.html#cb29-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="eda.html#cb29-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> edad)) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="eda.html#cb29-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)),</span>
+<span id="cb29-4"><a href="eda.html#cb29-4" tabindex="-1"></a>                 <span class="at">binwidth =</span> <span class="dv">1</span>,</span>
+<span id="cb29-5"><a href="eda.html#cb29-5" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;#2c7fb8&quot;</span>,</span>
+<span id="cb29-6"><a href="eda.html#cb29-6" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb29-7"><a href="eda.html#cb29-7" tabindex="-1"></a>                 <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb29-8"><a href="eda.html#cb29-8" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="st">&quot;darkblue&quot;</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">adjust =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb29-9"><a href="eda.html#cb29-9" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb29-10"><a href="eda.html#cb29-10" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución de la edad de los cangrejos&quot;</span>,</span>
+<span id="cb29-11"><a href="eda.html#cb29-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Edad (meses)&quot;</span>,</span>
+<span id="cb29-12"><a href="eda.html#cb29-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Densidad&quot;</span></span>
+<span id="cb29-13"><a href="eda.html#cb29-13" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb29-14"><a href="eda.html#cb29-14" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-18"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-18-1.png" alt="Distribución de la edad de los cangrejos" width="672" />
+<p class="caption">
+Figura 1.2: Distribución de la edad de los cangrejos
+</p>
+</div>
+<p>Veamos un diagrama de cajas y bigotes</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="eda.html#cb30-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="eda.html#cb30-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> edad)) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="eda.html#cb30-3" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#a6cee3&quot;</span>, <span class="at">color =</span> <span class="st">&quot;#1f78b4&quot;</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="eda.html#cb30-4" tabindex="-1"></a>  <span class="fu">stat_summary</span>(</span>
+<span id="cb30-5"><a href="eda.html#cb30-5" tabindex="-1"></a>    <span class="at">fun =</span> mean,</span>
+<span id="cb30-6"><a href="eda.html#cb30-6" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>,</span>
+<span id="cb30-7"><a href="eda.html#cb30-7" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">20</span>,</span>
+<span id="cb30-8"><a href="eda.html#cb30-8" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb30-9"><a href="eda.html#cb30-9" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb30-10"><a href="eda.html#cb30-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb30-11"><a href="eda.html#cb30-11" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb30-12"><a href="eda.html#cb30-12" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Diagrama de cajas y bigotes de la edad&quot;</span>,</span>
+<span id="cb30-13"><a href="eda.html#cb30-13" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb30-14"><a href="eda.html#cb30-14" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Edad (meses)&quot;</span></span>
+<span id="cb30-15"><a href="eda.html#cb30-15" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb30-16"><a href="eda.html#cb30-16" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-19"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-19-1.png" alt="Diagrama de cajas y bigotes de la edad de los cangrejos" width="672" />
+<p class="caption">
+Figura 1.3: Diagrama de cajas y bigotes de la edad de los cangrejos
+</p>
+</div>
+<p>Contemos cuántos valores atípicos tiene la edad según el criterio del rango intercuartílico:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="eda.html#cb31-1" tabindex="-1"></a>Q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(df<span class="sc">$</span>edad, <span class="fl">0.25</span>)</span>
+<span id="cb31-2"><a href="eda.html#cb31-2" tabindex="-1"></a>Q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(df<span class="sc">$</span>edad, <span class="fl">0.75</span>)</span>
+<span id="cb31-3"><a href="eda.html#cb31-3" tabindex="-1"></a>RIC <span class="ot">&lt;-</span> <span class="fu">IQR</span>(df<span class="sc">$</span>edad)</span>
+<span id="cb31-4"><a href="eda.html#cb31-4" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="eda.html#cb31-5" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb31-6"><a href="eda.html#cb31-6" tabindex="-1"></a>  <span class="at">limite_inferior =</span> Q1 <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> RIC,</span>
+<span id="cb31-7"><a href="eda.html#cb31-7" tabindex="-1"></a>  <span class="at">limite_superior =</span> Q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> RIC,</span>
+<span id="cb31-8"><a href="eda.html#cb31-8" tabindex="-1"></a>  <span class="at">atipicos =</span> <span class="fu">sum</span>(df<span class="sc">$</span>edad <span class="sc">&lt;</span> Q1 <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> RIC <span class="sc">|</span> df<span class="sc">$</span>edad <span class="sc">&gt;</span> Q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> RIC)</span>
+<span id="cb31-9"><a href="eda.html#cb31-9" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
+##   limite_inferior limite_superior atipicos
+##             &lt;dbl&gt;           &lt;dbl&gt;    &lt;int&gt;
+## 1             3.5            15.5     4811</code></pre>
+<p>La distribución de la edad presenta una asimetría positiva: la mayor parte de los cangrejos tiene entre <span class="math inline">\(6\)</span> y <span class="math inline">\(13\)</span> meses, con el pico entre los <span class="math inline">\(9\)</span> y <span class="math inline">\(10\)</span> meses, y a partir de ahí la frecuencia baja de forma gradual hasta llegar a los <span class="math inline">\(29\)</span> meses. El diagrama de cajas muestra muchos valores atípicos en ambos extremos, pero sobre todo en el superior. En total hay <span class="math inline">\(4.811\)</span> cangrejos con edades por fuera del intervalo <span class="math inline">\([3{,}5;\ 15{,}5]\)</span> meses. Estos valores no son errores, porque es normal que algunos cangrejos vivan más que el resto, así que se mantienen en la base.</p>
+<p>También se observa que la edad solo toma valores enteros, lo que genera muchos empates. Esto hay que tenerlo en cuenta más adelante, ya que las pruebas basadas en rangos y la prueba de Kolmogorov-Smirnov se ven afectadas por los empates.</p>
+</div>
+<div id="análisis-de-las-variables-características-independientes" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Análisis de las variables características (independientes)<a href="eda.html#análisis-de-las-variables-características-independientes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Analizaremos inicialmente las variables numéricas</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="eda.html#cb33-1" tabindex="-1"></a>resumen_numericas <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="eda.html#cb33-2" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric), <span class="sc">-</span>edad) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="eda.html#cb33-3" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb33-4"><a href="eda.html#cb33-4" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(),</span>
+<span id="cb33-5"><a href="eda.html#cb33-5" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;variable&quot;</span>,</span>
+<span id="cb33-6"><a href="eda.html#cb33-6" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;valor&quot;</span></span>
+<span id="cb33-7"><a href="eda.html#cb33-7" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb33-8"><a href="eda.html#cb33-8" tabindex="-1"></a>  <span class="fu">group_by</span>(variable) <span class="sc">%&gt;%</span></span>
+<span id="cb33-9"><a href="eda.html#cb33-9" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb33-10"><a href="eda.html#cb33-10" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(valor)),</span>
+<span id="cb33-11"><a href="eda.html#cb33-11" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(valor, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-12"><a href="eda.html#cb33-12" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(valor, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-13"><a href="eda.html#cb33-13" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(valor, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-14"><a href="eda.html#cb33-14" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(valor, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-15"><a href="eda.html#cb33-15" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(valor, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-16"><a href="eda.html#cb33-16" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(valor, <span class="fl">0.25</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-17"><a href="eda.html#cb33-17" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(valor, <span class="fl">0.75</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-18"><a href="eda.html#cb33-18" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(valor, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb33-19"><a href="eda.html#cb33-19" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
+<span id="cb33-20"><a href="eda.html#cb33-20" tabindex="-1"></a>  )</span>
+<span id="cb33-21"><a href="eda.html#cb33-21" tabindex="-1"></a></span>
+<span id="cb33-22"><a href="eda.html#cb33-22" tabindex="-1"></a>resumen_numericas <span class="sc">%&gt;%</span></span>
+<span id="cb33-23"><a href="eda.html#cb33-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span> <span class="fu">round</span>(., <span class="dv">4</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb33-24"><a href="eda.html#cb33-24" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span></code></pre></div>
+<pre><code>##         variable     n   media      ds mediana minimo  maximo      Q1      Q3
+## 1         altura 74051  0.3482  0.0918  0.3625 0.0125  2.8250  0.3000  0.4125
+## 2       diametro 74051  1.0245  0.2374  1.0750 0.1375  1.6125  0.8875  1.2000
+## 3          largo 74051  1.3175  0.2878  1.3750 0.1875  2.0128  1.1500  1.5375
+## 4           peso 74051 23.3852 12.6482 23.7994 0.0567 80.1015 13.4377 32.1625
+## 5 peso_caparazon 74051  6.7239  3.5844  6.9315 0.0425 28.4912  3.9689  9.0718
+## 6     peso_carne 74051 10.1043  5.6180  9.9082 0.0283 42.1841  5.7124 14.0330
+## 7  peso_visceras 74051  5.0584  2.7927  4.9895 0.0425 21.5456  2.8633  6.9882
+##       IQR
+## 1  0.1125
+## 2  0.3125
+## 3  0.3875
+## 4 18.7248
+## 5  5.1029
+## 6  8.3206
+## 7  4.1249</code></pre>
+<p>Las medidas del caparazón se encuentran en escalas parecidas. El largo tiene una media de <span class="math inline">\(1{,}32\)</span> pies (<span class="math inline">\(DS = 0{,}29\)</span>) y el diámetro una media de <span class="math inline">\(1{,}02\)</span> pies (<span class="math inline">\(DS = 0{,}24\)</span>), mientras que la altura es bastante menor, con una media de <span class="math inline">\(0{,}35\)</span> pies (<span class="math inline">\(DS = 0{,}09\)</span>). En las tres medidas la mediana es un poco mayor que la media, lo que indica una ligera asimetría negativa, es decir, hay algunos cangrejos muy pequeños que jalan el promedio hacia abajo. La altura llama la atención porque su máximo es de <span class="math inline">\(2{,}83\)</span> pies, un valor que está muy lejos del tercer cuartil (<span class="math inline">\(0{,}41\)</span>) y que incluso supera el largo máximo de la base, por lo que probablemente se trata de un error de medición.</p>
+<p>En cuanto a los pesos, el peso total tiene una media de <span class="math inline">\(23{,}39\)</span> onzas (<span class="math inline">\(DS = 12{,}65\)</span>) y va desde <span class="math inline">\(0{,}06\)</span> hasta <span class="math inline">\(80{,}10\)</span> onzas. Le siguen el peso de la carne (media de <span class="math inline">\(10{,}10\)</span> onzas), el peso del caparazón (media de <span class="math inline">\(6{,}72\)</span> onzas) y el peso de las vísceras (media de <span class="math inline">\(5{,}06\)</span> onzas). Todos los pesos tienen una desviación estándar grande en relación con su media, lo que refleja la diferencia de tamaño entre cangrejos jóvenes y adultos.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="eda.html#cb35-1" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb35-2"><a href="eda.html#cb35-2" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="eda.html#cb35-3" tabindex="-1"></a><span class="co"># Boxplot del largo</span></span>
+<span id="cb35-4"><a href="eda.html#cb35-4" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb35-5"><a href="eda.html#cb35-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> largo)) <span class="sc">+</span></span>
+<span id="cb35-6"><a href="eda.html#cb35-6" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#1f77b4&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb35-7"><a href="eda.html#cb35-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb35-8"><a href="eda.html#cb35-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Largo&quot;</span>,</span>
+<span id="cb35-9"><a href="eda.html#cb35-9" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Pies&quot;</span>,</span>
+<span id="cb35-10"><a href="eda.html#cb35-10" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb35-11"><a href="eda.html#cb35-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb35-12"><a href="eda.html#cb35-12" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb35-13"><a href="eda.html#cb35-13" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="eda.html#cb35-14" tabindex="-1"></a><span class="co"># Boxplot del diámetro</span></span>
+<span id="cb35-15"><a href="eda.html#cb35-15" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb35-16"><a href="eda.html#cb35-16" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> diametro)) <span class="sc">+</span></span>
+<span id="cb35-17"><a href="eda.html#cb35-17" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#2ca02c&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb35-18"><a href="eda.html#cb35-18" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb35-19"><a href="eda.html#cb35-19" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Diámetro&quot;</span>,</span>
+<span id="cb35-20"><a href="eda.html#cb35-20" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Pies&quot;</span>,</span>
+<span id="cb35-21"><a href="eda.html#cb35-21" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb35-22"><a href="eda.html#cb35-22" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb35-23"><a href="eda.html#cb35-23" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb35-24"><a href="eda.html#cb35-24" tabindex="-1"></a></span>
+<span id="cb35-25"><a href="eda.html#cb35-25" tabindex="-1"></a><span class="co"># Boxplot de la altura</span></span>
+<span id="cb35-26"><a href="eda.html#cb35-26" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb35-27"><a href="eda.html#cb35-27" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> altura)) <span class="sc">+</span></span>
+<span id="cb35-28"><a href="eda.html#cb35-28" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#d62728&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb35-29"><a href="eda.html#cb35-29" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb35-30"><a href="eda.html#cb35-30" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Altura&quot;</span>,</span>
+<span id="cb35-31"><a href="eda.html#cb35-31" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Pies&quot;</span>,</span>
+<span id="cb35-32"><a href="eda.html#cb35-32" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb35-33"><a href="eda.html#cb35-33" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb35-34"><a href="eda.html#cb35-34" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb35-35"><a href="eda.html#cb35-35" tabindex="-1"></a></span>
+<span id="cb35-36"><a href="eda.html#cb35-36" tabindex="-1"></a><span class="co"># Primera fila</span></span>
+<span id="cb35-37"><a href="eda.html#cb35-37" tabindex="-1"></a>p1 <span class="sc">+</span> p2 <span class="sc">+</span> p3</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-22-1.png" alt="Diagramas de cajas de las medidas del caparazón" width="864" />
+<p class="caption">
+Figura 1.4: Diagramas de cajas de las medidas del caparazón
+</p>
+</div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="eda.html#cb36-1" tabindex="-1"></a><span class="co"># Boxplot del peso total</span></span>
+<span id="cb36-2"><a href="eda.html#cb36-2" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="eda.html#cb36-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> peso)) <span class="sc">+</span></span>
+<span id="cb36-4"><a href="eda.html#cb36-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#9467bd&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb36-5"><a href="eda.html#cb36-5" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-6"><a href="eda.html#cb36-6" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Peso total&quot;</span>,</span>
+<span id="cb36-7"><a href="eda.html#cb36-7" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Onzas&quot;</span>,</span>
+<span id="cb36-8"><a href="eda.html#cb36-8" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb36-9"><a href="eda.html#cb36-9" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb36-10"><a href="eda.html#cb36-10" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb36-11"><a href="eda.html#cb36-11" tabindex="-1"></a></span>
+<span id="cb36-12"><a href="eda.html#cb36-12" tabindex="-1"></a><span class="co"># Boxplot del peso de la carne</span></span>
+<span id="cb36-13"><a href="eda.html#cb36-13" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb36-14"><a href="eda.html#cb36-14" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> peso_carne)) <span class="sc">+</span></span>
+<span id="cb36-15"><a href="eda.html#cb36-15" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#ff7f0e&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb36-16"><a href="eda.html#cb36-16" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-17"><a href="eda.html#cb36-17" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Peso de la carne&quot;</span>,</span>
+<span id="cb36-18"><a href="eda.html#cb36-18" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Onzas&quot;</span>,</span>
+<span id="cb36-19"><a href="eda.html#cb36-19" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb36-20"><a href="eda.html#cb36-20" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb36-21"><a href="eda.html#cb36-21" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb36-22"><a href="eda.html#cb36-22" tabindex="-1"></a></span>
+<span id="cb36-23"><a href="eda.html#cb36-23" tabindex="-1"></a><span class="co"># Boxplot del peso de las vísceras</span></span>
+<span id="cb36-24"><a href="eda.html#cb36-24" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb36-25"><a href="eda.html#cb36-25" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> peso_visceras)) <span class="sc">+</span></span>
+<span id="cb36-26"><a href="eda.html#cb36-26" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#8c564b&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb36-27"><a href="eda.html#cb36-27" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-28"><a href="eda.html#cb36-28" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Peso de las vísceras&quot;</span>,</span>
+<span id="cb36-29"><a href="eda.html#cb36-29" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Onzas&quot;</span>,</span>
+<span id="cb36-30"><a href="eda.html#cb36-30" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb36-31"><a href="eda.html#cb36-31" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb36-32"><a href="eda.html#cb36-32" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb36-33"><a href="eda.html#cb36-33" tabindex="-1"></a></span>
+<span id="cb36-34"><a href="eda.html#cb36-34" tabindex="-1"></a><span class="co"># Boxplot del peso del caparazón</span></span>
+<span id="cb36-35"><a href="eda.html#cb36-35" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb36-36"><a href="eda.html#cb36-36" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> peso_caparazon)) <span class="sc">+</span></span>
+<span id="cb36-37"><a href="eda.html#cb36-37" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;#17becf&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb36-38"><a href="eda.html#cb36-38" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-39"><a href="eda.html#cb36-39" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Peso del caparazón&quot;</span>,</span>
+<span id="cb36-40"><a href="eda.html#cb36-40" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Onzas&quot;</span>,</span>
+<span id="cb36-41"><a href="eda.html#cb36-41" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb36-42"><a href="eda.html#cb36-42" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb36-43"><a href="eda.html#cb36-43" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb36-44"><a href="eda.html#cb36-44" tabindex="-1"></a></span>
+<span id="cb36-45"><a href="eda.html#cb36-45" tabindex="-1"></a><span class="co"># Segunda fila</span></span>
+<span id="cb36-46"><a href="eda.html#cb36-46" tabindex="-1"></a>p4 <span class="sc">+</span> p5 <span class="sc">+</span> p6 <span class="sc">+</span> p7 <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-23"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-23-1.png" alt="Diagramas de cajas de los pesos" width="864" />
+<p class="caption">
+Figura 1.5: Diagramas de cajas de los pesos
+</p>
+</div>
+<p>Contemos los valores atípicos de cada variable con el mismo criterio del rango intercuartílico:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="eda.html#cb37-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="eda.html#cb37-2" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric), <span class="sc">-</span>edad) <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="eda.html#cb37-3" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb37-4"><a href="eda.html#cb37-4" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb37-5"><a href="eda.html#cb37-5" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
+<span id="cb37-6"><a href="eda.html#cb37-6" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">sum</span>(. <span class="sc">&lt;</span> <span class="fu">quantile</span>(., <span class="fl">0.25</span>) <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">IQR</span>(.) <span class="sc">|</span> . <span class="sc">&gt;</span> <span class="fu">quantile</span>(., <span class="fl">0.75</span>) <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">IQR</span>(.))</span>
+<span id="cb37-7"><a href="eda.html#cb37-7" tabindex="-1"></a>    )</span>
+<span id="cb37-8"><a href="eda.html#cb37-8" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##   largo diametro altura peso peso_carne peso_visceras peso_caparazon
+## 1  1270     1278   1226  249        311           283            397</code></pre>
+<p>En las medidas del caparazón (largo, diámetro y altura) los valores atípicos se ubican principalmente en el extremo inferior, con más de <span class="math inline">\(1.200\)</span> casos en cada una. Esto coincide con la asimetría negativa que se veía en la tabla: son cangrejos muy pequeños que se alejan del resto. En la altura, además, aparecen unos pocos valores extremos en la parte de arriba, entre ellos los dos registros de <span class="math inline">\(2{,}83\)</span> pies. En los pesos pasa lo contrario, pues los atípicos están en el extremo superior y son menos (entre <span class="math inline">\(249\)</span> y <span class="math inline">\(397\)</span> casos), correspondientes a cangrejos muy pesados. Como son una proporción pequeña de la base, se conservan para el análisis.</p>
+<p>Ahora analizaremos la variable categórica</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="eda.html#cb39-1" tabindex="-1"></a><span class="co"># Tabla de frecuencias para sexo</span></span>
+<span id="cb39-2"><a href="eda.html#cb39-2" tabindex="-1"></a>tabla_sexo <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="eda.html#cb39-3" tabindex="-1"></a>  <span class="fu">count</span>(sexo, <span class="at">name =</span> <span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb39-4"><a href="eda.html#cb39-4" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb39-5"><a href="eda.html#cb39-5" tabindex="-1"></a>    <span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>),</span>
+<span id="cb39-6"><a href="eda.html#cb39-6" tabindex="-1"></a>    <span class="at">Variable =</span> <span class="st">&quot;sexo&quot;</span>,</span>
+<span id="cb39-7"><a href="eda.html#cb39-7" tabindex="-1"></a>    <span class="at">Categoria =</span> <span class="fu">as.character</span>(sexo)</span>
+<span id="cb39-8"><a href="eda.html#cb39-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb39-9"><a href="eda.html#cb39-9" tabindex="-1"></a>  <span class="fu">select</span>(Variable, Categoria, Frecuencia, Porcentaje)</span>
+<span id="cb39-10"><a href="eda.html#cb39-10" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="eda.html#cb39-11" tabindex="-1"></a>tabla_sexo</span></code></pre></div>
+<pre><code>##   Variable     Categoria Frecuencia Porcentaje
+## 1     sexo        Hembra      23010      31.07
+## 2     sexo         Macho      27084      36.57
+## 3     sexo Indeterminado      23957      32.35</code></pre>
+<p>La variable <code>sexo</code> tiene una distribución bastante equilibrada entre sus tres categorías. Los machos son el grupo más numeroso, con el <span class="math inline">\(36{,}57\%\)</span> de los registros, seguidos de los indeterminados con el <span class="math inline">\(32{,}35\%\)</span> y las hembras con el <span class="math inline">\(31{,}07\%\)</span>. Ninguna categoría está subrepresentada, así que las comparaciones entre grupos que se hagan en los siguientes capítulos contarán con tamaños de muestra grandes en todos los casos.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="eda.html#cb41-1" tabindex="-1"></a>tabla_sexo_b <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb41-2"><a href="eda.html#cb41-2" tabindex="-1"></a>  <span class="fu">count</span>(sexo, <span class="at">name =</span> <span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="eda.html#cb41-3" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb41-4"><a href="eda.html#cb41-4" tabindex="-1"></a>    <span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>),</span>
+<span id="cb41-5"><a href="eda.html#cb41-5" tabindex="-1"></a>    <span class="at">Etiqueta =</span> <span class="fu">paste0</span>(Frecuencia, <span class="st">&quot; (&quot;</span>, Porcentaje, <span class="st">&quot;%)&quot;</span>)</span>
+<span id="cb41-6"><a href="eda.html#cb41-6" tabindex="-1"></a>  )</span>
+<span id="cb41-7"><a href="eda.html#cb41-7" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="eda.html#cb41-8" tabindex="-1"></a><span class="fu">ggplot</span>(tabla_sexo_b, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(sexo, <span class="sc">-</span>Frecuencia), <span class="at">y =</span> Frecuencia)) <span class="sc">+</span></span>
+<span id="cb41-9"><a href="eda.html#cb41-9" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">&quot;#008B8B&quot;</span>, <span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb41-10"><a href="eda.html#cb41-10" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> Etiqueta), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb41-11"><a href="eda.html#cb41-11" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">&quot;Distribución de la variable sexo&quot;</span>) <span class="sc">+</span></span>
+<span id="cb41-12"><a href="eda.html#cb41-12" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>))) <span class="sc">+</span></span>
+<span id="cb41-13"><a href="eda.html#cb41-13" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb41-14"><a href="eda.html#cb41-14" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Sexo&quot;</span>,</span>
+<span id="cb41-15"><a href="eda.html#cb41-15" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Frecuencia (Porcentaje)&quot;</span></span>
+<span id="cb41-16"><a href="eda.html#cb41-16" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb41-17"><a href="eda.html#cb41-17" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb41-18"><a href="eda.html#cb41-18" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb41-19"><a href="eda.html#cb41-19" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb41-20"><a href="eda.html#cb41-20" tabindex="-1"></a>    <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;gray80&quot;</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb41-21"><a href="eda.html#cb41-21" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb41-22"><a href="eda.html#cb41-22" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb41-23"><a href="eda.html#cb41-23" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-26"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-26-1.png" alt="Distribución de la variable sexo" width="672" />
+<p class="caption">
+Figura 1.6: Distribución de la variable sexo
+</p>
+</div>
+<p>El gráfico confirma lo anterior: los machos concentran <span class="math inline">\(27.084\)</span> registros (<span class="math inline">\(36{,}6\%\)</span>), los indeterminados <span class="math inline">\(23.957\)</span> (<span class="math inline">\(32{,}4\%\)</span>) y las hembras <span class="math inline">\(23.010\)</span> (<span class="math inline">\(31{,}1\%\)</span>). La diferencia entre la categoría más grande y la más pequeña es de apenas unos cinco puntos porcentuales.</p>
+</div>
+<div id="análisis-exploratorio-bivariado" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Análisis exploratorio bivariado<a href="eda.html#análisis-exploratorio-bivariado" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A continuación, analizaremos la relación entre la variable objetivo <code>edad</code> y las variables numéricas por medio de diagramas de dispersión. Como la base es muy grande, los puntos se dibujan con transparencia para poder ver dónde se concentran.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="eda.html#cb42-1" tabindex="-1"></a><span class="co"># Función para no repetir el mismo código en cada gráfico</span></span>
+<span id="cb42-2"><a href="eda.html#cb42-2" tabindex="-1"></a>dispersion_edad <span class="ot">&lt;-</span> <span class="cf">function</span>(variable, etiqueta) {</span>
+<span id="cb42-3"><a href="eda.html#cb42-3" tabindex="-1"></a>  df <span class="sc">%&gt;%</span></span>
+<span id="cb42-4"><a href="eda.html#cb42-4" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .data[[variable]], <span class="at">y =</span> edad)) <span class="sc">+</span></span>
+<span id="cb42-5"><a href="eda.html#cb42-5" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>, <span class="at">size =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb42-6"><a href="eda.html#cb42-6" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb42-7"><a href="eda.html#cb42-7" tabindex="-1"></a>      <span class="at">x =</span> etiqueta,</span>
+<span id="cb42-8"><a href="eda.html#cb42-8" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">&quot;Edad (meses)&quot;</span></span>
+<span id="cb42-9"><a href="eda.html#cb42-9" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb42-10"><a href="eda.html#cb42-10" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span>
+<span id="cb42-11"><a href="eda.html#cb42-11" tabindex="-1"></a>}</span>
+<span id="cb42-12"><a href="eda.html#cb42-12" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="eda.html#cb42-13" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">dispersion_edad</span>(<span class="st">&quot;largo&quot;</span>, <span class="st">&quot;Largo (pies)&quot;</span>)</span>
+<span id="cb42-14"><a href="eda.html#cb42-14" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> <span class="fu">dispersion_edad</span>(<span class="st">&quot;diametro&quot;</span>, <span class="st">&quot;Diámetro (pies)&quot;</span>)</span>
+<span id="cb42-15"><a href="eda.html#cb42-15" tabindex="-1"></a>d3 <span class="ot">&lt;-</span> <span class="fu">dispersion_edad</span>(<span class="st">&quot;altura&quot;</span>, <span class="st">&quot;Altura (pies)&quot;</span>)</span>
+<span id="cb42-16"><a href="eda.html#cb42-16" tabindex="-1"></a></span>
+<span id="cb42-17"><a href="eda.html#cb42-17" tabindex="-1"></a>d1 <span class="sc">+</span> d2 <span class="sc">+</span> d3</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-27"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-27-1.png" alt="Dispersión entre la edad y las medidas del caparazón" width="960" />
+<p class="caption">
+Figura 1.7: Dispersión entre la edad y las medidas del caparazón
+</p>
+</div>
+<p>En las tres medidas del caparazón se observa una tendencia ascendente: a mayor largo, diámetro o altura, mayor tiende a ser la edad del cangrejo. Sin embargo, la relación no es del todo lineal. Para los cangrejos pequeños la edad aumenta rápido con el tamaño, pero a partir de cierto punto (alrededor de <span class="math inline">\(1{,}5\)</span> pies de largo) la nube de puntos se abre mucho hacia arriba, es decir, cangrejos del mismo tamaño pueden tener edades muy distintas. En el gráfico de la altura se ven claramente los valores atípicos cerca de <span class="math inline">\(2{,}8\)</span> pies, que quedan aislados del resto de los datos y hacen que la mayor parte de la nube se vea comprimida a la izquierda.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="eda.html#cb43-1" tabindex="-1"></a>d4 <span class="ot">&lt;-</span> <span class="fu">dispersion_edad</span>(<span class="st">&quot;peso&quot;</span>, <span class="st">&quot;Peso total (onzas)&quot;</span>)</span>
+<span id="cb43-2"><a href="eda.html#cb43-2" tabindex="-1"></a>d5 <span class="ot">&lt;-</span> <span class="fu">dispersion_edad</span>(<span class="st">&quot;peso_carne&quot;</span>, <span class="st">&quot;Peso de la carne (onzas)&quot;</span>)</span>
+<span id="cb43-3"><a href="eda.html#cb43-3" tabindex="-1"></a>d6 <span class="ot">&lt;-</span> <span class="fu">dispersion_edad</span>(<span class="st">&quot;peso_visceras&quot;</span>, <span class="st">&quot;Peso de las vísceras (onzas)&quot;</span>)</span>
+<span id="cb43-4"><a href="eda.html#cb43-4" tabindex="-1"></a>d7 <span class="ot">&lt;-</span> <span class="fu">dispersion_edad</span>(<span class="st">&quot;peso_caparazon&quot;</span>, <span class="st">&quot;Peso del caparazón (onzas)&quot;</span>)</span>
+<span id="cb43-5"><a href="eda.html#cb43-5" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="eda.html#cb43-6" tabindex="-1"></a>(d4 <span class="sc">+</span> d5) <span class="sc">/</span> (d6 <span class="sc">+</span> d7)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-28"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-28-1.png" alt="Dispersión entre la edad y los pesos" width="960" />
+<p class="caption">
+Figura 1.8: Dispersión entre la edad y los pesos
+</p>
+</div>
+<p>Con los pesos pasa algo parecido: la edad aumenta a medida que aumenta el peso, pero la dispersión crece para los cangrejos más pesados. El peso del caparazón es el que muestra la tendencia más clara, lo cual tiene sentido porque el caparazón sigue creciendo y endureciéndose con los años. En cambio, en el peso de la carne la nube es más ancha y la tendencia ascendente es menos marcada, lo que sugiere que esta variable está menos asociada con la edad. En todos los casos la forma de la nube es curva, con un crecimiento rápido al principio que después se estabiliza, y la variabilidad de la edad no es constante.</p>
+<p>Realizaremos la comparación de la variable objetivo <code>edad</code> con respecto a la variable categórica <code>sexo</code>, con el fin de evaluar si existen diferencias en la edad de los cangrejos según su sexo.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="eda.html#cb44-1" tabindex="-1"></a><span class="co"># Resumen de edad por sexo</span></span>
+<span id="cb44-2"><a href="eda.html#cb44-2" tabindex="-1"></a>sexo_edad <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="eda.html#cb44-3" tabindex="-1"></a>  <span class="fu">group_by</span>(sexo) <span class="sc">%&gt;%</span></span>
+<span id="cb44-4"><a href="eda.html#cb44-4" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb44-5"><a href="eda.html#cb44-5" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(edad),</span>
+<span id="cb44-6"><a href="eda.html#cb44-6" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(edad),</span>
+<span id="cb44-7"><a href="eda.html#cb44-7" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(edad),</span>
+<span id="cb44-8"><a href="eda.html#cb44-8" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(edad),</span>
+<span id="cb44-9"><a href="eda.html#cb44-9" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(edad),</span>
+<span id="cb44-10"><a href="eda.html#cb44-10" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(edad),</span>
+<span id="cb44-11"><a href="eda.html#cb44-11" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(edad, <span class="fl">0.25</span>),</span>
+<span id="cb44-12"><a href="eda.html#cb44-12" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(edad, <span class="fl">0.75</span>),</span>
+<span id="cb44-13"><a href="eda.html#cb44-13" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(edad),</span>
+<span id="cb44-14"><a href="eda.html#cb44-14" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
+<span id="cb44-15"><a href="eda.html#cb44-15" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb44-16"><a href="eda.html#cb44-16" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb44-17"><a href="eda.html#cb44-17" tabindex="-1"></a>    <span class="at">variable =</span> <span class="st">&quot;sexo&quot;</span>,</span>
+<span id="cb44-18"><a href="eda.html#cb44-18" tabindex="-1"></a>    <span class="at">niveles =</span> <span class="fu">as.character</span>(sexo)</span>
+<span id="cb44-19"><a href="eda.html#cb44-19" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb44-20"><a href="eda.html#cb44-20" tabindex="-1"></a>  <span class="fu">select</span>(variable, niveles, <span class="fu">everything</span>(), <span class="sc">-</span>sexo)</span>
+<span id="cb44-21"><a href="eda.html#cb44-21" tabindex="-1"></a></span>
+<span id="cb44-22"><a href="eda.html#cb44-22" tabindex="-1"></a>sexo_edad</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 11
+##   variable niveles         n media    ds mediana minimo maximo    Q1    Q3   IQR
+##   &lt;chr&gt;    &lt;chr&gt;       &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;int&gt;  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 sexo     Hembra      23010 11.3   2.96      11      4     29     9    13     4
+## 2 sexo     Macho       27084 10.9   2.88      10      3     29     9    12     3
+## 3 sexo     Indetermin… 23957  7.60  2.23       7      1     24     6     8     2</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="eda.html#cb46-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb46-2"><a href="eda.html#cb46-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sexo, <span class="at">y =</span> edad, <span class="at">fill =</span> sexo)) <span class="sc">+</span></span>
+<span id="cb46-3"><a href="eda.html#cb46-3" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb46-4"><a href="eda.html#cb46-4" tabindex="-1"></a>  <span class="fu">stat_summary</span>(</span>
+<span id="cb46-5"><a href="eda.html#cb46-5" tabindex="-1"></a>    <span class="at">fun =</span> mean,</span>
+<span id="cb46-6"><a href="eda.html#cb46-6" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>,</span>
+<span id="cb46-7"><a href="eda.html#cb46-7" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">20</span>,</span>
+<span id="cb46-8"><a href="eda.html#cb46-8" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb46-9"><a href="eda.html#cb46-9" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb46-10"><a href="eda.html#cb46-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb46-11"><a href="eda.html#cb46-11" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb46-12"><a href="eda.html#cb46-12" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb46-13"><a href="eda.html#cb46-13" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Edad de los cangrejos según el sexo&quot;</span>,</span>
+<span id="cb46-14"><a href="eda.html#cb46-14" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Sexo&quot;</span>,</span>
+<span id="cb46-15"><a href="eda.html#cb46-15" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Edad (meses)&quot;</span></span>
+<span id="cb46-16"><a href="eda.html#cb46-16" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb46-17"><a href="eda.html#cb46-17" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb46-18"><a href="eda.html#cb46-18" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-30"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-30-1.png" alt="Diagrama de cajas de la edad según el sexo" width="672" />
+<p class="caption">
+Figura 1.9: Diagrama de cajas de la edad según el sexo
+</p>
+</div>
+<p>Se observan diferencias importantes en la edad según el sexo. Las hembras tienen la mayor edad promedio, con <span class="math inline">\(11{,}34\)</span> meses (<span class="math inline">\(DS = 2{,}96\)</span>), seguidas muy de cerca por los machos, con <span class="math inline">\(10{,}90\)</span> meses (<span class="math inline">\(DS = 2{,}88\)</span>). En cambio, los cangrejos indeterminados tienen una edad promedio mucho menor, de <span class="math inline">\(7{,}60\)</span> meses (<span class="math inline">\(DS = 2{,}23\)</span>). La mediana sigue el mismo orden: <span class="math inline">\(11\)</span> meses en las hembras, <span class="math inline">\(10\)</span> en los machos y <span class="math inline">\(7\)</span> en los indeterminados.</p>
+<p>Los indeterminados también tienen la menor dispersión, con un rango intercuartílico de apenas <span class="math inline">\(2\)</span> meses (entre <span class="math inline">\(6\)</span> y <span class="math inline">\(8\)</span>), frente a <span class="math inline">\(4\)</span> meses en las hembras y <span class="math inline">\(3\)</span> en los machos. Esto tiene sentido si se piensa que la categoría indeterminado agrupa principalmente a cangrejos jóvenes, en los que todavía no se puede identificar el sexo. Por eso esta categoría incluye la edad mínima de la base (<span class="math inline">\(1\)</span> mes). Entre hembras y machos la diferencia es pequeña a simple vista, así que en el siguiente capítulo se verificará con una prueba de hipótesis si esa diferencia es estadísticamente significativa y si tiene importancia práctica.</p>
+<p>Por último, usamos la función <code>ggpairs()</code> del paquete <code>GGally</code> para ver al mismo tiempo las relaciones entre todas las variables numéricas. Este gráfico puede tardar un poco en generarse por el tamaño de la base.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="eda.html#cb47-1" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb47-2"><a href="eda.html#cb47-2" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="eda.html#cb47-3" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb47-4"><a href="eda.html#cb47-4" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb47-5"><a href="eda.html#cb47-5" tabindex="-1"></a>  <span class="fu">ggpairs</span>(</span>
+<span id="cb47-6"><a href="eda.html#cb47-6" tabindex="-1"></a>    <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">&quot;points&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">size =</span> <span class="fl">0.3</span>))</span>
+<span id="cb47-7"><a href="eda.html#cb47-7" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-31"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-31-1.png" alt="Relaciones entre las variables numéricas" width="1056" />
+<p class="caption">
+Figura 1.10: Relaciones entre las variables numéricas
+</p>
+</div>
+<p>La matriz de gráficos muestra que todas las variables físicas están fuertemente relacionadas entre sí. Las correlaciones entre medidas y pesos son todas mayores a <span class="math inline">\(0{,}86\)</span>, y entre el largo y el diámetro llega a <span class="math inline">\(0{,}989\)</span>, lo que indica que prácticamente miden lo mismo. Los pesos también están muy correlacionados entre ellos (por ejemplo, el peso total y el peso de la carne tienen una correlación de <span class="math inline">\(0{,}971\)</span>). Esta alta relación entre las variables independientes es algo que habrá que considerar si más adelante se construye un modelo de regresión con varias de ellas.</p>
+<p>Los diagramas de dispersión muestran además que la relación entre las medidas del caparazón y los pesos no es lineal sino curva: el peso crece cada vez más rápido a medida que aumenta el largo, algo razonable si se piensa que el peso depende del volumen del cangrejo.</p>
+<p>Frente a la edad, las correlaciones son moderadas, entre <span class="math inline">\(0{,}503\)</span> (peso de la carne) y <span class="math inline">\(0{,}663\)</span> (peso del caparazón). Los diagramas de la última fila confirman que la relación con la edad es positiva pero no perfectamente lineal. En la diagonal se ve que el largo y el diámetro tienen una cola hacia la izquierda (asimetría negativa), mientras que los pesos tienen una forma más achatada con una cola hacia la derecha. La altura aparece con un rango muy amplio por culpa de los dos valores extremos. Estos resultados se analizarán con más detalle en el capítulo <a href="correglin.html#correglin">4</a>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="estparynopar.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+},
+"info": false
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

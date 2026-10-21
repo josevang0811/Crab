@@ -1,0 +1,70 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+
+/* Justificar texto de los párrafos */
+p {
+  text-align: justify;
+}
+
+/* Cajas de definición, teorema, nota y ejemplo */
+.admon-box {
+  border-left: 5px solid #43b581;
+  border-radius: 8px;
+  margin: 1.5em 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.admon-box > p,
+.admon-box > ul,
+.admon-box > ol {
+  padding: 0 1em;
+}
+
+.admon-title {
+  font-weight: bold;
+  padding: 0.8em 1em;
+  font-size: 1.05em;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.admon-title .icon::before {
+  display: inline-block;
+  margin-right: 0.5em;
+}
+
+.admon-box.definicion .admon-title { background-color: #eaf3fb; border-bottom-color: #d0e5f5; }
+.admon-box.teorema .admon-title { background-color: #f3eafa; border-bottom-color: #e2d1f3; }
+.admon-box.ejemplo .admon-title { background-color: #f6f7be; border-bottom-color: #c0c288; }
+.admon-box.advertencia .admon-title { background-color: #fdecea; border-bottom-color: #f5c6c6; }
+.admon-box.nota .admon-title { background-color: #fff8e1; border-bottom-color: #ffe9b3; }
+
+.admon-box.definicion  { border-left-color: #3498db; }
+.admon-box.definicion .icon::before { content: "📖"; }
+
+.admon-box.teorema     { border-left-color: #9b59b6; }
+.admon-box.teorema .icon::before { content: "∑"; }
+
+.admon-box.ejemplo     { border-left-color: #8d9101; }
+.admon-box.ejemplo .icon::before { content: "✅"; }
+
+.admon-box.advertencia { border-left-color: #e74c3c; }
+.admon-box.advertencia .icon::before { content: "⚠️"; }
+
+.admon-box.nota        { border-left-color: #f39c12; }
+.admon-box.nota .icon::before { content: "🗒️"; }

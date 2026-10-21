@@ -1,0 +1,568 @@
+# Análisis de estadística paramétrica y no paramétrica {#estparynopar}
+
+En el capítulo anterior se vio que la edad de los cangrejos cambia según el sexo: las hembras y los machos tienen edades parecidas, mientras que los indeterminados son claramente más jóvenes. En este capítulo se verifica si esas diferencias son estadísticamente significativas. Primero se comparan dos grupos (hembras y machos) con la prueba *t* y con la U de Mann-Whitney, y luego se comparan los tres grupos con el ANOVA de un factor y con la prueba de Kruskal-Wallis.
+
+En todas las pruebas se trabaja con un nivel de significancia de $\alpha = 0{,}05$. Carguemos las librerías y preparemos los datos con la misma limpieza del capítulo \@ref(eda):
+
+```{r}
+library(tidyverse)
+library(nortest)
+library(car)
+library(effsize)
+library(rstatix)
+
+df <- read.csv("datos/train.csv") %>%
+  select(-id) %>%
+  rename(
+    sexo           = Sex,
+    largo          = Length,
+    diametro       = Diameter,
+    altura         = Height,
+    peso           = Weight,
+    peso_carne     = Shucked.Weight,
+    peso_visceras  = Viscera.Weight,
+    peso_caparazon = Shell.Weight,
+    edad           = Age
+  ) %>%
+  mutate(
+    altura = ifelse(altura == 0, NA, altura),
+    altura = ifelse(is.na(altura), mean(altura, na.rm = TRUE), altura),
+    sexo = factor(sexo,
+                  levels = c("F", "M", "I"),
+                  labels = c("Hembra", "Macho", "Indeterminado"))
+  )
+
+head(df)
+```
+
+## Comparación de la edad entre hembras y machos con estadística paramétrica
+
+Se quiere verificar si existe una diferencia significativa en la edad promedio de los cangrejos hembra y macho, y si esa diferencia es relevante desde el punto de vista práctico. Sean $\mu_1$ la edad promedio de las hembras y $\mu_2$ la edad promedio de los machos. Las hipótesis son:
+
+$$
+H_0: \mu_1 = \mu_2 \quad \text{vs} \quad H_a: \mu_1 \ne \mu_2
+$$
+
+Separemos las edades de cada grupo:
+
+```{r}
+# edades de las hembras
+hembras <- df %>%
+  filter(sexo == "Hembra") %>%
+  pull(edad)
+
+# edades de los machos
+machos <- df %>%
+  filter(sexo == "Macho") %>%
+  pull(edad)
+
+length(hembras)
+length(machos)
+```
+
+### Verificación de supuestos
+
+La **independencia** se cumple porque cada registro corresponde a un cangrejo distinto y un cangrejo no puede ser hembra y macho a la vez.
+
+Para la **normalidad** no se puede usar la prueba de Shapiro-Wilk, ya que cada grupo tiene más de $5.000$ observaciones. Por eso usamos las pruebas de Kolmogorov-Smirnov y de Lilliefors:
+
+```{r}
+df %>%
+  filter(sexo %in% c("Hembra", "Macho")) %>%
+  group_by(sexo) %>%
+  summarise(n = length(edad),
+            est_ks = ks.test(scale(edad), "pnorm")$statistic,
+            p_ks = ks.test(scale(edad), "pnorm")$p.value,
+            est_lt = lillie.test(edad)$statistic,
+            p_lt = lillie.test(edad)$p.value)
+```
+
+Con una confianza del $95\%$, las pruebas de Kolmogorov-Smirnov y de Lilliefors indican que la edad no sigue una distribución normal ni en las hembras ($D = 0{,}189,\ p\text{-valor} < 0{,}001$) ni en los machos ($D = 0{,}194,\ p\text{-valor} < 0{,}001$). El estadístico $D$ es el mismo en ambas pruebas porque las dos miden la máxima distancia entre la distribución empírica y la normal; la diferencia está en que Lilliefors corrige el p-valor por haber estimado la media y la desviación estándar con la misma muestra. Además, R advierte que hay empates, ya que la edad solo toma valores enteros.
+
+Aunque la normalidad no se cumple, cada grupo tiene más de $23.000$ observaciones, así que por el Teorema del Límite Central la prueba *t* sigue siendo válida para comparar las medias. De todas formas, en la sección \@ref(mw-hembras-machos) se hace también la comparación no paramétrica.
+
+Verifiquemos la **igualdad de varianzas** (homocedasticidad):
+
+```{r}
+var.test(hembras, machos)
+```
+
+Con una confianza del $95\%$, hay diferencias estadísticamente significativas en las varianzas de la edad de hembras y machos ($F_{(23009,\,27083)} = 1{,}0524,\ p\text{-valor} < 0{,}001$). Hay que notar que la razón de varianzas es muy cercana a $1$ y que la diferencia sale significativa principalmente por el tamaño tan grande de las muestras.
+
+<div class="admon-box teorema">
+<div class="admon-title"><span class="icon"></span> Teorema (razón de varianzas)</div>
+
+Si $s_1^2$ y $s_2^2$ son las varianzas de muestras aleatorias independientes de tamaño $n_1$ y $n_2$, tomadas de poblaciones normales con varianzas $\sigma_1^2$ y $\sigma_2^2$, entonces el estadístico
+
+$$
+F = \frac{s_1^2}{s_2^2}
+$$
+
+sigue una distribución $F$ con $v_1 = n_1 - 1$ y $v_2 = n_2 - 1$ grados de libertad, y un intervalo de confianza al nivel $1 - \alpha$ para $\sigma_1^2 / \sigma_2^2$ es
+
+$$
+\left( \frac{s_1^2}{s_2^2} \cdot \frac{1}{F_{1 - \alpha/2}(v_1, v_2)},\ \frac{s_1^2}{s_2^2} \cdot \frac{1}{F_{\alpha/2}(v_1, v_2)} \right)
+$$
+
+</div>
+
+Verifiquemos la salida de `var.test()` paso a paso con este teorema:
+
+```{r}
+n1 <- length(hembras)
+n2 <- length(machos)
+s1_2 <- var(hembras)
+s2_2 <- var(machos)
+
+# estadístico F
+F_calc <- s1_2 / s2_2
+
+# grados de libertad
+v1 <- n1 - 1
+v2 <- n2 - 1
+
+# intervalo de confianza del 95%
+alpha <- 0.05
+IC_F <- c(F_calc / qf(1 - alpha/2, v1, v2),
+          F_calc / qf(alpha/2, v1, v2))
+
+# p-valor bilateral
+p_F <- 2 * min(pf(F_calc, v1, v2), 1 - pf(F_calc, v1, v2))
+
+data.frame(F_calc = F_calc, v1 = v1, v2 = v2,
+           IC_inf = IC_F[1], IC_sup = IC_F[2], p_valor = p_F)
+```
+
+Los valores coinciden con los de `var.test()`: $F = 1{,}0524$, intervalo de confianza $(1{,}0266;\ 1{,}0789)$ y p-valor menor a $0{,}001$. Como el intervalo no contiene al $1$, se rechaza la igualdad de varianzas.
+
+### Prueba *t* de Welch
+
+Como no se cumple la homocedasticidad, se usa la versión de Welch de la prueba *t*, que no asume varianzas iguales. En este caso, el error estándar de la diferencia de medias y los grados de libertad son:
+
+$$
+SE = \sqrt{ \frac{s_1^2}{n_1} + \frac{s_2^2}{n_2} }, \qquad
+gl \approx \frac{ \left( \frac{s_1^2}{n_1} + \frac{s_2^2}{n_2} \right)^2 }{ \frac{ \left( \frac{s_1^2}{n_1} \right)^2 }{n_1 - 1} + \frac{ \left( \frac{s_2^2}{n_2} \right)^2 }{n_2 - 1} }
+$$
+
+y el estadístico de prueba es $t = \dfrac{\bar{x}_1 - \bar{x}_2}{SE}$. Hagamos el cálculo paso a paso:
+
+```{r}
+xbar_1 <- mean(hembras)
+xbar_2 <- mean(machos)
+
+# error estándar de la diferencia de medias
+SE <- sqrt(s1_2/n1 + s2_2/n2)
+
+# estadístico t
+t_calc <- (xbar_1 - xbar_2) / SE
+
+# grados de libertad de Welch
+gl <- (s1_2/n1 + s2_2/n2)^2 /
+      ((s1_2/n1)^2/(n1 - 1) + (s2_2/n2)^2/(n2 - 1))
+
+# valor crítico, p-valor e intervalo de confianza
+t_critico <- qt(1 - alpha/2, df = gl)
+p_t <- 2 * pt(-abs(t_calc), df = gl)
+IC_t <- (xbar_1 - xbar_2) + c(-1, 1) * t_critico * SE
+
+data.frame(media_hembras = xbar_1, media_machos = xbar_2, SE = SE,
+           t_calc = t_calc, gl = gl, t_critico = t_critico,
+           p_valor = p_t, IC_inf = IC_t[1], IC_sup = IC_t[2])
+```
+
+```{r}
+decision <- ifelse(abs(t_calc) > t_critico, "Se rechaza H_0", "No se rechaza H_0")
+decision
+```
+
+Ahora comparemos con la función `t.test()`:
+
+```{r}
+t.test(hembras,
+       machos,
+       paired = FALSE,         # muestras independientes
+       var.equal = FALSE       # varianzas diferentes (Welch)
+       )
+```
+
+La prueba de Welch para muestras independientes nos indica que, con una confianza del $95\%$, existe una diferencia estadísticamente significativa entre la edad promedio de las hembras y la de los machos ($t_{(48371{,}49)} = 17{,}002,\ p\text{-valor} < 0{,}001$). Las hembras tienen en promedio $11{,}34$ meses y los machos $10{,}90$ meses, y el intervalo de confianza indica que la diferencia real está entre $0{,}39$ y $0{,}50$ meses. Los resultados del cálculo manual coinciden con los de la función.
+
+### Tamaño del efecto
+
+Con muestras tan grandes era de esperarse que la diferencia fuera significativa, así que lo importante es saber si esa diferencia tiene relevancia práctica. Veamos el cálculo del tamaño del efecto:
+
+```{r}
+cohen.d(hembras,
+        machos,
+        paired = FALSE)
+```
+
+Hagamos también el cálculo del tamaño del efecto $r$ a partir del estadístico $t$, usando $r = \sqrt{\dfrac{t^2}{t^2 + gl}}$:
+
+```{r}
+r_efecto <- sqrt(t_calc^2 / (t_calc^2 + gl))
+r_efecto
+```
+
+Con base en el índice de Cohen's d, se obtiene un valor estimado de $0{,}15$ ($IC_{95\%} = (0{,}14;\ 0{,}17)$), que corresponde a un tamaño del efecto **trivial o muy pequeño** ($|d| < 0{,}20$). El coeficiente $r = 0{,}077$ lleva a la misma conclusión, porque es menor a $0{,}10$. Esto quiere decir que, aunque la diferencia de edad entre hembras y machos es estadísticamente significativa, en la práctica es muy pequeña: equivale a menos de medio mes y a apenas $0{,}15$ desviaciones estándar. La significancia se explica sobre todo por el gran tamaño de las muestras.
+
+## Comparación de la edad entre hembras y machos con estadística no paramétrica {#mw-hembras-machos}
+
+Como la edad no sigue una distribución normal, es conveniente hacer también la comparación con la prueba de Mann-Whitney-Wilcoxon, que trabaja con los rangos de los datos. Las hipótesis son:
+
+$$
+H_0: P(X > Y) = 0{,}5 \quad \text{vs} \quad H_1: P(X > Y) \neq 0{,}5
+$$
+
+donde $X$ es la edad de una hembra y $Y$ la edad de un macho, ambos elegidos al azar.
+
+Los supuestos de la prueba se cumplen: las observaciones son independientes, la edad es una variable que se puede ordenar y no se requiere normalidad. Para poder interpretar el resultado como una comparación de medianas, las dos distribuciones deben tener una forma parecida. Como no hay normalidad, la igualdad de varianzas se revisa con la prueba de Levene centrada en la mediana:
+
+```{r}
+df_hm <- df %>%
+  filter(sexo %in% c("Hembra", "Macho")) %>%
+  droplevels()
+
+leveneTest(edad ~ sexo, data = df_hm, center = "median")
+```
+
+La prueba de Levene indica que hay diferencias significativas en la varianza de la edad entre hembras y machos ($F_{(1,\,50092)} = 27{,}133,\ p\text{-valor} < 0{,}001$). Por lo tanto, el resultado de Mann-Whitney se debe leer como una diferencia en la distribución de la edad y no estrictamente como una diferencia de medianas.
+
+Veamos si hay diferencia entre los dos grupos:
+
+```{r}
+df_hm %>%
+  wilcox_test(edad ~ sexo,
+              paired = FALSE)
+```
+
+La prueba U de Mann-Whitney muestra que hay evidencia estadísticamente significativa de una diferencia en la edad de los cangrejos hembra y macho ($U = 341.462.630,\ p\text{-valor} < 0{,}001$). Veamos el tamaño del efecto:
+
+```{r}
+df_hm %>%
+  wilcox_effsize(edad ~ sexo, paired = FALSE)
+```
+
+El tamaño del efecto es $r = 0{,}084$, que la función clasifica como pequeño, aunque está por debajo de $0{,}10$ y en la escala de las notas de clase corresponde a un efecto trivial. Así, la prueba no paramétrica confirma lo encontrado con la prueba *t*: las hembras tienden a ser un poco mayores que los machos, pero la diferencia es muy pequeña en términos prácticos.
+
+## ANOVA de la edad según el sexo
+
+Ahora comparemos la edad promedio de los tres grupos. Sean $\mu_1$, $\mu_2$ y $\mu_3$ las edades promedio de las hembras, los machos y los indeterminados, respectivamente. Las hipótesis son:
+
+$$
+\begin{aligned}
+H_0: &\quad \mu_1 = \mu_2 = \mu_3 \quad \text{(todas las medias son iguales)} \\
+H_1: &\quad \text{Al menos una media difiere de las demás}
+\end{aligned}
+$$
+
+### Verificación de supuestos
+
+Verifiquemos la normalidad en cada grupo:
+
+```{r}
+df %>%
+  group_by(sexo) %>%
+  summarise(n = length(edad),
+            est_ks = ks.test(scale(edad), "pnorm")$statistic,
+            p_ks = ks.test(scale(edad), "pnorm")$p.value,
+            est_lt = lillie.test(edad)$statistic,
+            p_lt = lillie.test(edad)$p.value)
+```
+
+La prueba de Lilliefors muestra que la edad no tiene comportamiento normal en ninguno de los tres grupos ($p\text{-valor} < 0{,}001$ en todos los casos). Probemos la homogeneidad de varianzas con las pruebas de Bartlett y de Levene:
+
+```{r}
+bartlett.test(edad ~ sexo, data = df)
+```
+
+```{r}
+leveneTest(edad ~ sexo, data = df, center = "median")
+```
+
+Tanto la prueba de Bartlett ($K^2_{(2)} = 2195{,}3,\ p\text{-valor} < 0{,}001$) como la de Levene ($F_{(2,\,74048)} = 501{,}64,\ p\text{-valor} < 0{,}001$) indican que las varianzas no son iguales. La prueba de Bartlett es sensible a la falta de normalidad, por lo que en este caso es más confiable la de Levene, pero ambas llegan a la misma conclusión. Esto se ve también en el análisis exploratorio, donde los indeterminados tienen una dispersión mucho menor que los otros dos grupos.
+
+<div class="admon-box advertencia">
+<div class="admon-title"><span class="icon"></span> Advertencia</div>
+
+Los supuestos de normalidad y homocedasticidad no se cumplen. El ANOVA es bastante robusto a la falta de normalidad cuando los grupos son grandes, pero la diferencia de varianzas puede afectar el resultado. Por eso el ANOVA se desarrolla a continuación con fines de comparación, y la conclusión principal se apoya en la prueba de Kruskal-Wallis de la sección \@ref(kw-sexo).
+
+</div>
+
+### Cálculo paso a paso
+
+Usando la notación de las notas de clase, $y_{ij}$ es la $i$-ésima observación del grupo $j$, $n_j$ el tamaño del grupo $j$, $N$ el total de observaciones, $\bar{y}_j$ la media del grupo $j$ y $\bar{y}$ la media global. Hallemos los tamaños y los promedios de cada muestra:
+
+```{r}
+edad_h <- df %>% filter(sexo == "Hembra") %>% pull(edad)
+edad_m <- df %>% filter(sexo == "Macho") %>% pull(edad)
+edad_i <- df %>% filter(sexo == "Indeterminado") %>% pull(edad)
+
+n1 <- length(edad_h)         # tamaño de muestra n_1
+n2 <- length(edad_m)         # tamaño de muestra n_2
+n3 <- length(edad_i)         # tamaño de muestra n_3
+N <- n1 + n2 + n3            # tamaño muestral total
+k <- nlevels(df$sexo)        # número de poblaciones
+
+ybar_1 <- mean(edad_h)
+ybar_2 <- mean(edad_m)
+ybar_3 <- mean(edad_i)
+
+ybar_total <- (sum(edad_h) + sum(edad_m) + sum(edad_i)) / N
+
+data.frame(n1, n2, n3, N, k, ybar_1, ybar_2, ybar_3, ybar_total)
+```
+
+Hallemos la suma de cuadrados total (SST), la suma de cuadrados entre grupos (SSA) y la suma de cuadrados dentro de los grupos (SSE):
+
+$$
+SST = \sum_{j=1}^{k} \sum_{i=1}^{n_j} (y_{ij} - \bar{y})^2, \qquad
+SSA = \sum_{j=1}^{k} n_j (\bar{y}_j - \bar{y})^2, \qquad
+SSE = \sum_{j=1}^{k} \sum_{i=1}^{n_j} (y_{ij} - \bar{y}_j)^2
+$$
+
+```{r}
+SST <- sum((edad_h - ybar_total)^2) +
+       sum((edad_m - ybar_total)^2) +
+       sum((edad_i - ybar_total)^2)
+
+SSA <- n1 * (ybar_1 - ybar_total)^2 +
+       n2 * (ybar_2 - ybar_total)^2 +
+       n3 * (ybar_3 - ybar_total)^2
+
+SSE <- SST - SSA
+
+data.frame(SST, SSA, SSE)
+```
+
+Por el teorema de descomposición, $SST = SSE + SSA$. Comprobemos que la $SSE$ obtenida por diferencia es igual a la que se obtiene con su definición, que también se puede escribir como $SSE = \sum_{j=1}^{k}(n_j - 1)S_j^2$:
+
+```{r}
+SSE_definicion <- sum((edad_h - ybar_1)^2) +
+                  sum((edad_m - ybar_2)^2) +
+                  sum((edad_i - ybar_3)^2)
+
+SSE_varianzas <- (n1 - 1) * var(edad_h) +
+                 (n2 - 1) * var(edad_m) +
+                 (n3 - 1) * var(edad_i)
+
+data.frame(SSE, SSE_definicion, SSE_varianzas)
+```
+
+Los tres valores son iguales, lo que confirma el teorema de descomposición. Calculemos los cuadrados medios y el estadístico de Fisher:
+
+$$
+MSA = \frac{SSA}{k - 1}, \qquad MSE = \frac{SSE}{N - k}, \qquad F = \frac{MSA}{MSE}
+$$
+
+```{r}
+MSA <- SSA / (k - 1)
+MSE <- SSE / (N - k)
+
+F_anova <- MSA / MSE
+
+data.frame(MSA, MSE, F_anova)
+```
+
+Hallemos el $F$ crítico y veamos si se rechaza o no la hipótesis nula:
+
+```{r}
+alpha <- 0.05
+v1 <- k - 1
+v2 <- N - k
+
+F_critico <- qf(p = 1 - alpha, df1 = v1, df2 = v2)
+F_critico
+
+decision <- ifelse(F_anova > F_critico, "Se rechaza H_0", "No se rechaza H_0")
+decision
+```
+
+Otra forma de realizarlo es con el p-valor:
+
+```{r}
+pvalor <- pf(F_anova, v1, v2, lower.tail = FALSE)
+pvalor
+
+decision <- ifelse(pvalor < alpha, "Se rechaza H_0", "No se rechaza H_0")
+decision
+```
+
+Organicemos los resultados en la tabla de ANOVA de un factor:
+
+```{r}
+data.frame(
+  Fuente = c("Entre grupos", "Dentro de grupos", "Total"),
+  gl = c(v1, v2, N - 1),
+  SC = c(SSA, SSE, SST),
+  CM = c(MSA, MSE, NA),
+  F = c(F_anova, NA, NA)
+)
+```
+
+### ANOVA con la función `aov()`
+
+```{r}
+modelo <- aov(edad ~ sexo, data = df)
+summary(modelo)
+```
+
+La función `aov()` da los mismos resultados que el cálculo manual. El ANOVA muestra que existen diferencias significativas en la edad promedio de al menos uno de los tres grupos ($F_{(2,\,74048)} = 13657{,}04,\ p\text{-valor} < 0{,}001$). El estadístico $F$ es enorme comparado con el valor crítico ($3{,}00$), lo que indica que la variabilidad entre grupos es mucho mayor que la variabilidad dentro de los grupos. De hecho, la suma de cuadrados entre grupos representa el $26{,}9\%$ de la variabilidad total de la edad ($SSA/SST = 201175{,}6/746559{,}2$).
+
+### Comparaciones múltiples con el método de Tukey
+
+El ANOVA no dice cuáles grupos son diferentes, así que aplicamos el método de Tukey. Como los tamaños de muestra son distintos, se usa la versión de Tukey-Kramer, en la que la diferencia honestamente significativa para el par $(i, j)$ es:
+
+$$
+HSD_{ij} = q_{\alpha}(k, N - k) \cdot \sqrt{\frac{CME}{2} \left( \frac{1}{n_i} + \frac{1}{n_j} \right)}
+$$
+
+Cuando $n_i = n_j = n$, esta expresión se reduce a $q_{\alpha}(k, N-k)\sqrt{CME/n}$, que es la fórmula de las notas de clase para tamaños iguales. Hagamos el cálculo:
+
+```{r}
+q <- qtukey(p = 1 - alpha, nmeans = k, df = N - k)
+q
+
+medias <- c(ybar_1, ybar_2, ybar_3)
+tamanos <- c(n1, n2, n3)
+grupos <- c("Hembra", "Macho", "Indeterminado")
+
+# Matriz de comparaciones por pares
+comparaciones <- combn(1:k, 2, function(idx) {
+  i <- idx[1]
+  j <- idx[2]
+  dif <- medias[i] - medias[j]
+  HSD <- q * sqrt(MSE / 2 * (1 / tamanos[i] + 1 / tamanos[j]))
+  c(Grupo_1 = grupos[i],
+    Grupo_2 = grupos[j],
+    Diferencia = round(dif, 4),
+    HSD = round(HSD, 4),
+    Significativa = ifelse(abs(dif) > HSD, "Sí", "No"))
+})
+
+comparacion_tukey <- as.data.frame(t(comparaciones), stringsAsFactors = FALSE)
+names(comparacion_tukey) <- c("Grupo 1", "Grupo 2", "Diferencia", "HSD", "¿Significativa?")
+
+comparacion_tukey
+```
+
+Ahora con la función `TukeyHSD()`:
+
+```{r}
+resultado_tukey <- TukeyHSD(modelo)
+resultado_tukey
+```
+
+Las dos formas coinciden: la amplitud de los intervalos de `TukeyHSD()` es igual al $HSD$ calculado para cada par, y en los tres casos la diferencia de medias es mucho mayor que ese umbral. Por lo tanto, **los tres grupos difieren entre sí**. Los indeterminados son en promedio $3{,}74$ meses más jóvenes que las hembras ($IC_{95\%} = (-3{,}80;\ -3{,}68)$) y $3{,}30$ meses más jóvenes que los machos ($IC_{95\%} = (-3{,}35;\ -3{,}24)$). Entre machos y hembras la diferencia es de apenas $0{,}45$ meses ($IC_{95\%} = (-0{,}50;\ -0{,}39)$), que es significativa pero pequeña, como ya se había visto con el tamaño del efecto.
+
+```{r fig.cap="Intervalos de confianza de Tukey para las diferencias de edad"}
+as.data.frame(resultado_tukey$sexo) %>%
+  rownames_to_column("comparacion") %>%
+  ggplot(aes(x = diff, y = comparacion)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray40") +
+  geom_errorbar(aes(xmin = lwr, xmax = upr), width = 0.2, color = "#1f78b4") +
+  geom_point(size = 3, color = "red") +
+  labs(
+    title = "Comparaciones múltiples de Tukey",
+    x = "Diferencia de medias (meses)",
+    y = ""
+  ) +
+  theme_bw()
+```
+
+## Kruskal-Wallis de la edad según el sexo {#kw-sexo}
+
+Como no se cumplen los supuestos del ANOVA, la prueba adecuada para comparar los tres grupos es la de Kruskal-Wallis. Las hipótesis son:
+
+- $H_0$: la edad tiene la misma distribución en los tres grupos (hembra, macho e indeterminado).
+- $H_A$: al menos un grupo tiene una distribución de edad distinta.
+
+<div class="admon-box teorema">
+<div class="admon-title"><span class="icon"></span> Estadístico de Kruskal-Wallis</div>
+
+Se ordenan todas las observaciones de menor a mayor, se les asignan rangos y se calcula
+
+$$
+H = \frac{12}{N(N+1)} \sum_{i=1}^{k} \frac{R_i^2}{n_i} - 3(N+1)
+$$
+
+donde $N$ es el número total de observaciones, $k$ el número de grupos, $R_i$ la suma de rangos del grupo $i$ y $n_i$ el tamaño del grupo $i$. El estadístico $H$ se compara con una distribución $\chi^2$ con $k - 1$ grados de libertad.
+
+</div>
+
+### Cálculo paso a paso
+
+```{r}
+# rangos de todas las observaciones (los empates reciben el rango promedio)
+rangos <- rank(df$edad)
+
+# suma de rangos y tamaño de cada grupo
+R_i <- tapply(rangos, df$sexo, sum)
+n_i <- tapply(rangos, df$sexo, length)
+
+data.frame(sexo = names(R_i),
+           n_i = as.numeric(n_i),
+           R_i = as.numeric(R_i),
+           rango_promedio = as.numeric(R_i / n_i))
+```
+
+Los indeterminados tienen un rango promedio mucho menor que los otros dos grupos, lo que indica que sus edades tienden a ubicarse en la parte baja del ordenamiento. Calculemos el estadístico $H$:
+
+```{r}
+H <- 12 / (N * (N + 1)) * sum(R_i^2 / n_i) - 3 * (N + 1)
+H
+```
+
+Como la edad tiene muchos valores repetidos, el estadístico se corrige por empates dividiéndolo entre $C = 1 - \dfrac{\sum (t^3 - t)}{N^3 - N}$, donde $t$ es el número de observaciones empatadas en cada valor. Esta es la corrección que aplica la función `kruskal.test()`:
+
+```{r}
+t_empates <- table(df$edad)
+C <- 1 - sum(t_empates^3 - t_empates) / (N^3 - N)
+
+H_corregido <- H / C
+
+chi_critico <- qchisq(1 - alpha, df = k - 1)
+p_H <- pchisq(H_corregido, df = k - 1, lower.tail = FALSE)
+
+data.frame(H, C, H_corregido, chi_critico, p_valor = p_H,
+           decision = ifelse(H_corregido > chi_critico, "Se rechaza H_0", "No se rechaza H_0"))
+```
+
+### Prueba con la función `kruskal.test()`
+
+```{r}
+kruskal.test(edad ~ sexo, data = df)
+```
+
+La prueba de Kruskal-Wallis indica que existen diferencias estadísticamente significativas en la edad entre al menos dos de los grupos ($\chi^2_{(2)} = 27724,\ p\text{-valor} < 0{,}001$). El valor coincide con el $H$ corregido por empates que se calculó a mano; sin la corrección el resultado sería $H = 27335{,}9$, que lleva a la misma conclusión.
+
+Para complementar, veamos el tamaño del efecto de la prueba con la función `kruskal_effsize()` del paquete `rstatix`, que calcula $\eta^2_H = \dfrac{H - k + 1}{N - k}$:
+
+```{r}
+df %>%
+  kruskal_effsize(edad ~ sexo)
+```
+
+El tamaño del efecto es $\eta^2_H = 0{,}374$, clasificado como grande. A diferencia de la comparación entre hembras y machos, aquí la diferencia sí es relevante en la práctica, y se debe principalmente al grupo de los indeterminados.
+
+### Comparaciones post-hoc
+
+Apliquemos una prueba post-hoc para ver qué grupos son diferentes:
+
+```{r}
+pairwise.wilcox.test(x = df$edad,
+                     g = df$sexo,
+                     exact = FALSE,
+                     p.adjust.method = "bonferroni")
+```
+
+Con base en el ajuste de Bonferroni, se encontraron diferencias estadísticamente significativas en los tres pares de grupos: hembra vs macho, hembra vs indeterminado y macho vs indeterminado ($p < 0{,}001$ en todos los casos). Hagamos también el ajuste de Holm, que es menos conservador:
+
+```{r}
+pairwise.wilcox.test(x = df$edad,
+                     g = df$sexo,
+                     exact = FALSE,
+                     p.adjust.method = "holm")
+```
+
+Con el ajuste de Holm se llega a la misma conclusión. En resumen, la edad de los cangrejos es distinta en los tres grupos, pero la diferencia importante está en los indeterminados, que son claramente más jóvenes. Entre hembras y machos la diferencia es significativa solo por el tamaño de la muestra, ya que su magnitud es muy pequeña.

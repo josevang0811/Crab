@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Conclusiones | Análisis estadístico de la edad de cangrejos</title>
+  <meta name="description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Conclusiones | Análisis estadístico de la edad de cangrejos" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Conclusiones | Análisis estadístico de la edad de cangrejos" />
+  
+  <meta name="twitter:description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  
+
+<meta name="author" content="Jairo Hernández Carvajal, Jose Van Strahlen García" />
+
+
+<meta name="date" content="2026-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="correglin.html"/>
+<link rel="next" href="referencias.html"/>
+<script src="libs/jquery-3.6.1/jquery-3.6.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Análisis estadístico de la edad de cangrejos</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Presentación</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#base-de-datos"><i class="fa fa-check"></i>Base de datos</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#objetivo"><i class="fa fa-check"></i>Objetivo</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#herramientas"><i class="fa fa-check"></i>Herramientas</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="eda.html"><a href="eda.html"><i class="fa fa-check"></i><b>1</b> Análisis exploratorio de datos (EDA)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="eda.html"><a href="eda.html#contexto-de-los-datos-de-cangrejos"><i class="fa fa-check"></i><b>1.1</b> Contexto de los datos de cangrejos</a></li>
+<li class="chapter" data-level="1.2" data-path="eda.html"><a href="eda.html#extracción-transformación-y-carga-etl"><i class="fa fa-check"></i><b>1.2</b> Extracción, transformación y carga (ETL)</a></li>
+<li class="chapter" data-level="1.3" data-path="eda.html"><a href="eda.html#análisis-de-la-variable-edad-target"><i class="fa fa-check"></i><b>1.3</b> Análisis de la variable <code>edad</code> (Target)</a></li>
+<li class="chapter" data-level="1.4" data-path="eda.html"><a href="eda.html#análisis-de-las-variables-características-independientes"><i class="fa fa-check"></i><b>1.4</b> Análisis de las variables características (independientes)</a></li>
+<li class="chapter" data-level="1.5" data-path="eda.html"><a href="eda.html#análisis-exploratorio-bivariado"><i class="fa fa-check"></i><b>1.5</b> Análisis exploratorio bivariado</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="estparynopar.html"><a href="estparynopar.html"><i class="fa fa-check"></i><b>2</b> Análisis de estadística paramétrica y no paramétrica</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="estparynopar.html"><a href="estparynopar.html#comparación-de-la-edad-entre-hembras-y-machos-con-estadística-paramétrica"><i class="fa fa-check"></i><b>2.1</b> Comparación de la edad entre hembras y machos con estadística paramétrica</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="estparynopar.html"><a href="estparynopar.html#verificación-de-supuestos"><i class="fa fa-check"></i><b>2.1.1</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="2.1.2" data-path="estparynopar.html"><a href="estparynopar.html#prueba-t-de-welch"><i class="fa fa-check"></i><b>2.1.2</b> Prueba <em>t</em> de Welch</a></li>
+<li class="chapter" data-level="2.1.3" data-path="estparynopar.html"><a href="estparynopar.html#tamaño-del-efecto"><i class="fa fa-check"></i><b>2.1.3</b> Tamaño del efecto</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="estparynopar.html"><a href="estparynopar.html#mw-hembras-machos"><i class="fa fa-check"></i><b>2.2</b> Comparación de la edad entre hembras y machos con estadística no paramétrica</a></li>
+<li class="chapter" data-level="2.3" data-path="estparynopar.html"><a href="estparynopar.html#anova-de-la-edad-según-el-sexo"><i class="fa fa-check"></i><b>2.3</b> ANOVA de la edad según el sexo</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="estparynopar.html"><a href="estparynopar.html#verificación-de-supuestos-1"><i class="fa fa-check"></i><b>2.3.1</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="2.3.2" data-path="estparynopar.html"><a href="estparynopar.html#cálculo-paso-a-paso"><i class="fa fa-check"></i><b>2.3.2</b> Cálculo paso a paso</a></li>
+<li class="chapter" data-level="2.3.3" data-path="estparynopar.html"><a href="estparynopar.html#anova-con-la-función-aov"><i class="fa fa-check"></i><b>2.3.3</b> ANOVA con la función <code>aov()</code></a></li>
+<li class="chapter" data-level="2.3.4" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-múltiples-con-el-método-de-tukey"><i class="fa fa-check"></i><b>2.3.4</b> Comparaciones múltiples con el método de Tukey</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="estparynopar.html"><a href="estparynopar.html#kw-sexo"><i class="fa fa-check"></i><b>2.4</b> Kruskal-Wallis de la edad según el sexo</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="estparynopar.html"><a href="estparynopar.html#cálculo-paso-a-paso-1"><i class="fa fa-check"></i><b>2.4.1</b> Cálculo paso a paso</a></li>
+<li class="chapter" data-level="2.4.2" data-path="estparynopar.html"><a href="estparynopar.html#prueba-con-la-función-kruskal.test"><i class="fa fa-check"></i><b>2.4.2</b> Prueba con la función <code>kruskal.test()</code></a></li>
+<li class="chapter" data-level="2.4.3" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-post-hoc"><i class="fa fa-check"></i><b>2.4.3</b> Comparaciones post-hoc</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="tabcontingencia.html"><a href="tabcontingencia.html"><i class="fa fa-check"></i><b>3</b> Tabla de contingencia</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#creación-de-las-variables-categóricas"><i class="fa fa-check"></i><b>3.1</b> Creación de las variables categóricas</a></li>
+<li class="chapter" data-level="3.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-de-homogeneidad"><i class="fa fa-check"></i><b>3.2</b> Prueba de homogeneidad</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#solución-paso-a-paso"><i class="fa fa-check"></i><b>3.2.1</b> Solución paso a paso</a></li>
+<li class="chapter" data-level="3.2.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-con-la-función-chisq.test"><i class="fa fa-check"></i><b>3.2.2</b> Prueba con la función <code>chisq.test()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-de-independencia"><i class="fa fa-check"></i><b>3.3</b> Prueba de independencia</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#solución-paso-a-paso-1"><i class="fa fa-check"></i><b>3.3.1</b> Solución paso a paso</a></li>
+<li class="chapter" data-level="3.3.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-con-la-función-chisq.test-1"><i class="fa fa-check"></i><b>3.3.2</b> Prueba con la función <code>chisq.test()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="correglin.html"><a href="correglin.html"><i class="fa fa-check"></i><b>4</b> Correlación lineal</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="correglin.html"><a href="correglin.html#correlación-de-pearson"><i class="fa fa-check"></i><b>4.1</b> Correlación de Pearson</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="correglin.html"><a href="correglin.html#contraste-para-rho-rho_0-neq-0"><i class="fa fa-check"></i><b>4.1.1</b> Contraste para <span class="math inline">\(\rho = \rho_0 \neq 0\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="correglin.html"><a href="correglin.html#correlación-de-spearman"><i class="fa fa-check"></i><b>4.2</b> Correlación de Spearman</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="correglin.html"><a href="correglin.html#correlación-de-la-edad-con-todas-las-medidas"><i class="fa fa-check"></i><b>4.2.1</b> Correlación de la edad con todas las medidas</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="correglin.html"><a href="correglin.html#correlación-de-kendall"><i class="fa fa-check"></i><b>4.3</b> Correlación de Kendall</a></li>
+<li class="chapter" data-level="4.4" data-path="correglin.html"><a href="correglin.html#correlación-entre-las-variables-independientes"><i class="fa fa-check"></i><b>4.4</b> Correlación entre las variables independientes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>5</b> Conclusiones</a></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Análisis estadístico de la edad de cangrejos</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="conclusiones" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Conclusiones<a href="conclusiones.html#conclusiones" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>A partir del análisis de la base <em>Regression with a Crab Age Dataset</em> se llegó a las siguientes conclusiones:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Sobre los datos.</strong> La base tiene <span class="math inline">\(74.051\)</span> cangrejos, sin valores ausentes ni registros duplicados. Sin embargo, se encontraron <span class="math inline">\(24\)</span> cangrejos con altura igual a cero, que se trataron como valores ausentes y se reemplazaron por el promedio, y dos registros con una altura de <span class="math inline">\(2{,}83\)</span> pies que superan el largo máximo de la base y probablemente son errores de medición. La edad va de <span class="math inline">\(1\)</span> a <span class="math inline">\(29\)</span> meses, con un promedio de <span class="math inline">\(9{,}97\)</span> meses, solo toma valores enteros y tiene una asimetría positiva.</p></li>
+<li><p><strong>Sobre la comparación entre hembras y machos.</strong> Las hembras son en promedio un poco mayores que los machos (<span class="math inline">\(11{,}34\)</span> frente a <span class="math inline">\(10{,}90\)</span> meses). La diferencia resultó significativa tanto con la prueba <em>t</em> de Welch como con la U de Mann-Whitney, pero su tamaño del efecto es trivial (<span class="math inline">\(d = 0{,}15\)</span>). La significancia se explica por el gran tamaño de las muestras más que por una diferencia importante en la práctica.</p></li>
+<li><p><strong>Sobre la comparación de los tres grupos.</strong> El ANOVA y la prueba de Kruskal-Wallis mostraron que la edad difiere según el sexo. Como no se cumplen los supuestos de normalidad y homogeneidad de varianzas, la conclusión se apoya en Kruskal-Wallis, cuyo tamaño del efecto es grande (<span class="math inline">\(\eta^2_H = 0{,}374\)</span>). Las comparaciones múltiples indicaron que los tres grupos son distintos entre sí, pero la diferencia relevante está en los cangrejos indeterminados, que son en promedio entre <span class="math inline">\(3{,}3\)</span> y <span class="math inline">\(3{,}7\)</span> meses más jóvenes que los machos y las hembras.</p></li>
+<li><p><strong>Sobre las tablas de contingencia.</strong> La distribución de los grupos de edad no es homogénea entre los sexos: el <span class="math inline">\(75{,}34\%\)</span> de los indeterminados son jóvenes, mientras que en hembras y machos predominan los adultos. Además, el grupo de edad y el grupo de tamaño no son independientes; la mayoría de los cangrejos jóvenes son pequeños y la mayoría de los mayores son grandes.</p></li>
+<li><p><strong>Sobre la correlación.</strong> Todas las medidas físicas tienen una correlación positiva, moderada y significativa con la edad. El peso del caparazón es la variable más relacionada, con <span class="math inline">\(r = 0{,}663\)</span> (Pearson), <span class="math inline">\(\rho_S = 0{,}736\)</span> (Spearman) y <span class="math inline">\(\tau = 0{,}582\)</span> (Kendall), mientras que el peso de la carne es la menos relacionada. Como las variables no son normales y la relación no es del todo lineal, Spearman y Kendall son los coeficientes más adecuados para estos datos.</p></li>
+<li><p><strong>Sobre las variables independientes.</strong> Las medidas físicas están muy correlacionadas entre sí (coeficientes de Spearman entre <span class="math inline">\(0{,}89\)</span> y <span class="math inline">\(0{,}98\)</span>), por lo que aportan información muy parecida. Esto debe tenerse en cuenta si se construye un modelo de regresión para predecir la edad.</p></li>
+</ol>
+<p>En general, el sexo (en especial la categoría indeterminado) y el peso del caparazón son las variables que mejor ayudan a diferenciar la edad de los cangrejos. Aun así, cangrejos con medidas parecidas pueden tener edades bastante distintas, por lo que ninguna variable por sí sola permite determinar la edad con precisión.</p>
+<p>Por último, un aprendizaje importante del proyecto es que, cuando se trabaja con bases de datos tan grandes, el p-valor casi siempre es menor a <span class="math inline">\(0{,}05\)</span>. Por eso no basta con decir que una diferencia o una correlación es significativa: también hay que revisar el tamaño del efecto o la magnitud del coeficiente para saber si el resultado tiene importancia práctica.</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="correglin.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="referencias.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+},
+"info": false
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+book_filename: "proyecto_crab_age"
+output_dir: "docs"
+delete_merged_file: true
+language:
+  label:
+    fig: "Figura "
+    tab: "Tabla "
+  ui:
+    edit: "Editar"
+    chapter_name: ""
+rmd_files:
+  - index.Rmd
+  - 01-eda.Rmd
+  - 02-estparynopar.Rmd
+  - 03-tabcontingencia.Rmd
+  - 04-correglin.Rmd
+  - 05-conclusiones.Rmd
+  - 06-referencias.Rmd

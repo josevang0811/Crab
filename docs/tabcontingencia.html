@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Tabla de contingencia | Análisis estadístico de la edad de cangrejos</title>
+  <meta name="description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Tabla de contingencia | Análisis estadístico de la edad de cangrejos" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Tabla de contingencia | Análisis estadístico de la edad de cangrejos" />
+  
+  <meta name="twitter:description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  
+
+<meta name="author" content="Jairo Hernández Carvajal, Jose Van Strahlen García" />
+
+
+<meta name="date" content="2026-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="estparynopar.html"/>
+<link rel="next" href="correglin.html"/>
+<script src="libs/jquery-3.6.1/jquery-3.6.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Análisis estadístico de la edad de cangrejos</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Presentación</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#base-de-datos"><i class="fa fa-check"></i>Base de datos</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#objetivo"><i class="fa fa-check"></i>Objetivo</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#herramientas"><i class="fa fa-check"></i>Herramientas</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="eda.html"><a href="eda.html"><i class="fa fa-check"></i><b>1</b> Análisis exploratorio de datos (EDA)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="eda.html"><a href="eda.html#contexto-de-los-datos-de-cangrejos"><i class="fa fa-check"></i><b>1.1</b> Contexto de los datos de cangrejos</a></li>
+<li class="chapter" data-level="1.2" data-path="eda.html"><a href="eda.html#extracción-transformación-y-carga-etl"><i class="fa fa-check"></i><b>1.2</b> Extracción, transformación y carga (ETL)</a></li>
+<li class="chapter" data-level="1.3" data-path="eda.html"><a href="eda.html#análisis-de-la-variable-edad-target"><i class="fa fa-check"></i><b>1.3</b> Análisis de la variable <code>edad</code> (Target)</a></li>
+<li class="chapter" data-level="1.4" data-path="eda.html"><a href="eda.html#análisis-de-las-variables-características-independientes"><i class="fa fa-check"></i><b>1.4</b> Análisis de las variables características (independientes)</a></li>
+<li class="chapter" data-level="1.5" data-path="eda.html"><a href="eda.html#análisis-exploratorio-bivariado"><i class="fa fa-check"></i><b>1.5</b> Análisis exploratorio bivariado</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="estparynopar.html"><a href="estparynopar.html"><i class="fa fa-check"></i><b>2</b> Análisis de estadística paramétrica y no paramétrica</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="estparynopar.html"><a href="estparynopar.html#comparación-de-la-edad-entre-hembras-y-machos-con-estadística-paramétrica"><i class="fa fa-check"></i><b>2.1</b> Comparación de la edad entre hembras y machos con estadística paramétrica</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="estparynopar.html"><a href="estparynopar.html#verificación-de-supuestos"><i class="fa fa-check"></i><b>2.1.1</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="2.1.2" data-path="estparynopar.html"><a href="estparynopar.html#prueba-t-de-welch"><i class="fa fa-check"></i><b>2.1.2</b> Prueba <em>t</em> de Welch</a></li>
+<li class="chapter" data-level="2.1.3" data-path="estparynopar.html"><a href="estparynopar.html#tamaño-del-efecto"><i class="fa fa-check"></i><b>2.1.3</b> Tamaño del efecto</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="estparynopar.html"><a href="estparynopar.html#mw-hembras-machos"><i class="fa fa-check"></i><b>2.2</b> Comparación de la edad entre hembras y machos con estadística no paramétrica</a></li>
+<li class="chapter" data-level="2.3" data-path="estparynopar.html"><a href="estparynopar.html#anova-de-la-edad-según-el-sexo"><i class="fa fa-check"></i><b>2.3</b> ANOVA de la edad según el sexo</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="estparynopar.html"><a href="estparynopar.html#verificación-de-supuestos-1"><i class="fa fa-check"></i><b>2.3.1</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="2.3.2" data-path="estparynopar.html"><a href="estparynopar.html#cálculo-paso-a-paso"><i class="fa fa-check"></i><b>2.3.2</b> Cálculo paso a paso</a></li>
+<li class="chapter" data-level="2.3.3" data-path="estparynopar.html"><a href="estparynopar.html#anova-con-la-función-aov"><i class="fa fa-check"></i><b>2.3.3</b> ANOVA con la función <code>aov()</code></a></li>
+<li class="chapter" data-level="2.3.4" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-múltiples-con-el-método-de-tukey"><i class="fa fa-check"></i><b>2.3.4</b> Comparaciones múltiples con el método de Tukey</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="estparynopar.html"><a href="estparynopar.html#kw-sexo"><i class="fa fa-check"></i><b>2.4</b> Kruskal-Wallis de la edad según el sexo</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="estparynopar.html"><a href="estparynopar.html#cálculo-paso-a-paso-1"><i class="fa fa-check"></i><b>2.4.1</b> Cálculo paso a paso</a></li>
+<li class="chapter" data-level="2.4.2" data-path="estparynopar.html"><a href="estparynopar.html#prueba-con-la-función-kruskal.test"><i class="fa fa-check"></i><b>2.4.2</b> Prueba con la función <code>kruskal.test()</code></a></li>
+<li class="chapter" data-level="2.4.3" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-post-hoc"><i class="fa fa-check"></i><b>2.4.3</b> Comparaciones post-hoc</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="tabcontingencia.html"><a href="tabcontingencia.html"><i class="fa fa-check"></i><b>3</b> Tabla de contingencia</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#creación-de-las-variables-categóricas"><i class="fa fa-check"></i><b>3.1</b> Creación de las variables categóricas</a></li>
+<li class="chapter" data-level="3.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-de-homogeneidad"><i class="fa fa-check"></i><b>3.2</b> Prueba de homogeneidad</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#solución-paso-a-paso"><i class="fa fa-check"></i><b>3.2.1</b> Solución paso a paso</a></li>
+<li class="chapter" data-level="3.2.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-con-la-función-chisq.test"><i class="fa fa-check"></i><b>3.2.2</b> Prueba con la función <code>chisq.test()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-de-independencia"><i class="fa fa-check"></i><b>3.3</b> Prueba de independencia</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#solución-paso-a-paso-1"><i class="fa fa-check"></i><b>3.3.1</b> Solución paso a paso</a></li>
+<li class="chapter" data-level="3.3.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-con-la-función-chisq.test-1"><i class="fa fa-check"></i><b>3.3.2</b> Prueba con la función <code>chisq.test()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="correglin.html"><a href="correglin.html"><i class="fa fa-check"></i><b>4</b> Correlación lineal</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="correglin.html"><a href="correglin.html#correlación-de-pearson"><i class="fa fa-check"></i><b>4.1</b> Correlación de Pearson</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="correglin.html"><a href="correglin.html#contraste-para-rho-rho_0-neq-0"><i class="fa fa-check"></i><b>4.1.1</b> Contraste para <span class="math inline">\(\rho = \rho_0 \neq 0\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="correglin.html"><a href="correglin.html#correlación-de-spearman"><i class="fa fa-check"></i><b>4.2</b> Correlación de Spearman</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="correglin.html"><a href="correglin.html#correlación-de-la-edad-con-todas-las-medidas"><i class="fa fa-check"></i><b>4.2.1</b> Correlación de la edad con todas las medidas</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="correglin.html"><a href="correglin.html#correlación-de-kendall"><i class="fa fa-check"></i><b>4.3</b> Correlación de Kendall</a></li>
+<li class="chapter" data-level="4.4" data-path="correglin.html"><a href="correglin.html#correlación-entre-las-variables-independientes"><i class="fa fa-check"></i><b>4.4</b> Correlación entre las variables independientes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>5</b> Conclusiones</a></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Análisis estadístico de la edad de cangrejos</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tabcontingencia" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Tabla de contingencia<a href="tabcontingencia.html#tabcontingencia" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Las tablas de contingencia permiten estudiar la relación entre dos variables cualitativas a partir de sus frecuencias. En este capítulo se aplican las dos pruebas vistas en las notas de clase, ambas basadas en el estadístico <span class="math inline">\(\chi^2\)</span>:</p>
+<ul>
+<li>La <strong>prueba de homogeneidad</strong>, para comparar si la distribución de una variable categórica es la misma en varias poblaciones.</li>
+<li>La <strong>prueba de independencia</strong>, para evaluar si dos variables categóricas medidas en una misma población están asociadas.</li>
+</ul>
+<p>En la base de cangrejos la única variable categórica es el sexo, así que primero es necesario construir otras variables categóricas a partir de las numéricas.</p>
+<p>Carguemos los datos con la misma limpieza de los capítulos anteriores:</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="tabcontingencia.html#cb123-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb123-2"><a href="tabcontingencia.html#cb123-2" tabindex="-1"></a></span>
+<span id="cb123-3"><a href="tabcontingencia.html#cb123-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;datos/train.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb123-4"><a href="tabcontingencia.html#cb123-4" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb123-5"><a href="tabcontingencia.html#cb123-5" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb123-6"><a href="tabcontingencia.html#cb123-6" tabindex="-1"></a>    <span class="at">sexo           =</span> Sex,</span>
+<span id="cb123-7"><a href="tabcontingencia.html#cb123-7" tabindex="-1"></a>    <span class="at">largo          =</span> Length,</span>
+<span id="cb123-8"><a href="tabcontingencia.html#cb123-8" tabindex="-1"></a>    <span class="at">diametro       =</span> Diameter,</span>
+<span id="cb123-9"><a href="tabcontingencia.html#cb123-9" tabindex="-1"></a>    <span class="at">altura         =</span> Height,</span>
+<span id="cb123-10"><a href="tabcontingencia.html#cb123-10" tabindex="-1"></a>    <span class="at">peso           =</span> Weight,</span>
+<span id="cb123-11"><a href="tabcontingencia.html#cb123-11" tabindex="-1"></a>    <span class="at">peso_carne     =</span> Shucked.Weight,</span>
+<span id="cb123-12"><a href="tabcontingencia.html#cb123-12" tabindex="-1"></a>    <span class="at">peso_visceras  =</span> Viscera.Weight,</span>
+<span id="cb123-13"><a href="tabcontingencia.html#cb123-13" tabindex="-1"></a>    <span class="at">peso_caparazon =</span> Shell.Weight,</span>
+<span id="cb123-14"><a href="tabcontingencia.html#cb123-14" tabindex="-1"></a>    <span class="at">edad           =</span> Age</span>
+<span id="cb123-15"><a href="tabcontingencia.html#cb123-15" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb123-16"><a href="tabcontingencia.html#cb123-16" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb123-17"><a href="tabcontingencia.html#cb123-17" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(altura <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, altura),</span>
+<span id="cb123-18"><a href="tabcontingencia.html#cb123-18" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(altura), <span class="fu">mean</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), altura),</span>
+<span id="cb123-19"><a href="tabcontingencia.html#cb123-19" tabindex="-1"></a>    <span class="at">sexo =</span> <span class="fu">factor</span>(sexo,</span>
+<span id="cb123-20"><a href="tabcontingencia.html#cb123-20" tabindex="-1"></a>                  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;I&quot;</span>),</span>
+<span id="cb123-21"><a href="tabcontingencia.html#cb123-21" tabindex="-1"></a>                  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Hembra&quot;</span>, <span class="st">&quot;Macho&quot;</span>, <span class="st">&quot;Indeterminado&quot;</span>))</span>
+<span id="cb123-22"><a href="tabcontingencia.html#cb123-22" tabindex="-1"></a>  )</span></code></pre></div>
+<div id="creación-de-las-variables-categóricas" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Creación de las variables categóricas<a href="tabcontingencia.html#creación-de-las-variables-categóricas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Grupo de edad.</strong> Para clasificar a los cangrejos según su edad usamos los cuartiles de la variable <code>edad</code>:</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="tabcontingencia.html#cb124-1" tabindex="-1"></a><span class="fu">quantile</span>(df<span class="sc">$</span>edad, <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>))</span></code></pre></div>
+<pre><code>## 25% 75% 
+##   8  11</code></pre>
+<p>Con estos valores se definen tres grupos: <em>Joven</em> para los cangrejos de hasta <span class="math inline">\(8\)</span> meses (hasta el primer cuartil), <em>Adulto</em> para los que tienen entre <span class="math inline">\(9\)</span> y <span class="math inline">\(11\)</span> meses (entre el primer y el tercer cuartil) y <em>Mayor</em> para los de <span class="math inline">\(12\)</span> meses o más (por encima del tercer cuartil).</p>
+<p><strong>Grupo de tamaño.</strong> Para el tamaño usamos el largo del cangrejo dividido en terciles, de forma que cada grupo tenga aproximadamente la tercera parte de los datos:</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="tabcontingencia.html#cb126-1" tabindex="-1"></a><span class="fu">quantile</span>(df<span class="sc">$</span>largo, <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span>))</span></code></pre></div>
+<pre><code>##        0% 33.33333% 66.66667%      100% 
+##  0.187500  1.250000  1.487500  2.012815</code></pre>
+<p>Así, los cangrejos con largo hasta <span class="math inline">\(1{,}25\)</span> pies son <em>Pequeños</em>, los que están entre <span class="math inline">\(1{,}25\)</span> y <span class="math inline">\(1{,}4875\)</span> pies son <em>Medianos</em> y los de más de <span class="math inline">\(1{,}4875\)</span> pies son <em>Grandes</em>. Creemos las dos variables:</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="tabcontingencia.html#cb128-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb128-2"><a href="tabcontingencia.html#cb128-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb128-3"><a href="tabcontingencia.html#cb128-3" tabindex="-1"></a>    <span class="at">grupo_edad =</span> <span class="fu">cut</span>(edad,</span>
+<span id="cb128-4"><a href="tabcontingencia.html#cb128-4" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">8</span>, <span class="dv">11</span>, <span class="cn">Inf</span>),</span>
+<span id="cb128-5"><a href="tabcontingencia.html#cb128-5" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Joven&quot;</span>, <span class="st">&quot;Adulto&quot;</span>, <span class="st">&quot;Mayor&quot;</span>)),</span>
+<span id="cb128-6"><a href="tabcontingencia.html#cb128-6" tabindex="-1"></a>    <span class="at">grupo_tamano =</span> <span class="fu">cut</span>(largo,</span>
+<span id="cb128-7"><a href="tabcontingencia.html#cb128-7" tabindex="-1"></a>                       <span class="at">breaks =</span> <span class="fu">quantile</span>(largo, <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">1</span>)),</span>
+<span id="cb128-8"><a href="tabcontingencia.html#cb128-8" tabindex="-1"></a>                       <span class="at">include.lowest =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb128-9"><a href="tabcontingencia.html#cb128-9" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Pequeño&quot;</span>, <span class="st">&quot;Mediano&quot;</span>, <span class="st">&quot;Grande&quot;</span>))</span>
+<span id="cb128-10"><a href="tabcontingencia.html#cb128-10" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Veamos la frecuencia de cada grupo:</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="tabcontingencia.html#cb129-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb129-2"><a href="tabcontingencia.html#cb129-2" tabindex="-1"></a>  <span class="fu">count</span>(grupo_edad, <span class="at">name =</span> <span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb129-3"><a href="tabcontingencia.html#cb129-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>))</span></code></pre></div>
+<pre><code>##   grupo_edad Frecuencia Porcentaje
+## 1      Joven      24176      32.65
+## 2     Adulto      32699      44.16
+## 3      Mayor      17176      23.19</code></pre>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="tabcontingencia.html#cb131-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb131-2"><a href="tabcontingencia.html#cb131-2" tabindex="-1"></a>  <span class="fu">count</span>(grupo_tamano, <span class="at">name =</span> <span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb131-3"><a href="tabcontingencia.html#cb131-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>))</span></code></pre></div>
+<pre><code>##   grupo_tamano Frecuencia Porcentaje
+## 1      Pequeño      25914      34.99
+## 2      Mediano      23987      32.39
+## 3       Grande      24150      32.61</code></pre>
+<p>El grupo <em>Adulto</em> es el más grande, con el <span class="math inline">\(44{,}16\%\)</span> de los cangrejos, mientras que los <em>Jóvenes</em> son el <span class="math inline">\(32{,}65\%\)</span> y los <em>Mayores</em> el <span class="math inline">\(23{,}19\%\)</span>. Los grupos no quedan exactamente en <span class="math inline">\(25\%\)</span>, <span class="math inline">\(50\%\)</span> y <span class="math inline">\(25\%\)</span> porque la edad solo toma valores enteros y hay muchos cangrejos con la misma edad justo en los puntos de corte. Por la misma razón, los grupos de tamaño tampoco tienen exactamente un tercio cada uno (<span class="math inline">\(34{,}99\%\)</span>, <span class="math inline">\(32{,}39\%\)</span> y <span class="math inline">\(32{,}61\%\)</span>), aunque están bastante balanceados.</p>
+</div>
+<div id="prueba-de-homogeneidad" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Prueba de homogeneidad<a href="tabcontingencia.html#prueba-de-homogeneidad" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Se quiere saber si la distribución de los grupos de edad es la misma en las hembras, los machos y los indeterminados. En este caso, cada sexo se considera una población distinta (<span class="math inline">\(I = 3\)</span>) y el grupo de edad es la variable categórica común (<span class="math inline">\(J = 3\)</span>). Si <span class="math inline">\(p_{ij}\)</span> es la proporción de cangrejos de la población <span class="math inline">\(i\)</span> que caen en el grupo de edad <span class="math inline">\(j\)</span>, las hipótesis son:</p>
+<p><span class="math display">\[
+H_0: p_{1j} = p_{2j} = p_{3j}, \quad \text{para cada } j = 1, 2, 3
+\]</span></p>
+<p><span class="math display">\[
+H_1: \text{al menos una de las proporciones es diferente}
+\]</span></p>
+<div class="admon-box teorema">
+<div class="admon-title">
+<span class="icon"></span> Teorema (prueba de homogeneidad)
+</div>
+<p>Bajo <span class="math inline">\(H_0\)</span>, el número esperado en cada celda es</p>
+<p><span class="math display">\[
+\hat{E}_{ij} = \frac{R_i C_j}{n},
+\]</span></p>
+<p>donde <span class="math inline">\(R_i\)</span> y <span class="math inline">\(C_j\)</span> son los totales de la fila <span class="math inline">\(i\)</span> y la columna <span class="math inline">\(j\)</span>. Si todos los <span class="math inline">\(\hat{E}_{ij} \geq 5\)</span>, se rechaza <span class="math inline">\(H_0\)</span> cuando</p>
+<p><span class="math display">\[
+\chi^2 = \sum_{i=1}^{I} \sum_{j=1}^{J} \frac{(O_{ij} - \hat{E}_{ij})^2}{\hat{E}_{ij}} &gt; \chi^2_\alpha,
+\]</span></p>
+<p>donde <span class="math inline">\(\chi^2_\alpha\)</span> es el valor crítico de la distribución chi-cuadrado con <span class="math inline">\((I - 1)(J - 1)\)</span> grados de libertad.</p>
+</div>
+<div id="solución-paso-a-paso" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Solución paso a paso<a href="tabcontingencia.html#solución-paso-a-paso" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Construyamos la tabla de contingencia con las frecuencias observadas:</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="tabcontingencia.html#cb133-1" tabindex="-1"></a>observados <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Sexo =</span> df<span class="sc">$</span>sexo, <span class="at">Edad =</span> df<span class="sc">$</span>grupo_edad)</span>
+<span id="cb133-2"><a href="tabcontingencia.html#cb133-2" tabindex="-1"></a>observados</span></code></pre></div>
+<pre><code>##                Edad
+## Sexo            Joven Adulto Mayor
+##   Hembra         2242  12562  8206
+##   Macho          3885  15314  7885
+##   Indeterminado 18049   4823  1085</code></pre>
+<p>Calculemos los totales por fila, columna y el total general:</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="tabcontingencia.html#cb135-1" tabindex="-1"></a>fila_totales <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(observados)</span>
+<span id="cb135-2"><a href="tabcontingencia.html#cb135-2" tabindex="-1"></a>col_totales <span class="ot">&lt;-</span> <span class="fu">colSums</span>(observados)</span>
+<span id="cb135-3"><a href="tabcontingencia.html#cb135-3" tabindex="-1"></a>total_general <span class="ot">&lt;-</span> <span class="fu">sum</span>(observados)</span>
+<span id="cb135-4"><a href="tabcontingencia.html#cb135-4" tabindex="-1"></a></span>
+<span id="cb135-5"><a href="tabcontingencia.html#cb135-5" tabindex="-1"></a>fila_totales</span></code></pre></div>
+<pre><code>##        Hembra         Macho Indeterminado 
+##         23010         27084         23957</code></pre>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="tabcontingencia.html#cb137-1" tabindex="-1"></a>col_totales</span></code></pre></div>
+<pre><code>##  Joven Adulto  Mayor 
+##  24176  32699  17176</code></pre>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="tabcontingencia.html#cb139-1" tabindex="-1"></a>total_general</span></code></pre></div>
+<pre><code>## [1] 74051</code></pre>
+<p>Ahora, hallemos las frecuencias esperadas bajo <span class="math inline">\(H_0\)</span>:</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="tabcontingencia.html#cb141-1" tabindex="-1"></a>esperados <span class="ot">&lt;-</span> <span class="fu">outer</span>(fila_totales, col_totales, <span class="at">FUN =</span> <span class="cf">function</span>(f, c) f <span class="sc">*</span> c <span class="sc">/</span> total_general)</span>
+<span id="cb141-2"><a href="tabcontingencia.html#cb141-2" tabindex="-1"></a><span class="fu">dimnames</span>(esperados) <span class="ot">&lt;-</span> <span class="fu">dimnames</span>(observados)</span>
+<span id="cb141-3"><a href="tabcontingencia.html#cb141-3" tabindex="-1"></a><span class="fu">round</span>(esperados, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##                Edad
+## Sexo              Joven   Adulto   Mayor
+##   Hembra        7512.25 10160.62 5337.13
+##   Macho         8842.32 11959.59 6282.09
+##   Indeterminado 7821.43 10578.79 5556.78</code></pre>
+<p>Verifiquemos que todas las frecuencias esperadas son mayores o iguales a <span class="math inline">\(5\)</span>:</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="tabcontingencia.html#cb143-1" tabindex="-1"></a><span class="fu">all</span>(esperados <span class="sc">&gt;=</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>La condición se cumple, pues la frecuencia esperada más pequeña es de <span class="math inline">\(5337{,}13\)</span>. Seguido calculemos el estadístico <span class="math inline">\(\chi^2\)</span>:</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="tabcontingencia.html#cb145-1" tabindex="-1"></a>chi_cuadrado <span class="ot">&lt;-</span> <span class="fu">sum</span>((observados <span class="sc">-</span> esperados)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> esperados)</span>
+<span id="cb145-2"><a href="tabcontingencia.html#cb145-2" tabindex="-1"></a>chi_cuadrado</span></code></pre></div>
+<pre><code>## [1] 30040.34</code></pre>
+<p>Determinemos los grados de libertad:</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="tabcontingencia.html#cb147-1" tabindex="-1"></a>gl <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(observados) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(observados) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb147-2"><a href="tabcontingencia.html#cb147-2" tabindex="-1"></a>gl</span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<p>Ahora, el valor crítico y la decisión al <span class="math inline">\(5\%\)</span>:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="tabcontingencia.html#cb149-1" tabindex="-1"></a>alfa <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb149-2"><a href="tabcontingencia.html#cb149-2" tabindex="-1"></a>valor_critico <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="dv">1</span> <span class="sc">-</span> alfa, gl)</span>
+<span id="cb149-3"><a href="tabcontingencia.html#cb149-3" tabindex="-1"></a>valor_critico</span></code></pre></div>
+<pre><code>## [1] 9.487729</code></pre>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="tabcontingencia.html#cb151-1" tabindex="-1"></a>rechaza_H0 <span class="ot">&lt;-</span> chi_cuadrado <span class="sc">&gt;</span> valor_critico</span>
+<span id="cb151-2"><a href="tabcontingencia.html#cb151-2" tabindex="-1"></a>rechaza_H0</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Concluimos que</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="tabcontingencia.html#cb153-1" tabindex="-1"></a><span class="cf">if</span> (rechaza_H0) {</span>
+<span id="cb153-2"><a href="tabcontingencia.html#cb153-2" tabindex="-1"></a>  conclusion <span class="ot">&lt;-</span> <span class="st">&quot;Se rechaza H0: la distribución de los grupos de edad no es la misma en los tres sexos.&quot;</span></span>
+<span id="cb153-3"><a href="tabcontingencia.html#cb153-3" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb153-4"><a href="tabcontingencia.html#cb153-4" tabindex="-1"></a>  conclusion <span class="ot">&lt;-</span> <span class="st">&quot;No se rechaza H0: no hay evidencia suficiente para afirmar que la distribución de los grupos de edad cambia según el sexo.&quot;</span></span>
+<span id="cb153-5"><a href="tabcontingencia.html#cb153-5" tabindex="-1"></a>}</span>
+<span id="cb153-6"><a href="tabcontingencia.html#cb153-6" tabindex="-1"></a>conclusion</span></code></pre></div>
+<pre><code>## [1] &quot;Se rechaza H0: la distribución de los grupos de edad no es la misma en los tres sexos.&quot;</code></pre>
+<p>Si calculamos el p-valor</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="tabcontingencia.html#cb155-1" tabindex="-1"></a>valor_p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(chi_cuadrado, gl, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb155-2"><a href="tabcontingencia.html#cb155-2" tabindex="-1"></a>valor_p</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<p>El p-valor es tan pequeño que R lo muestra como cero.</p>
+</div>
+<div id="prueba-con-la-función-chisq.test" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Prueba con la función <code>chisq.test()</code><a href="tabcontingencia.html#prueba-con-la-función-chisq.test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="tabcontingencia.html#cb157-1" tabindex="-1"></a>prueba_homogeneidad <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(observados)</span>
+<span id="cb157-2"><a href="tabcontingencia.html#cb157-2" tabindex="-1"></a>prueba_homogeneidad</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  observados
+## X-squared = 30040, df = 4, p-value &lt; 2.2e-16</code></pre>
+<p>La prueba chi-cuadrado indica que, con una confianza del <span class="math inline">\(95\%\)</span>, la distribución de los grupos de edad <strong>no es homogénea</strong> entre hembras, machos e indeterminados (<span class="math inline">\(\chi^2_{(4)} = 30040,\ p\text{-valor} &lt; 0{,}001\)</span>). El resultado coincide con el cálculo manual.</p>
+<p>Para ver en qué consiste la diferencia, revisemos las proporciones de cada grupo de edad dentro de cada sexo:</p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="tabcontingencia.html#cb159-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(observados, <span class="at">margin =</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##                Edad
+## Sexo            Joven Adulto Mayor
+##   Hembra         9.74  54.59 35.66
+##   Macho         14.34  56.54 29.11
+##   Indeterminado 75.34  20.13  4.53</code></pre>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="tabcontingencia.html#cb161-1" tabindex="-1"></a><span class="fu">as.data.frame</span>(observados) <span class="sc">%&gt;%</span></span>
+<span id="cb161-2"><a href="tabcontingencia.html#cb161-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Sexo) <span class="sc">%&gt;%</span></span>
+<span id="cb161-3"><a href="tabcontingencia.html#cb161-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> Freq <span class="sc">/</span> <span class="fu">sum</span>(Freq) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb161-4"><a href="tabcontingencia.html#cb161-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sexo, <span class="at">y =</span> Porcentaje, <span class="at">fill =</span> Edad)) <span class="sc">+</span></span>
+<span id="cb161-5"><a href="tabcontingencia.html#cb161-5" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb161-6"><a href="tabcontingencia.html#cb161-6" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(Porcentaje, <span class="dv">1</span>), <span class="st">&quot;%&quot;</span>)),</span>
+<span id="cb161-7"><a href="tabcontingencia.html#cb161-7" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb161-8"><a href="tabcontingencia.html#cb161-8" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb161-9"><a href="tabcontingencia.html#cb161-9" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb161-10"><a href="tabcontingencia.html#cb161-10" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Grupos de edad según el sexo&quot;</span>,</span>
+<span id="cb161-11"><a href="tabcontingencia.html#cb161-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Sexo&quot;</span>,</span>
+<span id="cb161-12"><a href="tabcontingencia.html#cb161-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Porcentaje&quot;</span>,</span>
+<span id="cb161-13"><a href="tabcontingencia.html#cb161-13" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Grupo de edad&quot;</span></span>
+<span id="cb161-14"><a href="tabcontingencia.html#cb161-14" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb161-15"><a href="tabcontingencia.html#cb161-15" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-84"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-84-1.png" alt="Distribución de los grupos de edad según el sexo" width="672" />
+<p class="caption">
+Figura 3.1: Distribución de los grupos de edad según el sexo
+</p>
+</div>
+<p>Las hembras y los machos tienen una distribución parecida: en ambos predominan los adultos (<span class="math inline">\(54{,}59\%\)</span> y <span class="math inline">\(56{,}54\%\)</span>), seguidos por los mayores (<span class="math inline">\(35{,}66\%\)</span> y <span class="math inline">\(29{,}11\%\)</span>), y los jóvenes son pocos (<span class="math inline">\(9{,}74\%\)</span> y <span class="math inline">\(14{,}34\%\)</span>). En cambio, en los indeterminados el <span class="math inline">\(75{,}34\%\)</span> son jóvenes y solo el <span class="math inline">\(4{,}53\%\)</span> son mayores. Esta es la principal fuente de la falta de homogeneidad.</p>
+<p>Los residuales de la prueba, que se calculan como <span class="math inline">\(\dfrac{O_{ij} - \hat{E}_{ij}}{\sqrt{\hat{E}_{ij}}}\)</span>, muestran qué celdas aportan más al estadístico <span class="math inline">\(\chi^2\)</span>:</p>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="tabcontingencia.html#cb162-1" tabindex="-1"></a><span class="fu">round</span>(prueba_homogeneidad<span class="sc">$</span>residuals, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##                Edad
+## Sexo             Joven Adulto  Mayor
+##   Hembra        -60.81  23.82  39.27
+##   Macho         -52.72  30.67  20.22
+##   Indeterminado 115.65 -55.96 -59.99</code></pre>
+<p>El residual más grande es el de los indeterminados jóvenes (<span class="math inline">\(115{,}65\)</span>), lo que quiere decir que hay muchos más cangrejos en esa celda de los que se esperarían si la distribución fuera la misma en los tres sexos. Por el contrario, las hembras y los machos jóvenes tienen residuales negativos, es decir, hay menos de los esperados. Este resultado es consistente con lo encontrado en el capítulo <a href="estparynopar.html#estparynopar">2</a>, donde los indeterminados resultaron ser el grupo más joven.</p>
+</div>
+</div>
+<div id="prueba-de-independencia" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Prueba de independencia<a href="tabcontingencia.html#prueba-de-independencia" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ahora se quiere saber si el grupo de edad de un cangrejo está asociado con su tamaño. En este caso se tiene una sola población (todos los cangrejos de la base) y cada uno se clasifica según dos atributos: el grupo de edad (<span class="math inline">\(A\)</span>, con <span class="math inline">\(I = 3\)</span> categorías) y el grupo de tamaño (<span class="math inline">\(B\)</span>, con <span class="math inline">\(J = 3\)</span> categorías). Las hipótesis son:</p>
+<p><span class="math display">\[
+H_0: p_{ij} = p_{i\cdot} \, p_{\cdot j} \quad \text{para todo } i, j \quad \text{(el grupo de edad y el tamaño son independientes)}
+\]</span></p>
+<p><span class="math display">\[
+H_1: \text{el grupo de edad y el tamaño no son independientes}
+\]</span></p>
+<div class="admon-box teorema">
+<div class="admon-title">
+<span class="icon"></span> Teorema (prueba de independencia)
+</div>
+<p>Bajo <span class="math inline">\(H_0\)</span>, el número esperado de observaciones en cada celda es</p>
+<p><span class="math display">\[
+\hat{E}_{ij} = n \, \hat{p}_{i\cdot} \, \hat{p}_{\cdot j} = n \cdot \frac{R_i}{n} \cdot \frac{C_j}{n} = \frac{R_i C_j}{n}.
+\]</span></p>
+<p>Si todos los <span class="math inline">\(\hat{E}_{ij} \geq 5\)</span>, se rechaza <span class="math inline">\(H_0\)</span> al nivel <span class="math inline">\(\alpha\)</span> cuando <span class="math inline">\(\chi^2 &gt; \chi^2_\alpha\)</span>, con <span class="math inline">\((I-1)(J-1)\)</span> grados de libertad.</p>
+</div>
+<div id="solución-paso-a-paso-1" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Solución paso a paso<a href="tabcontingencia.html#solución-paso-a-paso-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Construyamos la tabla de contingencia:</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="tabcontingencia.html#cb164-1" tabindex="-1"></a>observados2 <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Edad =</span> df<span class="sc">$</span>grupo_edad, <span class="at">Tamano =</span> df<span class="sc">$</span>grupo_tamano)</span>
+<span id="cb164-2"><a href="tabcontingencia.html#cb164-2" tabindex="-1"></a>observados2</span></code></pre></div>
+<pre><code>##         Tamano
+## Edad     Pequeño Mediano Grande
+##   Joven    19166    4239    771
+##   Adulto    4996   13548  14155
+##   Mayor     1752    6200   9224</code></pre>
+<p>Hallemos los totales y los valores esperados:</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="tabcontingencia.html#cb166-1" tabindex="-1"></a>fila_totales2 <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(observados2)</span>
+<span id="cb166-2"><a href="tabcontingencia.html#cb166-2" tabindex="-1"></a>col_totales2 <span class="ot">&lt;-</span> <span class="fu">colSums</span>(observados2)</span>
+<span id="cb166-3"><a href="tabcontingencia.html#cb166-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sum</span>(observados2)</span>
+<span id="cb166-4"><a href="tabcontingencia.html#cb166-4" tabindex="-1"></a></span>
+<span id="cb166-5"><a href="tabcontingencia.html#cb166-5" tabindex="-1"></a>esperados2 <span class="ot">&lt;-</span> <span class="fu">outer</span>(fila_totales2, col_totales2) <span class="sc">/</span> n</span>
+<span id="cb166-6"><a href="tabcontingencia.html#cb166-6" tabindex="-1"></a><span class="fu">round</span>(esperados2, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##         Pequeño  Mediano   Grande
+## Joven   8460.34  7831.22  7884.44
+## Adulto 11442.95 10592.04 10664.01
+## Mayor   6010.71  5563.74  5601.55</code></pre>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="tabcontingencia.html#cb168-1" tabindex="-1"></a><span class="fu">all</span>(esperados2 <span class="sc">&gt;=</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Todas las frecuencias esperadas son mayores a <span class="math inline">\(5\)</span> (la menor es <span class="math inline">\(5563{,}74\)</span>). Calculemos el estadístico chi-cuadrado y los grados de libertad:</p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="tabcontingencia.html#cb170-1" tabindex="-1"></a>chi_cuadrado2 <span class="ot">&lt;-</span> <span class="fu">sum</span>((observados2 <span class="sc">-</span> esperados2)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> esperados2)</span>
+<span id="cb170-2"><a href="tabcontingencia.html#cb170-2" tabindex="-1"></a>chi_cuadrado2</span></code></pre></div>
+<pre><code>## [1] 32645.15</code></pre>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="tabcontingencia.html#cb172-1" tabindex="-1"></a>gl2 <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(observados2) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(observados2) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb172-2"><a href="tabcontingencia.html#cb172-2" tabindex="-1"></a>gl2</span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<p>Ahora, el valor crítico y la decisión al <span class="math inline">\(5\%\)</span>:</p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="tabcontingencia.html#cb174-1" tabindex="-1"></a>valor_critico2 <span class="ot">&lt;-</span> <span class="fu">qchisq</span>(<span class="dv">1</span> <span class="sc">-</span> alfa, gl2)</span>
+<span id="cb174-2"><a href="tabcontingencia.html#cb174-2" tabindex="-1"></a>valor_critico2</span></code></pre></div>
+<pre><code>## [1] 9.487729</code></pre>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="tabcontingencia.html#cb176-1" tabindex="-1"></a>rechaza_H0_2 <span class="ot">&lt;-</span> chi_cuadrado2 <span class="sc">&gt;</span> valor_critico2</span>
+<span id="cb176-2"><a href="tabcontingencia.html#cb176-2" tabindex="-1"></a>rechaza_H0_2</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Si calculamos el p-valor</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="tabcontingencia.html#cb178-1" tabindex="-1"></a>valor_p2 <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(chi_cuadrado2, gl2, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb178-2"><a href="tabcontingencia.html#cb178-2" tabindex="-1"></a>valor_p2</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+</div>
+<div id="prueba-con-la-función-chisq.test-1" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Prueba con la función <code>chisq.test()</code><a href="tabcontingencia.html#prueba-con-la-función-chisq.test-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="tabcontingencia.html#cb180-1" tabindex="-1"></a>prueba_independencia <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(observados2)</span>
+<span id="cb180-2"><a href="tabcontingencia.html#cb180-2" tabindex="-1"></a>prueba_independencia</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  observados2
+## X-squared = 32645, df = 4, p-value &lt; 2.2e-16</code></pre>
+<p>La prueba chi-cuadrado nos indica que el grupo de edad y el grupo de tamaño <strong>no son independientes</strong> (<span class="math inline">\(\chi^2_{(4)} = 32645,\ p\text{-valor} &lt; 0{,}001\)</span>). Es decir, el tamaño de un cangrejo está asociado con su grupo de edad.</p>
+<p>Veamos las proporciones de cada tamaño dentro de cada grupo de edad:</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="tabcontingencia.html#cb182-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(observados2, <span class="at">margin =</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##         Tamano
+## Edad     Pequeño Mediano Grande
+##   Joven    79.28   17.53   3.19
+##   Adulto   15.28   41.43  43.29
+##   Mayor    10.20   36.10  53.70</code></pre>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="tabcontingencia.html#cb184-1" tabindex="-1"></a><span class="fu">as.data.frame</span>(observados2) <span class="sc">%&gt;%</span></span>
+<span id="cb184-2"><a href="tabcontingencia.html#cb184-2" tabindex="-1"></a>  <span class="fu">group_by</span>(Edad) <span class="sc">%&gt;%</span></span>
+<span id="cb184-3"><a href="tabcontingencia.html#cb184-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> Freq <span class="sc">/</span> <span class="fu">sum</span>(Freq) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb184-4"><a href="tabcontingencia.html#cb184-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Edad, <span class="at">y =</span> Porcentaje, <span class="at">fill =</span> Tamano)) <span class="sc">+</span></span>
+<span id="cb184-5"><a href="tabcontingencia.html#cb184-5" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb184-6"><a href="tabcontingencia.html#cb184-6" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(Porcentaje, <span class="dv">1</span>), <span class="st">&quot;%&quot;</span>)),</span>
+<span id="cb184-7"><a href="tabcontingencia.html#cb184-7" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb184-8"><a href="tabcontingencia.html#cb184-8" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Blues&quot;</span>) <span class="sc">+</span></span>
+<span id="cb184-9"><a href="tabcontingencia.html#cb184-9" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb184-10"><a href="tabcontingencia.html#cb184-10" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Grupos de tamaño según el grupo de edad&quot;</span>,</span>
+<span id="cb184-11"><a href="tabcontingencia.html#cb184-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Grupo de edad&quot;</span>,</span>
+<span id="cb184-12"><a href="tabcontingencia.html#cb184-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Porcentaje&quot;</span>,</span>
+<span id="cb184-13"><a href="tabcontingencia.html#cb184-13" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Tamaño&quot;</span></span>
+<span id="cb184-14"><a href="tabcontingencia.html#cb184-14" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb184-15"><a href="tabcontingencia.html#cb184-15" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-96"></span>
+<img src="proyecto_crab_age_files/figure-html/unnamed-chunk-96-1.png" alt="Distribución del tamaño según el grupo de edad" width="672" />
+<p class="caption">
+Figura 3.2: Distribución del tamaño según el grupo de edad
+</p>
+</div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="tabcontingencia.html#cb185-1" tabindex="-1"></a><span class="fu">round</span>(prueba_independencia<span class="sc">$</span>residuals, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##         Tamano
+## Edad     Pequeño Mediano Grande
+##   Joven   116.39  -40.59 -80.11
+##   Adulto  -60.27   28.72  33.81
+##   Mayor   -54.93    8.53  48.40</code></pre>
+<p>La asociación es clara: el <span class="math inline">\(79{,}28\%\)</span> de los cangrejos jóvenes son pequeños y apenas el <span class="math inline">\(3{,}19\%\)</span> son grandes. En los adultos los tamaños mediano y grande se reparten casi por igual (<span class="math inline">\(41{,}43\%\)</span> y <span class="math inline">\(43{,}29\%\)</span>), y en los mayores predominan los grandes (<span class="math inline">\(53{,}70\%\)</span>). Los residuales confirman este patrón, con valores positivos muy altos en las celdas <em>Joven-Pequeño</em> (<span class="math inline">\(116{,}39\)</span>) y <em>Mayor-Grande</em> (<span class="math inline">\(48{,}40\)</span>), y negativos en <em>Joven-Grande</em> (<span class="math inline">\(-80{,}11\)</span>) y <em>Mayor-Pequeño</em> (<span class="math inline">\(-54{,}93\)</span>).</p>
+<p>Sin embargo, también se observa que entre los mayores hay un <span class="math inline">\(10{,}20\%\)</span> de cangrejos pequeños y un <span class="math inline">\(36{,}10\%\)</span> de medianos, lo que muestra que el tamaño por sí solo no determina la edad. Esto coincide con lo visto en los diagramas de dispersión del capítulo <a href="eda.html#eda">1</a>, donde cangrejos del mismo largo podían tener edades muy distintas.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="estparynopar.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="correglin.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+},
+"info": false
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

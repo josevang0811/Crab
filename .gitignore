@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+_book
+_bookdown_files
+rsconnect
+*_cache
+proyecto_crab_age_files
+proyecto_crab_age.rds
