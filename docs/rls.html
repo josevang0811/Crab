@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Regresión lineal simple | Análisis estadístico de la edad de cangrejos</title>
+  <meta name="description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Regresión lineal simple | Análisis estadístico de la edad de cangrejos" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Regresión lineal simple | Análisis estadístico de la edad de cangrejos" />
+  
+  <meta name="twitter:description" content="Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle." />
+  
+
+<meta name="author" content="Jairo Hernández Carvajal, Jose Van Strahlen García" />
+
+
+<meta name="date" content="2026-11-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="correglin.html"/>
+<link rel="next" href="rlm.html"/>
+<script src="libs/jquery-3.6.1/jquery-3.6.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Análisis estadístico de la edad de cangrejos</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Presentación</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#base-de-datos"><i class="fa fa-check"></i>Base de datos</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#objetivo"><i class="fa fa-check"></i>Objetivo</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#herramientas"><i class="fa fa-check"></i>Herramientas</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="eda.html"><a href="eda.html"><i class="fa fa-check"></i><b>1</b> Análisis exploratorio de datos (EDA)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="eda.html"><a href="eda.html#contexto-de-los-datos-de-cangrejos"><i class="fa fa-check"></i><b>1.1</b> Contexto de los datos de cangrejos</a></li>
+<li class="chapter" data-level="1.2" data-path="eda.html"><a href="eda.html#extracción-transformación-y-carga-etl"><i class="fa fa-check"></i><b>1.2</b> Extracción, transformación y carga (ETL)</a></li>
+<li class="chapter" data-level="1.3" data-path="eda.html"><a href="eda.html#análisis-de-la-variable-edad-target"><i class="fa fa-check"></i><b>1.3</b> Análisis de la variable <code>edad</code> (Target)</a></li>
+<li class="chapter" data-level="1.4" data-path="eda.html"><a href="eda.html#análisis-de-las-variables-características-independientes"><i class="fa fa-check"></i><b>1.4</b> Análisis de las variables características (independientes)</a></li>
+<li class="chapter" data-level="1.5" data-path="eda.html"><a href="eda.html#análisis-exploratorio-bivariado"><i class="fa fa-check"></i><b>1.5</b> Análisis exploratorio bivariado</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="estparynopar.html"><a href="estparynopar.html"><i class="fa fa-check"></i><b>2</b> Análisis de estadística paramétrica y no paramétrica</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="estparynopar.html"><a href="estparynopar.html#comparación-de-la-edad-entre-hembras-y-machos-con-estadística-paramétrica"><i class="fa fa-check"></i><b>2.1</b> Comparación de la edad entre hembras y machos con estadística paramétrica</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="estparynopar.html"><a href="estparynopar.html#verificación-de-supuestos"><i class="fa fa-check"></i><b>2.1.1</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="2.1.2" data-path="estparynopar.html"><a href="estparynopar.html#prueba-t-de-welch"><i class="fa fa-check"></i><b>2.1.2</b> Prueba <em>t</em> de Welch</a></li>
+<li class="chapter" data-level="2.1.3" data-path="estparynopar.html"><a href="estparynopar.html#tamaño-del-efecto"><i class="fa fa-check"></i><b>2.1.3</b> Tamaño del efecto</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="estparynopar.html"><a href="estparynopar.html#mw-hembras-machos"><i class="fa fa-check"></i><b>2.2</b> Comparación de la edad entre hembras y machos con estadística no paramétrica</a></li>
+<li class="chapter" data-level="2.3" data-path="estparynopar.html"><a href="estparynopar.html#anova-de-la-edad-según-el-sexo"><i class="fa fa-check"></i><b>2.3</b> ANOVA de la edad según el sexo</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="estparynopar.html"><a href="estparynopar.html#verificación-de-supuestos-1"><i class="fa fa-check"></i><b>2.3.1</b> Verificación de supuestos</a></li>
+<li class="chapter" data-level="2.3.2" data-path="estparynopar.html"><a href="estparynopar.html#cálculo-paso-a-paso"><i class="fa fa-check"></i><b>2.3.2</b> Cálculo paso a paso</a></li>
+<li class="chapter" data-level="2.3.3" data-path="estparynopar.html"><a href="estparynopar.html#anova-con-la-función-aov"><i class="fa fa-check"></i><b>2.3.3</b> ANOVA con la función <code>aov()</code></a></li>
+<li class="chapter" data-level="2.3.4" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-múltiples-con-el-método-de-tukey"><i class="fa fa-check"></i><b>2.3.4</b> Comparaciones múltiples con el método de Tukey</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="estparynopar.html"><a href="estparynopar.html#kw-sexo"><i class="fa fa-check"></i><b>2.4</b> Kruskal-Wallis de la edad según el sexo</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="estparynopar.html"><a href="estparynopar.html#comparaciones-post-hoc"><i class="fa fa-check"></i><b>2.4.1</b> Comparaciones post-hoc</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="tabcontingencia.html"><a href="tabcontingencia.html"><i class="fa fa-check"></i><b>3</b> Tabla de contingencia</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#creación-de-las-variables-categóricas"><i class="fa fa-check"></i><b>3.1</b> Creación de las variables categóricas</a></li>
+<li class="chapter" data-level="3.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-de-homogeneidad"><i class="fa fa-check"></i><b>3.2</b> Prueba de homogeneidad</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#solución-paso-a-paso"><i class="fa fa-check"></i><b>3.2.1</b> Solución paso a paso</a></li>
+<li class="chapter" data-level="3.2.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-con-la-función-chisq.test"><i class="fa fa-check"></i><b>3.2.2</b> Prueba con la función <code>chisq.test()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-de-independencia"><i class="fa fa-check"></i><b>3.3</b> Prueba de independencia</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="tabcontingencia.html"><a href="tabcontingencia.html#solución-paso-a-paso-1"><i class="fa fa-check"></i><b>3.3.1</b> Solución paso a paso</a></li>
+<li class="chapter" data-level="3.3.2" data-path="tabcontingencia.html"><a href="tabcontingencia.html#prueba-con-la-función-chisq.test-1"><i class="fa fa-check"></i><b>3.3.2</b> Prueba con la función <code>chisq.test()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="correglin.html"><a href="correglin.html"><i class="fa fa-check"></i><b>4</b> Correlación lineal</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="correglin.html"><a href="correglin.html#correlación-de-pearson"><i class="fa fa-check"></i><b>4.1</b> Correlación de Pearson</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="correglin.html"><a href="correglin.html#contraste-para-rho-rho_0-neq-0"><i class="fa fa-check"></i><b>4.1.1</b> Contraste para <span class="math inline">\(\rho = \rho_0 \neq 0\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="correglin.html"><a href="correglin.html#correlación-de-spearman"><i class="fa fa-check"></i><b>4.2</b> Correlación de Spearman</a></li>
+<li class="chapter" data-level="4.3" data-path="correglin.html"><a href="correglin.html#correlación-de-kendall"><i class="fa fa-check"></i><b>4.3</b> Correlación de Kendall</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="rls.html"><a href="rls.html"><i class="fa fa-check"></i><b>5</b> Regresión lineal simple</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="rls.html"><a href="rls.html#estimación-de-los-parámetros-por-mínimos-cuadrados"><i class="fa fa-check"></i><b>5.1</b> Estimación de los parámetros por mínimos cuadrados</a></li>
+<li class="chapter" data-level="5.2" data-path="rls.html"><a href="rls.html#estimación-de-sigma2"><i class="fa fa-check"></i><b>5.2</b> Estimación de <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="5.3" data-path="rls.html"><a href="rls.html#coeficiente-de-determinación"><i class="fa fa-check"></i><b>5.3</b> Coeficiente de determinación</a></li>
+<li class="chapter" data-level="5.4" data-path="rls.html"><a href="rls.html#intervalos-de-confianza-y-pruebas-de-hipótesis-para-beta_0-beta_1-y-sigma2"><i class="fa fa-check"></i><b>5.4</b> Intervalos de confianza y pruebas de hipótesis para <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> y <span class="math inline">\(\sigma^2\)</span></a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="rls.html"><a href="rls.html#intervalo-de-confianza-para-sigma2"><i class="fa fa-check"></i><b>5.4.1</b> Intervalo de confianza para <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="5.4.2" data-path="rls.html"><a href="rls.html#intervalo-de-confianza-y-prueba-de-hipótesis-para-beta_0"><i class="fa fa-check"></i><b>5.4.2</b> Intervalo de confianza y prueba de hipótesis para <span class="math inline">\(\beta_0\)</span></a></li>
+<li class="chapter" data-level="5.4.3" data-path="rls.html"><a href="rls.html#intervalo-de-confianza-y-prueba-de-hipótesis-para-beta_1"><i class="fa fa-check"></i><b>5.4.3</b> Intervalo de confianza y prueba de hipótesis para <span class="math inline">\(\beta_1\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="rls.html"><a href="rls.html#anova-en-regresión-lineal"><i class="fa fa-check"></i><b>5.5</b> ANOVA en regresión lineal</a></li>
+<li class="chapter" data-level="5.6" data-path="rls.html"><a href="rls.html#transformaciones-para-mejorar-el-ajuste"><i class="fa fa-check"></i><b>5.6</b> Transformaciones para mejorar el ajuste</a></li>
+<li class="chapter" data-level="5.7" data-path="rls.html"><a href="rls.html#análisis-de-residuales"><i class="fa fa-check"></i><b>5.7</b> Análisis de residuales</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="rls.html"><a href="rls.html#independencia-de-los-errores"><i class="fa fa-check"></i><b>5.7.1</b> Independencia de los errores</a></li>
+<li class="chapter" data-level="5.7.2" data-path="rls.html"><a href="rls.html#normalidad-de-los-errores"><i class="fa fa-check"></i><b>5.7.2</b> Normalidad de los errores</a></li>
+<li class="chapter" data-level="5.7.3" data-path="rls.html"><a href="rls.html#media-cero-de-los-errores"><i class="fa fa-check"></i><b>5.7.3</b> Media cero de los errores</a></li>
+<li class="chapter" data-level="5.7.4" data-path="rls.html"><a href="rls.html#varianza-constante-de-los-errores"><i class="fa fa-check"></i><b>5.7.4</b> Varianza constante de los errores</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="rls.html"><a href="rls.html#intervalo-de-confianza-para-ey-mid-x_0-e-intervalo-de-predicción"><i class="fa fa-check"></i><b>5.8</b> Intervalo de confianza para <span class="math inline">\(E(y \mid x_0)\)</span> e intervalo de predicción</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="rlm.html"><a href="rlm.html"><i class="fa fa-check"></i><b>6</b> Regresión lineal múltiple</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="rlm.html"><a href="rlm.html#modelo-con-las-medidas-físicas"><i class="fa fa-check"></i><b>6.1</b> Modelo con las medidas físicas</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="rlm.html"><a href="rlm.html#estimación-de-los-coeficientes"><i class="fa fa-check"></i><b>6.1.1</b> Estimación de los coeficientes</a></li>
+<li class="chapter" data-level="6.1.2" data-path="rlm.html"><a href="rlm.html#residuales"><i class="fa fa-check"></i><b>6.1.2</b> Residuales</a></li>
+<li class="chapter" data-level="6.1.3" data-path="rlm.html"><a href="rlm.html#estimación-de-sigma2-1"><i class="fa fa-check"></i><b>6.1.3</b> Estimación de <span class="math inline">\(\sigma^2\)</span></a></li>
+<li class="chapter" data-level="6.1.4" data-path="rlm.html"><a href="rlm.html#prueba-de-significancia-global"><i class="fa fa-check"></i><b>6.1.4</b> Prueba de significancia global</a></li>
+<li class="chapter" data-level="6.1.5" data-path="rlm.html"><a href="rlm.html#prueba-individual-de-significancia"><i class="fa fa-check"></i><b>6.1.5</b> Prueba individual de significancia</a></li>
+<li class="chapter" data-level="6.1.6" data-path="rlm.html"><a href="rlm.html#intervalos-de-confianza-para-los-coeficientes"><i class="fa fa-check"></i><b>6.1.6</b> Intervalos de confianza para los coeficientes</a></li>
+<li class="chapter" data-level="6.1.7" data-path="rlm.html"><a href="rlm.html#coeficiente-de-determinación-y-r2-ajustado"><i class="fa fa-check"></i><b>6.1.7</b> Coeficiente de determinación y <span class="math inline">\(R^2\)</span> ajustado</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="rlm.html"><a href="rlm.html#análisis-de-multicolinealidad"><i class="fa fa-check"></i><b>6.2</b> Análisis de multicolinealidad</a></li>
+<li class="chapter" data-level="6.3" data-path="rlm.html"><a href="rlm.html#modelos-con-variables-cualitativas"><i class="fa fa-check"></i><b>6.3</b> Modelos con variables cualitativas</a></li>
+<li class="chapter" data-level="6.4" data-path="rlm.html"><a href="rlm.html#selección-del-mejor-modelo"><i class="fa fa-check"></i><b>6.4</b> Selección del mejor modelo</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="rlm.html"><a href="rlm.html#método-de-todas-las-regresiones-posibles"><i class="fa fa-check"></i><b>6.4.1</b> Método de todas las regresiones posibles</a></li>
+<li class="chapter" data-level="6.4.2" data-path="rlm.html"><a href="rlm.html#selección-secuencial"><i class="fa fa-check"></i><b>6.4.2</b> Selección secuencial</a></li>
+<li class="chapter" data-level="6.4.3" data-path="rlm.html"><a href="rlm.html#eliminación-hacia-atrás-por-redundancia"><i class="fa fa-check"></i><b>6.4.3</b> Eliminación hacia atrás por redundancia</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="rlm.html"><a href="rlm.html#modelo-final"><i class="fa fa-check"></i><b>6.5</b> Modelo final</a></li>
+<li class="chapter" data-level="6.6" data-path="rlm.html"><a href="rlm.html#validación-de-los-supuestos-del-modelo-final"><i class="fa fa-check"></i><b>6.6</b> Validación de los supuestos del modelo final</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="rlm.html"><a href="rlm.html#independencia"><i class="fa fa-check"></i><b>6.6.1</b> Independencia</a></li>
+<li class="chapter" data-level="6.6.2" data-path="rlm.html"><a href="rlm.html#normalidad"><i class="fa fa-check"></i><b>6.6.2</b> Normalidad</a></li>
+<li class="chapter" data-level="6.6.3" data-path="rlm.html"><a href="rlm.html#media-cero"><i class="fa fa-check"></i><b>6.6.3</b> Media cero</a></li>
+<li class="chapter" data-level="6.6.4" data-path="rlm.html"><a href="rlm.html#varianza-constante"><i class="fa fa-check"></i><b>6.6.4</b> Varianza constante</a></li>
+<li class="chapter" data-level="6.6.5" data-path="rlm.html"><a href="rlm.html#observaciones-atípicas-e-influenciales"><i class="fa fa-check"></i><b>6.6.5</b> Observaciones atípicas e influenciales</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="rlm.html"><a href="rlm.html#modelo-final-sin-las-observaciones-influenciales"><i class="fa fa-check"></i><b>6.7</b> Modelo final sin las observaciones influenciales</a></li>
+<li class="chapter" data-level="6.8" data-path="rlm.html"><a href="rlm.html#ic-rlm"><i class="fa fa-check"></i><b>6.8</b> Intervalo de confianza para <span class="math inline">\(E(Y \mid \mathbf{x}_0)\)</span> e intervalo de predicción</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>7</b> Conclusiones</a></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Análisis estadístico de la edad de cangrejos</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="rls" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Regresión lineal simple<a href="rls.html#rls" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>En el capítulo de correlación se encontró que el peso del caparazón es la medida física más relacionada con la edad de los cangrejos. En este capítulo se construye un modelo de regresión lineal simple (RLS) para explicar la edad a partir del peso del caparazón:</p>
+<p><span class="math display">\[
+\text{edad}_i = \beta_0 + \beta_1\,\text{peso\_caparazon}_i + \varepsilon_i, \qquad \varepsilon_i \sim N(0, \sigma^2), \qquad \sigma^2 = \text{constante}.
+\]</span></p>
+<p>Se trabaja con un nivel de significancia de <span class="math inline">\(\alpha = 0{,}05\)</span>. Carguemos las librerías y los datos con la misma limpieza del capítulo <a href="eda.html#eda">1</a>:</p>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="rls.html#cb204-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb204-2"><a href="rls.html#cb204-2" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb204-3"><a href="rls.html#cb204-3" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb204-4"><a href="rls.html#cb204-4" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
+<span id="cb204-5"><a href="rls.html#cb204-5" tabindex="-1"></a></span>
+<span id="cb204-6"><a href="rls.html#cb204-6" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;datos/train.csv&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb204-7"><a href="rls.html#cb204-7" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb204-8"><a href="rls.html#cb204-8" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb204-9"><a href="rls.html#cb204-9" tabindex="-1"></a>    <span class="at">sexo           =</span> Sex,</span>
+<span id="cb204-10"><a href="rls.html#cb204-10" tabindex="-1"></a>    <span class="at">largo          =</span> Length,</span>
+<span id="cb204-11"><a href="rls.html#cb204-11" tabindex="-1"></a>    <span class="at">diametro       =</span> Diameter,</span>
+<span id="cb204-12"><a href="rls.html#cb204-12" tabindex="-1"></a>    <span class="at">altura         =</span> Height,</span>
+<span id="cb204-13"><a href="rls.html#cb204-13" tabindex="-1"></a>    <span class="at">peso           =</span> Weight,</span>
+<span id="cb204-14"><a href="rls.html#cb204-14" tabindex="-1"></a>    <span class="at">peso_carne     =</span> Shucked.Weight,</span>
+<span id="cb204-15"><a href="rls.html#cb204-15" tabindex="-1"></a>    <span class="at">peso_visceras  =</span> Viscera.Weight,</span>
+<span id="cb204-16"><a href="rls.html#cb204-16" tabindex="-1"></a>    <span class="at">peso_caparazon =</span> Shell.Weight,</span>
+<span id="cb204-17"><a href="rls.html#cb204-17" tabindex="-1"></a>    <span class="at">edad           =</span> Age</span>
+<span id="cb204-18"><a href="rls.html#cb204-18" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb204-19"><a href="rls.html#cb204-19" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb204-20"><a href="rls.html#cb204-20" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(altura <span class="sc">==</span> <span class="dv">0</span>, <span class="cn">NA</span>, altura),</span>
+<span id="cb204-21"><a href="rls.html#cb204-21" tabindex="-1"></a>    <span class="at">altura =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(altura), <span class="fu">mean</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), altura)</span>
+<span id="cb204-22"><a href="rls.html#cb204-22" tabindex="-1"></a>  )</span></code></pre></div>
+<p>El diagrama de dispersión entre la edad y el peso del caparazón ya se presentó en el capítulo <a href="correglin.html#correglin">4</a>: la edad aumenta con el peso del caparazón, aunque la nube de puntos se abre a medida que el peso crece.</p>
+<div id="estimación-de-los-parámetros-por-mínimos-cuadrados" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Estimación de los parámetros por mínimos cuadrados<a href="rls.html#estimación-de-los-parámetros-por-mínimos-cuadrados" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Los estimadores de mínimos cuadrados son</p>
+<p><span class="math display">\[
+\hat{\beta}_1 = \frac{S_{xy}}{S_{xx}}, \qquad \hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x},
+\]</span></p>
+<p>donde <span class="math inline">\(S_{xx} = \sum (x_i - \bar{x})^2\)</span> y <span class="math inline">\(S_{xy} = \sum (x_i - \bar{x})(y_i - \bar{y})\)</span>. Hagamos el cálculo paso a paso:</p>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="rls.html#cb205-1" tabindex="-1"></a><span class="co"># Variables</span></span>
+<span id="cb205-2"><a href="rls.html#cb205-2" tabindex="-1"></a>Y <span class="ot">&lt;-</span> df<span class="sc">$</span>edad</span>
+<span id="cb205-3"><a href="rls.html#cb205-3" tabindex="-1"></a>X <span class="ot">&lt;-</span> df<span class="sc">$</span>peso_caparazon</span>
+<span id="cb205-4"><a href="rls.html#cb205-4" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(X)</span>
+<span id="cb205-5"><a href="rls.html#cb205-5" tabindex="-1"></a></span>
+<span id="cb205-6"><a href="rls.html#cb205-6" tabindex="-1"></a><span class="co"># Medias</span></span>
+<span id="cb205-7"><a href="rls.html#cb205-7" tabindex="-1"></a>x_bar <span class="ot">&lt;-</span> <span class="fu">mean</span>(X)</span>
+<span id="cb205-8"><a href="rls.html#cb205-8" tabindex="-1"></a>y_bar <span class="ot">&lt;-</span> <span class="fu">mean</span>(Y)</span>
+<span id="cb205-9"><a href="rls.html#cb205-9" tabindex="-1"></a></span>
+<span id="cb205-10"><a href="rls.html#cb205-10" tabindex="-1"></a><span class="co"># Cálculo de Sxx y Sxy</span></span>
+<span id="cb205-11"><a href="rls.html#cb205-11" tabindex="-1"></a>Sxx <span class="ot">&lt;-</span> <span class="fu">sum</span>((X <span class="sc">-</span> x_bar)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb205-12"><a href="rls.html#cb205-12" tabindex="-1"></a>Sxy <span class="ot">&lt;-</span> <span class="fu">sum</span>((X <span class="sc">-</span> x_bar) <span class="sc">*</span> (Y <span class="sc">-</span> y_bar))</span>
+<span id="cb205-13"><a href="rls.html#cb205-13" tabindex="-1"></a></span>
+<span id="cb205-14"><a href="rls.html#cb205-14" tabindex="-1"></a><span class="co"># Estimadores de mínimos cuadrados</span></span>
+<span id="cb205-15"><a href="rls.html#cb205-15" tabindex="-1"></a>beta1 <span class="ot">&lt;-</span> Sxy <span class="sc">/</span> Sxx</span>
+<span id="cb205-16"><a href="rls.html#cb205-16" tabindex="-1"></a>beta1</span></code></pre></div>
+<pre><code>## [1] 0.5877328</code></pre>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="rls.html#cb207-1" tabindex="-1"></a>beta0 <span class="ot">&lt;-</span> y_bar <span class="sc">-</span> beta1 <span class="sc">*</span> x_bar</span>
+<span id="cb207-2"><a href="rls.html#cb207-2" tabindex="-1"></a>beta0</span></code></pre></div>
+<pre><code>## [1] 6.015967</code></pre>
+<p>Con la función <code>lm()</code>:</p>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="rls.html#cb209-1" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(edad <span class="sc">~</span> peso_caparazon, <span class="at">data =</span> df)</span>
+<span id="cb209-2"><a href="rls.html#cb209-2" tabindex="-1"></a>modelo</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = edad ~ peso_caparazon, data = df)
+## 
+## Coefficients:
+##    (Intercept)  peso_caparazon  
+##         6.0160          0.5877</code></pre>
+<p>El modelo ajustado es</p>
+<p><span class="math display">\[
+\widehat{\text{edad}}_i = 6{,}016 + 0{,}588\,\text{peso\_caparazon}_i.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\hat{\beta}_1 = 0{,}588\)</span>: por cada onza adicional de peso del caparazón, la edad promedio del cangrejo aumenta aproximadamente <span class="math inline">\(0{,}59\)</span> meses.</li>
+<li><span class="math inline">\(\hat{\beta}_0 = 6{,}016\)</span>: es la edad promedio estimada para un cangrejo con peso del caparazón igual a cero. Es solo un valor de referencia, porque no hay cangrejos con ese peso.</li>
+</ul>
+</div>
+<div id="estimación-de-sigma2" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Estimación de <span class="math inline">\(\sigma^2\)</span><a href="rls.html#estimación-de-sigma2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>El estimador insesgado de <span class="math inline">\(\sigma^2\)</span> es el cuadrado medio residual:</p>
+<p><span class="math display">\[
+\hat{\sigma}^2 = MSE = \frac{SSE}{n - 2}.
+\]</span></p>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="rls.html#cb211-1" tabindex="-1"></a><span class="co"># Coeficientes del modelo</span></span>
+<span id="cb211-2"><a href="rls.html#cb211-2" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> modelo<span class="sc">$</span>coefficients[<span class="dv">1</span>]</span>
+<span id="cb211-3"><a href="rls.html#cb211-3" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> modelo<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb211-4"><a href="rls.html#cb211-4" tabindex="-1"></a></span>
+<span id="cb211-5"><a href="rls.html#cb211-5" tabindex="-1"></a><span class="co"># Ajustados y residuos</span></span>
+<span id="cb211-6"><a href="rls.html#cb211-6" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> b0 <span class="sc">+</span> b1 <span class="sc">*</span> X</span>
+<span id="cb211-7"><a href="rls.html#cb211-7" tabindex="-1"></a>e    <span class="ot">&lt;-</span> Y <span class="sc">-</span> yhat</span>
+<span id="cb211-8"><a href="rls.html#cb211-8" tabindex="-1"></a></span>
+<span id="cb211-9"><a href="rls.html#cb211-9" tabindex="-1"></a><span class="co"># SSE por definición</span></span>
+<span id="cb211-10"><a href="rls.html#cb211-10" tabindex="-1"></a>SSE <span class="ot">&lt;-</span> <span class="fu">sum</span>(e<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb211-11"><a href="rls.html#cb211-11" tabindex="-1"></a></span>
+<span id="cb211-12"><a href="rls.html#cb211-12" tabindex="-1"></a><span class="co"># MSE y RSE</span></span>
+<span id="cb211-13"><a href="rls.html#cb211-13" tabindex="-1"></a>gl  <span class="ot">&lt;-</span> n <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb211-14"><a href="rls.html#cb211-14" tabindex="-1"></a>MSE <span class="ot">&lt;-</span> SSE <span class="sc">/</span> gl</span>
+<span id="cb211-15"><a href="rls.html#cb211-15" tabindex="-1"></a>MSE</span></code></pre></div>
+<pre><code>## [1] 5.643915</code></pre>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="rls.html#cb213-1" tabindex="-1"></a>RSE <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(MSE)</span>
+<span id="cb213-2"><a href="rls.html#cb213-2" tabindex="-1"></a>RSE</span></code></pre></div>
+<pre><code>## [1] 2.375693</code></pre>
+<p>Con la función <code>lm()</code>:</p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="rls.html#cb215-1" tabindex="-1"></a><span class="fu">summary</span>(modelo)<span class="sc">$</span>sigma</span></code></pre></div>
+<pre><code>## [1] 2.375693</code></pre>
+<p>Por lo tanto, <span class="math inline">\(\hat{\sigma} = 2{,}376\)</span> meses y <span class="math inline">\(MSE = 5{,}644\)</span>.</p>
+</div>
+<div id="coeficiente-de-determinación" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Coeficiente de determinación<a href="rls.html#coeficiente-de-determinación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="rls.html#cb217-1" tabindex="-1"></a><span class="co"># Valores ajustados</span></span>
+<span id="cb217-2"><a href="rls.html#cb217-2" tabindex="-1"></a>Y_hat <span class="ot">&lt;-</span> beta0 <span class="sc">+</span> beta1 <span class="sc">*</span> X</span>
+<span id="cb217-3"><a href="rls.html#cb217-3" tabindex="-1"></a></span>
+<span id="cb217-4"><a href="rls.html#cb217-4" tabindex="-1"></a><span class="co"># Sumas de cuadrados</span></span>
+<span id="cb217-5"><a href="rls.html#cb217-5" tabindex="-1"></a>SST <span class="ot">&lt;-</span> <span class="fu">sum</span>((Y <span class="sc">-</span> y_bar)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb217-6"><a href="rls.html#cb217-6" tabindex="-1"></a>SSE <span class="ot">&lt;-</span> <span class="fu">sum</span>((Y <span class="sc">-</span> Y_hat)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb217-7"><a href="rls.html#cb217-7" tabindex="-1"></a>SSR <span class="ot">&lt;-</span> SST <span class="sc">-</span> SSE</span>
+<span id="cb217-8"><a href="rls.html#cb217-8" tabindex="-1"></a></span>
+<span id="cb217-9"><a href="rls.html#cb217-9" tabindex="-1"></a><span class="co"># Coeficiente de determinación</span></span>
+<span id="cb217-10"><a href="rls.html#cb217-10" tabindex="-1"></a>R2 <span class="ot">&lt;-</span> SSR <span class="sc">/</span> SST</span>
+<span id="cb217-11"><a href="rls.html#cb217-11" tabindex="-1"></a>R2</span></code></pre></div>
+<pre><code>## [1] 0.4401968</code></pre>
+<p>Otra forma de calcularlo es elevando al cuadrado el coeficiente de correlación de Pearson:</p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="rls.html#cb219-1" tabindex="-1"></a>rho_est <span class="ot">&lt;-</span> <span class="fu">with</span>(df, <span class="fu">cor</span>(edad, peso_caparazon))</span>
+<span id="cb219-2"><a href="rls.html#cb219-2" tabindex="-1"></a>rho_est<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 0.4401968</code></pre>
+<p>Y con la función <code>lm()</code>:</p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="rls.html#cb221-1" tabindex="-1"></a><span class="fu">summary</span>(modelo)<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.4401968</code></pre>
+<p>El peso del caparazón explica el <span class="math inline">\(44{,}02\%\)</span> de la variabilidad de la edad de los cangrejos.</p>
+</div>
+<div id="intervalos-de-confianza-y-pruebas-de-hipótesis-para-beta_0-beta_1-y-sigma2" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Intervalos de confianza y pruebas de hipótesis para <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> y <span class="math inline">\(\sigma^2\)</span><a href="rls.html#intervalos-de-confianza-y-pruebas-de-hipótesis-para-beta_0-beta_1-y-sigma2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="intervalo-de-confianza-para-sigma2" class="section level3 hasAnchor" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Intervalo de confianza para <span class="math inline">\(\sigma^2\)</span><a href="rls.html#intervalo-de-confianza-para-sigma2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+\frac{(n-2)\hat{\sigma}^2}{\chi^2_{1-\alpha/2,\,n-2}} &lt; \sigma^2 &lt; \frac{(n-2)\hat{\sigma}^2}{\chi^2_{\alpha/2,\,n-2}}
+\]</span></p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="rls.html#cb223-1" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb223-2"><a href="rls.html#cb223-2" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">summary</span>(modelo)<span class="sc">$</span>sigma</span>
+<span id="cb223-3"><a href="rls.html#cb223-3" tabindex="-1"></a>gl <span class="ot">&lt;-</span> n <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb223-4"><a href="rls.html#cb223-4" tabindex="-1"></a>lim_inf <span class="ot">&lt;-</span> gl <span class="sc">*</span> sigma<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="fu">qchisq</span>(<span class="dv">1</span> <span class="sc">-</span> alpha<span class="sc">/</span><span class="dv">2</span>, gl)</span>
+<span id="cb223-5"><a href="rls.html#cb223-5" tabindex="-1"></a>lim_sup <span class="ot">&lt;-</span> gl <span class="sc">*</span> sigma<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="fu">qchisq</span>(alpha<span class="sc">/</span><span class="dv">2</span>, gl)</span>
+<span id="cb223-6"><a href="rls.html#cb223-6" tabindex="-1"></a><span class="fu">c</span>(<span class="at">lim_inf =</span> lim_inf, <span class="at">sigma2_hat =</span> sigma<span class="sc">^</span><span class="dv">2</span>, <span class="at">lim_sup =</span> lim_sup)</span></code></pre></div>
+<pre><code>##    lim_inf sigma2_hat    lim_sup 
+##   5.586864   5.643915   5.701848</code></pre>
+<p>Con una confianza del <span class="math inline">\(95\%\)</span>, <span class="math inline">\(\sigma^2 \in (5{,}587;\ 5{,}702)\)</span>. Como el cero no está en el intervalo, <span class="math inline">\(\sigma^2 &gt; 0\)</span> a nivel poblacional.</p>
+</div>
+<div id="intervalo-de-confianza-y-prueba-de-hipótesis-para-beta_0" class="section level3 hasAnchor" number="5.4.2">
+<h3><span class="header-section-number">5.4.2</span> Intervalo de confianza y prueba de hipótesis para <span class="math inline">\(\beta_0\)</span><a href="rls.html#intervalo-de-confianza-y-prueba-de-hipótesis-para-beta_0" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+H_0: \beta_0 = 0 \quad \text{vs} \quad H_1: \beta_0 \neq 0
+\]</span></p>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="rls.html#cb225-1" tabindex="-1"></a><span class="co"># Sigma estimada</span></span>
+<span id="cb225-2"><a href="rls.html#cb225-2" tabindex="-1"></a>sigma_hat <span class="ot">&lt;-</span> <span class="fu">summary</span>(modelo)<span class="sc">$</span>sigma</span>
+<span id="cb225-3"><a href="rls.html#cb225-3" tabindex="-1"></a></span>
+<span id="cb225-4"><a href="rls.html#cb225-4" tabindex="-1"></a><span class="co"># Varianza y error estándar de b0</span></span>
+<span id="cb225-5"><a href="rls.html#cb225-5" tabindex="-1"></a>var_b0 <span class="ot">&lt;-</span> sigma_hat<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>n <span class="sc">+</span> (x_bar<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>Sxx)</span>
+<span id="cb225-6"><a href="rls.html#cb225-6" tabindex="-1"></a>se_b0 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var_b0)</span>
+<span id="cb225-7"><a href="rls.html#cb225-7" tabindex="-1"></a></span>
+<span id="cb225-8"><a href="rls.html#cb225-8" tabindex="-1"></a><span class="co"># Valor crítico t</span></span>
+<span id="cb225-9"><a href="rls.html#cb225-9" tabindex="-1"></a>t_crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha<span class="sc">/</span><span class="dv">2</span>, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">2</span>)</span>
+<span id="cb225-10"><a href="rls.html#cb225-10" tabindex="-1"></a></span>
+<span id="cb225-11"><a href="rls.html#cb225-11" tabindex="-1"></a><span class="co"># Intervalo de confianza</span></span>
+<span id="cb225-12"><a href="rls.html#cb225-12" tabindex="-1"></a>inferior <span class="ot">&lt;-</span> b0 <span class="sc">-</span> t_crit <span class="sc">*</span> se_b0</span>
+<span id="cb225-13"><a href="rls.html#cb225-13" tabindex="-1"></a>superior <span class="ot">&lt;-</span> b0 <span class="sc">+</span> t_crit <span class="sc">*</span> se_b0</span>
+<span id="cb225-14"><a href="rls.html#cb225-14" tabindex="-1"></a><span class="fu">c</span>(<span class="at">LI =</span> inferior, <span class="at">beta0 =</span> b0, <span class="at">LS =</span> superior)</span></code></pre></div>
+<pre><code>##    LI.(Intercept) beta0.(Intercept)    LS.(Intercept) 
+##          5.979592          6.015967          6.052341</code></pre>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="rls.html#cb227-1" tabindex="-1"></a><span class="co"># Prueba de hipótesis</span></span>
+<span id="cb227-2"><a href="rls.html#cb227-2" tabindex="-1"></a>t_calc <span class="ot">&lt;-</span> (b0 <span class="sc">-</span> <span class="dv">0</span>) <span class="sc">/</span> se_b0</span>
+<span id="cb227-3"><a href="rls.html#cb227-3" tabindex="-1"></a>p_valor <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(t_calc), gl))</span>
+<span id="cb227-4"><a href="rls.html#cb227-4" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">beta0_hat =</span> b0, <span class="at">se_beta0 =</span> se_b0, <span class="at">estadistico_t =</span> t_calc,</span>
+<span id="cb227-5"><a href="rls.html#cb227-5" tabindex="-1"></a>           <span class="at">gl =</span> gl, <span class="at">p_value =</span> p_valor)</span></code></pre></div>
+<pre><code>##             beta0_hat   se_beta0 estadistico_t    gl p_value
+## (Intercept)  6.015967 0.01855862      324.1603 74049       0</code></pre>
+</div>
+<div id="intervalo-de-confianza-y-prueba-de-hipótesis-para-beta_1" class="section level3 hasAnchor" number="5.4.3">
+<h3><span class="header-section-number">5.4.3</span> Intervalo de confianza y prueba de hipótesis para <span class="math inline">\(\beta_1\)</span><a href="rls.html#intervalo-de-confianza-y-prueba-de-hipótesis-para-beta_1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+H_0: \beta_1 = 0 \quad \text{vs} \quad H_1: \beta_1 \neq 0
+\]</span></p>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="rls.html#cb229-1" tabindex="-1"></a><span class="co"># Varianza y error estándar de b1</span></span>
+<span id="cb229-2"><a href="rls.html#cb229-2" tabindex="-1"></a>var_b1 <span class="ot">&lt;-</span> sigma_hat<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> Sxx</span>
+<span id="cb229-3"><a href="rls.html#cb229-3" tabindex="-1"></a>se_b1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var_b1)</span>
+<span id="cb229-4"><a href="rls.html#cb229-4" tabindex="-1"></a></span>
+<span id="cb229-5"><a href="rls.html#cb229-5" tabindex="-1"></a><span class="co"># Intervalo de confianza</span></span>
+<span id="cb229-6"><a href="rls.html#cb229-6" tabindex="-1"></a>inferior <span class="ot">&lt;-</span> b1 <span class="sc">-</span> t_crit <span class="sc">*</span> se_b1</span>
+<span id="cb229-7"><a href="rls.html#cb229-7" tabindex="-1"></a>superior <span class="ot">&lt;-</span> b1 <span class="sc">+</span> t_crit <span class="sc">*</span> se_b1</span>
+<span id="cb229-8"><a href="rls.html#cb229-8" tabindex="-1"></a><span class="fu">c</span>(<span class="at">LI =</span> inferior, <span class="at">beta1 =</span> b1, <span class="at">LS =</span> superior)</span></code></pre></div>
+<pre><code>##    LI.peso_caparazon beta1.peso_caparazon    LS.peso_caparazon 
+##            0.5829590            0.5877328            0.5925067</code></pre>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="rls.html#cb231-1" tabindex="-1"></a><span class="co"># Prueba de hipótesis</span></span>
+<span id="cb231-2"><a href="rls.html#cb231-2" tabindex="-1"></a>t_calc <span class="ot">&lt;-</span> (b1 <span class="sc">-</span> <span class="dv">0</span>) <span class="sc">/</span> se_b1</span>
+<span id="cb231-3"><a href="rls.html#cb231-3" tabindex="-1"></a>p_valor <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(t_calc), gl))</span>
+<span id="cb231-4"><a href="rls.html#cb231-4" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">beta1_hat =</span> b1, <span class="at">se_beta1 =</span> se_b1, <span class="at">estadistico_t =</span> t_calc,</span>
+<span id="cb231-5"><a href="rls.html#cb231-5" tabindex="-1"></a>           <span class="at">gl =</span> gl, <span class="at">p_value =</span> p_valor)</span></code></pre></div>
+<pre><code>##                beta1_hat    se_beta1 estadistico_t    gl p_value
+## peso_caparazon 0.5877328 0.002435648      241.3045 74049       0</code></pre>
+<p>Verifiquemos los cálculos con las funciones de R:</p>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="rls.html#cb233-1" tabindex="-1"></a><span class="fu">coefficients</span>(<span class="fu">summary</span>(modelo))</span></code></pre></div>
+<pre><code>##                 Estimate  Std. Error  t value Pr(&gt;|t|)
+## (Intercept)    6.0159667 0.018558615 324.1603        0
+## peso_caparazon 0.5877328 0.002435648 241.3045        0</code></pre>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="rls.html#cb235-1" tabindex="-1"></a><span class="fu">confint.default</span>(modelo)</span></code></pre></div>
+<pre><code>##                    2.5 %    97.5 %
+## (Intercept)    5.9795925 6.0523409
+## peso_caparazon 0.5829591 0.5925066</code></pre>
+<ul>
+<li><strong>Intercepto:</strong> es significativo (<span class="math inline">\(t_{(74049)} = 324{,}16,\ p\text{-valor} &lt; 0{,}001\)</span>) y su intervalo de confianza del <span class="math inline">\(95\%\)</span> es <span class="math inline">\((5{,}98;\ 6{,}05)\)</span>, que no contiene el cero.</li>
+<li><strong>Pendiente:</strong> es significativa (<span class="math inline">\(t_{(74049)} = 241{,}31,\ p\text{-valor} &lt; 0{,}001\)</span>) y su intervalo de confianza del <span class="math inline">\(95\%\)</span> es <span class="math inline">\((0{,}583;\ 0{,}593)\)</span>. Como no contiene el cero, el peso del caparazón sí aporta información para explicar la edad.</li>
+</ul>
+</div>
+</div>
+<div id="anova-en-regresión-lineal" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> ANOVA en regresión lineal<a href="rls.html#anova-en-regresión-lineal" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><span class="math display">\[
+H_0: \beta_1 = 0 \quad \text{vs} \quad H_1: \beta_1 \neq 0
+\]</span></p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="rls.html#cb237-1" tabindex="-1"></a><span class="fu">anova</span>(modelo)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: edad
+##                   Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## peso_caparazon     1 328633  328633   58228 &lt; 2.2e-16 ***
+## Residuals      74049 417926       6                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Como el <span class="math inline">\(p\text{-valor} &lt; 0{,}001\)</span>, se rechaza <span class="math inline">\(H_0\)</span> y el modelo es globalmente significativo (<span class="math inline">\(F_{(1,\ 74049)} = 58228\)</span>). El valor de <span class="math inline">\(F\)</span> es mucho mayor que 1, así que la mayor parte de la variabilidad explicada de la edad se debe al peso del caparazón y no a los factores incontrolables.</p>
+</div>
+<div id="transformaciones-para-mejorar-el-ajuste" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Transformaciones para mejorar el ajuste<a href="rls.html#transformaciones-para-mejorar-el-ajuste" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>El modelo explica el <span class="math inline">\(44\%\)</span> de la variabilidad de la edad, pero en el diagrama de dispersión la relación no es del todo lineal: la edad crece rápido cuando el caparazón es liviano y después se aplana, y además la nube se abre hacia arriba. Este patrón sugiere probar una transformación log-log (modelo potencial), una de las transformaciones de las notas de clase.</p>
+<p>Visualicemos la relación original:</p>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="rls.html#cb239-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb239-2"><a href="rls.html#cb239-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(peso_caparazon, edad)) <span class="sc">+</span></span>
+<span id="cb239-3"><a href="rls.html#cb239-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>, <span class="at">size =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb239-4"><a href="rls.html#cb239-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb239-5"><a href="rls.html#cb239-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Relación original: peso del caparazón vs. edad&quot;</span>,</span>
+<span id="cb239-6"><a href="rls.html#cb239-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Peso del caparazón (onzas)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Edad (meses)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb239-7"><a href="rls.html#cb239-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-14"></span>
+<img src="05-rls_files/figure-html/unnamed-chunk-14-1.png" alt="Relación original entre el peso del caparazón y la edad" width="672" />
+<p class="caption">
+Figura 5.1: Relación original entre el peso del caparazón y la edad
+</p>
+</div>
+<p>Ahora con las dos variables en escala logarítmica:</p>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="rls.html#cb240-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb240-2"><a href="rls.html#cb240-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">log</span>(peso_caparazon), <span class="fu">log</span>(edad))) <span class="sc">+</span></span>
+<span id="cb240-3"><a href="rls.html#cb240-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">color =</span> <span class="st">&quot;#1E90FF&quot;</span>, <span class="at">size =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb240-4"><a href="rls.html#cb240-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb240-5"><a href="rls.html#cb240-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Transformación: log(peso del caparazón) vs. log(edad)&quot;</span>,</span>
+<span id="cb240-6"><a href="rls.html#cb240-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;log(peso del caparazón)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;log(edad)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb240-7"><a href="rls.html#cb240-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
+<img src="05-rls_files/figure-html/unnamed-chunk-15-1.png" alt="Relación entre el logaritmo del peso del caparazón y el logaritmo de la edad" width="672" />
+<p class="caption">
+Figura 1.2: Relación entre el logaritmo del peso del caparazón y el logaritmo de la edad
+</p>
+</div>
+<p>Con la transformación, los puntos siguen mejor la recta. Ajustemos el modelo:</p>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="rls.html#cb241-1" tabindex="-1"></a>modelo2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(edad) <span class="sc">~</span> <span class="fu">log</span>(peso_caparazon), <span class="at">data =</span> df)</span>
+<span id="cb241-2"><a href="rls.html#cb241-2" tabindex="-1"></a><span class="fu">summary</span>(modelo2)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(edad) ~ log(peso_caparazon), data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.83621 -0.13644 -0.03991  0.09646  1.14967 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)         1.7358933  0.0017650   983.5   &lt;2e-16 ***
+## log(peso_caparazon) 0.3052096  0.0009485   321.8   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2026 on 74049 degrees of freedom
+## Multiple R-squared:  0.5831, Adjusted R-squared:  0.5831 
+## F-statistic: 1.036e+05 on 1 and 74049 DF,  p-value: &lt; 2.2e-16</code></pre>
+<ul>
+<li>La variable <code>log(peso_caparazon)</code> es significativa (<span class="math inline">\(p\text{-valor} &lt; 0{,}001\)</span>).</li>
+<li>El coeficiente <span class="math inline">\(0{,}305\)</span> indica que, si el peso del caparazón aumenta un <span class="math inline">\(1\%\)</span>, la edad aumenta aproximadamente un <span class="math inline">\(0{,}31\%\)</span>.</li>
+<li>El <span class="math inline">\(R^2\)</span> sube de <span class="math inline">\(0{,}440\)</span> a <span class="math inline">\(0{,}583\)</span>: el modelo transformado explica el <span class="math inline">\(58{,}3\%\)</span> de la variabilidad de la edad.</li>
+<li>El modelo es significativo en su conjunto (<span class="math inline">\(F = 1{,}036 \times 10^{5}\)</span>, <span class="math inline">\(p\text{-valor} &lt; 0{,}001\)</span>).</li>
+</ul>
+<p>Como el modelo transformado ajusta mejor, es el que se usa en el resto del capítulo:</p>
+<p><span class="math display">\[
+\widehat{\log(\text{edad})}_i = 1{,}736 + 0{,}305\,\log(\text{peso\_caparazon}_i).
+\]</span></p>
+</div>
+<div id="análisis-de-residuales" class="section level2 hasAnchor" number="5.7">
+<h2><span class="header-section-number">5.7</span> Análisis de residuales<a href="rls.html#análisis-de-residuales" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Para usar el modelo en predicción hay que validar los supuestos de los errores: independencia, normalidad, media cero y varianza constante.</p>
+<div id="independencia-de-los-errores" class="section level3 hasAnchor" number="5.7.1">
+<h3><span class="header-section-number">5.7.1</span> Independencia de los errores<a href="rls.html#independencia-de-los-errores" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="rls.html#cb243-1" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(modelo2)</span></code></pre></div>
+<pre><code>##  lag Autocorrelation D-W Statistic p-value
+##    1    -0.005105108      2.010195   0.184
+##  Alternative hypothesis: rho != 0</code></pre>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="rls.html#cb245-1" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo2)</span>
+<span id="cb245-2"><a href="rls.html#cb245-2" tabindex="-1"></a><span class="fu">acf</span>(r, <span class="at">main =</span> <span class="st">&quot;Función de Autocorrelación (ACF) de los residuales&quot;</span>,</span>
+<span id="cb245-3"><a href="rls.html#cb245-3" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="st">&quot;Autocorrelación&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Rezago (Lag)&quot;</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-18"></span>
+<img src="05-rls_files/figure-html/unnamed-chunk-18-1.png" alt="Función de autocorrelación de los residuales del modelo transformado" width="672" />
+<p class="caption">
+Figura 5.2: Función de autocorrelación de los residuales del modelo transformado
+</p>
+</div>
+<p>El <span class="math inline">\(p\text{-valor}\)</span> de la prueba de Durbin-Watson es mayor que <span class="math inline">\(0{,}05\)</span> y las barras de la ACF están dentro de las bandas, así que los errores son independientes.</p>
+</div>
+<div id="normalidad-de-los-errores" class="section level3 hasAnchor" number="5.7.2">
+<h3><span class="header-section-number">5.7.2</span> Normalidad de los errores<a href="rls.html#normalidad-de-los-errores" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+H_0: \text{los errores siguen una distribución normal} \quad \text{vs} \quad H_A: \text{los errores no siguen una distribución normal}
+\]</span></p>
+<p>Como hay más de 5.000 residuales, se usa la prueba de Lilliefors en lugar de Shapiro-Wilk:</p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="rls.html#cb246-1" tabindex="-1"></a><span class="fu">lillie.test</span>(r)</span></code></pre></div>
+<pre><code>## 
+##  Lilliefors (Kolmogorov-Smirnov) normality test
+## 
+## data:  r
+## D = 0.096936, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="rls.html#cb248-1" tabindex="-1"></a><span class="fu">qqnorm</span>(r, <span class="at">main =</span> <span class="st">&quot;Gráfico Q-Q de los residuales&quot;</span>)</span>
+<span id="cb248-2"><a href="rls.html#cb248-2" tabindex="-1"></a><span class="fu">qqline</span>(r, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-20"></span>
+<img src="05-rls_files/figure-html/unnamed-chunk-20-1.png" alt="Gráfico Q-Q de los residuales del modelo transformado" width="672" />
+<p class="caption">
+Figura 1.5: Gráfico Q-Q de los residuales del modelo transformado
+</p>
+</div>
+<p>El <span class="math inline">\(p\text{-valor} &lt; 0{,}05\)</span>, por lo que se rechaza <span class="math inline">\(H_0\)</span>: los errores no siguen una distribución normal. En el gráfico Q-Q los puntos se alejan de la línea en las dos colas.</p>
+</div>
+<div id="media-cero-de-los-errores" class="section level3 hasAnchor" number="5.7.3">
+<h3><span class="header-section-number">5.7.3</span> Media cero de los errores<a href="rls.html#media-cero-de-los-errores" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="rls.html#cb249-1" tabindex="-1"></a><span class="fu">mean</span>(r)</span></code></pre></div>
+<pre><code>## [1] 1.750472e-17</code></pre>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="rls.html#cb251-1" tabindex="-1"></a><span class="fu">t.test</span>(r, <span class="at">mu =</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  r
+## t = 2.3508e-14, df = 74050, p-value = 1
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  -0.001459485  0.001459485
+## sample estimates:
+##    mean of x 
+## 1.750472e-17</code></pre>
+<p>Como el modelo tiene intercepto, la media de los residuales es cero, y la prueba <em>t</em> lo confirma (<span class="math inline">\(p\text{-valor} = 1\)</span>).</p>
+</div>
+<div id="varianza-constante-de-los-errores" class="section level3 hasAnchor" number="5.7.4">
+<h3><span class="header-section-number">5.7.4</span> Varianza constante de los errores<a href="rls.html#varianza-constante-de-los-errores" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="rls.html#cb253-1" tabindex="-1"></a>diag_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb253-2"><a href="rls.html#cb253-2" tabindex="-1"></a>  <span class="at">Ajustados  =</span> <span class="fu">fitted</span>(modelo2),</span>
+<span id="cb253-3"><a href="rls.html#cb253-3" tabindex="-1"></a>  <span class="at">Residuales =</span> <span class="fu">resid</span>(modelo2)</span>
+<span id="cb253-4"><a href="rls.html#cb253-4" tabindex="-1"></a>)</span>
+<span id="cb253-5"><a href="rls.html#cb253-5" tabindex="-1"></a></span>
+<span id="cb253-6"><a href="rls.html#cb253-6" tabindex="-1"></a><span class="fu">ggplot</span>(diag_df, <span class="fu">aes</span>(<span class="at">x =</span> Ajustados, <span class="at">y =</span> Residuales)) <span class="sc">+</span></span>
+<span id="cb253-7"><a href="rls.html#cb253-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">size =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb253-8"><a href="rls.html#cb253-8" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
+<span id="cb253-9"><a href="rls.html#cb253-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Residuales vs. valores ajustados&quot;</span>,</span>
+<span id="cb253-10"><a href="rls.html#cb253-10" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Valores ajustados&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Residuales&quot;</span>) <span class="sc">+</span></span>
+<span id="cb253-11"><a href="rls.html#cb253-11" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
+<img src="05-rls_files/figure-html/unnamed-chunk-22-1.png" alt="Residuales vs. valores ajustados del modelo transformado" width="672" />
+<p class="caption">
+Figura 5.3: Residuales vs. valores ajustados del modelo transformado
+</p>
+</div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="rls.html#cb254-1" tabindex="-1"></a><span class="fu">bptest</span>(modelo2)</span></code></pre></div>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  modelo2
+## BP = 9.73, df = 1, p-value = 0.001813</code></pre>
+<p>El <span class="math inline">\(p\text{-valor}\)</span> de la prueba de Breusch-Pagan es menor que <span class="math inline">\(0{,}05\)</span>, así que la varianza de los errores no es constante.</p>
+<p>En resumen, el modelo cumple los supuestos de independencia y media cero, pero no los de normalidad y varianza constante. Con 74.051 datos estas pruebas detectan cualquier desviación, por pequeña que sea; aun así, los intervalos que siguen deben leerse con cautela.</p>
+</div>
+</div>
+<div id="intervalo-de-confianza-para-ey-mid-x_0-e-intervalo-de-predicción" class="section level2 hasAnchor" number="5.8">
+<h2><span class="header-section-number">5.8</span> Intervalo de confianza para <span class="math inline">\(E(y \mid x_0)\)</span> e intervalo de predicción<a href="rls.html#intervalo-de-confianza-para-ey-mid-x_0-e-intervalo-de-predicción" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Supongamos que se quiere estimar la edad de los cangrejos cuyo caparazón pesa <span class="math inline">\(x_0 = 7\)</span> onzas, un valor cercano a la mediana de la base. Como el modelo está en escala logarítmica, primero se calculan los intervalos para <span class="math inline">\(\log(\text{edad})\)</span> y luego se retrotransforman con la función exponencial.</p>
+<p>Paso a paso, para el intervalo de confianza de la media:</p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="rls.html#cb256-1" tabindex="-1"></a><span class="co"># Variable explicativa transformada</span></span>
+<span id="cb256-2"><a href="rls.html#cb256-2" tabindex="-1"></a>x_log <span class="ot">&lt;-</span> <span class="fu">log</span>(df<span class="sc">$</span>peso_caparazon)</span>
+<span id="cb256-3"><a href="rls.html#cb256-3" tabindex="-1"></a>xbar  <span class="ot">&lt;-</span> <span class="fu">mean</span>(x_log)</span>
+<span id="cb256-4"><a href="rls.html#cb256-4" tabindex="-1"></a>Sxx   <span class="ot">&lt;-</span> <span class="fu">sum</span>((x_log <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb256-5"><a href="rls.html#cb256-5" tabindex="-1"></a>sig   <span class="ot">&lt;-</span> <span class="fu">summary</span>(modelo2)<span class="sc">$</span>sigma</span>
+<span id="cb256-6"><a href="rls.html#cb256-6" tabindex="-1"></a>x0    <span class="ot">&lt;-</span> <span class="fu">log</span>(<span class="dv">7</span>)</span>
+<span id="cb256-7"><a href="rls.html#cb256-7" tabindex="-1"></a></span>
+<span id="cb256-8"><a href="rls.html#cb256-8" tabindex="-1"></a><span class="co"># Estimación puntual en escala log</span></span>
+<span id="cb256-9"><a href="rls.html#cb256-9" tabindex="-1"></a>b  <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo2)</span>
+<span id="cb256-10"><a href="rls.html#cb256-10" tabindex="-1"></a>y0 <span class="ot">&lt;-</span> <span class="fu">unname</span>(b[<span class="dv">1</span>] <span class="sc">+</span> b[<span class="dv">2</span>] <span class="sc">*</span> x0)</span>
+<span id="cb256-11"><a href="rls.html#cb256-11" tabindex="-1"></a></span>
+<span id="cb256-12"><a href="rls.html#cb256-12" tabindex="-1"></a><span class="co"># Error estándar e intervalo de confianza del 95%</span></span>
+<span id="cb256-13"><a href="rls.html#cb256-13" tabindex="-1"></a>se0   <span class="ot">&lt;-</span> sig <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span>n <span class="sc">+</span> (x0 <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> Sxx)</span>
+<span id="cb256-14"><a href="rls.html#cb256-14" tabindex="-1"></a>tcrit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">2</span>)</span>
+<span id="cb256-15"><a href="rls.html#cb256-15" tabindex="-1"></a>ic_log <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">y_hat =</span> y0, <span class="at">LI =</span> y0 <span class="sc">-</span> tcrit <span class="sc">*</span> se0, <span class="at">LS =</span> y0 <span class="sc">+</span> tcrit <span class="sc">*</span> se0)</span>
+<span id="cb256-16"><a href="rls.html#cb256-16" tabindex="-1"></a></span>
+<span id="cb256-17"><a href="rls.html#cb256-17" tabindex="-1"></a><span class="co"># Retrotransformación a meses</span></span>
+<span id="cb256-18"><a href="rls.html#cb256-18" tabindex="-1"></a><span class="fu">exp</span>(ic_log)</span></code></pre></div>
+<pre><code>##    y_hat       LI       LS 
+## 10.27592 10.26015 10.29173</code></pre>
+<p>Y para el intervalo de predicción de un cangrejo nuevo:</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="rls.html#cb258-1" tabindex="-1"></a>se_pred <span class="ot">&lt;-</span> sig <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>n <span class="sc">+</span> (x0 <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> Sxx)</span>
+<span id="cb258-2"><a href="rls.html#cb258-2" tabindex="-1"></a>ip_log <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">y_hat =</span> y0, <span class="at">LI =</span> y0 <span class="sc">-</span> tcrit <span class="sc">*</span> se_pred, <span class="at">LS =</span> y0 <span class="sc">+</span> tcrit <span class="sc">*</span> se_pred)</span>
+<span id="cb258-3"><a href="rls.html#cb258-3" tabindex="-1"></a><span class="fu">exp</span>(ip_log)</span></code></pre></div>
+<pre><code>##     y_hat        LI        LS 
+## 10.275924  6.907711 15.286483</code></pre>
+<p>El mismo resultado se obtiene con <code>predict()</code>:</p>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="rls.html#cb260-1" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(modelo2, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">peso_caparazon =</span> <span class="dv">7</span>), <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>))</span></code></pre></div>
+<pre><code>##        fit      lwr      upr
+## 1 10.27592 10.26015 10.29173</code></pre>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="rls.html#cb262-1" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(modelo2, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">peso_caparazon =</span> <span class="dv">7</span>), <span class="at">interval =</span> <span class="st">&quot;prediction&quot;</span>))</span></code></pre></div>
+<pre><code>##        fit      lwr      upr
+## 1 10.27592 6.907711 15.28648</code></pre>
+<p>Para los cangrejos con un caparazón de 7 onzas, la edad estimada es de <span class="math inline">\(10{,}28\)</span> meses. Con una confianza del <span class="math inline">\(95\%\)</span>, la edad esperada de esos cangrejos está entre <span class="math inline">\(10{,}26\)</span> y <span class="math inline">\(10{,}29\)</span> meses, y la edad de un cangrejo nuevo con ese peso estará entre <span class="math inline">\(6{,}91\)</span> y <span class="math inline">\(15{,}29\)</span> meses. El intervalo de predicción es mucho más ancho porque incluye la variabilidad de cada cangrejo, y eso muestra que con una sola variable la edad no se puede predecir con precisión. En el siguiente capítulo se agregan las demás variables para mejorar el modelo.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="correglin.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="rlm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+},
+"info": false
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
