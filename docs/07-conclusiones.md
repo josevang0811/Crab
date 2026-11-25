@@ -1,0 +1,23 @@
+# Conclusiones {#conclusiones}
+
+A partir del análisis de la base *Regression with a Crab Age Dataset* se llegó a las siguientes conclusiones:
+
+1. **Sobre los datos.** La base tiene $74.051$ cangrejos, sin valores ausentes. Sin embargo, se encontraron $24$ cangrejos con altura igual a cero, que se trataron como valores ausentes y se reemplazaron por el promedio, y dos registros con una altura de $2{,}83$ pies que superan el largo máximo de la base y probablemente son errores de medición. La edad va de $1$ a $29$ meses, con un promedio de $9{,}97$ meses, solo toma valores enteros y tiene una asimetría positiva.
+
+2. **Sobre la comparación entre hembras y machos.** Las hembras son en promedio un poco mayores que los machos ($11{,}34$ frente a $10{,}90$ meses). La diferencia resultó significativa tanto con la prueba *t* de Welch como con la U de Mann-Whitney, pero su tamaño del efecto es trivial ($d = 0{,}15$). La significancia se explica por el gran tamaño de las muestras más que por una diferencia importante en la práctica.
+
+3. **Sobre la comparación de los tres grupos.** El ANOVA y la prueba de Kruskal-Wallis mostraron que la edad difiere según el sexo. Como no se cumplen los supuestos de normalidad y homogeneidad de varianzas, la conclusión se apoya en Kruskal-Wallis. Las comparaciones múltiples indicaron que los tres grupos son distintos entre sí, pero la diferencia relevante está en los cangrejos indeterminados, que son en promedio entre $3{,}3$ y $3{,}7$ meses más jóvenes que los machos y las hembras.
+
+4. **Sobre las tablas de contingencia.** La distribución de los grupos de edad no es homogénea entre los sexos: la gran mayoría de los indeterminados son jóvenes ($18.049$ de $23.957$), mientras que en hembras y machos predominan los adultos. Además, el grupo de edad y el grupo de tamaño no son independientes; la mayoría de los cangrejos jóvenes son pequeños y la mayoría de los mayores son grandes.
+
+5. **Sobre la correlación.** Todas las medidas físicas tienen una correlación positiva, moderada y significativa con la edad. El peso del caparazón es la variable más relacionada, con $r = 0{,}663$ (Pearson), $\rho_S = 0{,}736$ (Spearman) y $\tau = 0{,}582$ (Kendall), mientras que el peso de la carne es la menos relacionada. Como las variables no son normales y la relación no es del todo lineal, Spearman y Kendall son los coeficientes más adecuados para estos datos.
+
+6. **Sobre las variables independientes.** Las medidas físicas están muy correlacionadas entre sí (en el análisis exploratorio todas sus correlaciones fueron mayores a $0{,}86$), por lo que aportan información muy parecida. Esto se confirmó en el modelo de regresión múltiple, donde causó una multicolinealidad muy fuerte.
+
+7. **Sobre la regresión lineal simple.** El peso del caparazón explica el $44{,}0\%$ de la variabilidad de la edad. Como la relación no es del todo lineal, la transformación log-log mejora el ajuste hasta un $R^2$ de $0{,}583$. Los errores son independientes y tienen media cero, pero no son normales ni tienen varianza constante.
+
+8. **Sobre la regresión lineal múltiple.** El modelo con todas las variables explica el $55{,}1\%$ de la variabilidad de la edad, pero tiene una multicolinealidad muy fuerte (VIF de hasta $76{,}7$), porque varias medidas físicas contienen la misma información. Los métodos de selección eligen el modelo completo porque, con tantos datos, cualquier variable resulta significativa; por eso el mejor modelo se escogió quitando las variables más redundantes mientras el $R^2$ ajustado casi no cambiara. El modelo final usa el sexo, la altura, el peso de la carne y el peso del caparazón, explica el $53{,}9\%$ de la variabilidad con la mitad de las variables y no tiene VIF mayores que 10. En el análisis de residuales se eliminaron los dos cangrejos con altura de $2{,}825$ pies, que eran muy influenciales y ya se sospechaba que eran errores de medición.
+
+En general, el sexo (en especial la categoría indeterminado) y el peso del caparazón son las variables que mejor ayudan a diferenciar la edad de los cangrejos. Aun así, cangrejos con medidas parecidas pueden tener edades bastante distintas: incluso con el modelo múltiple, el intervalo de predicción para un cangrejo nuevo abarca unos ocho meses, así que la edad de un cangrejo individual no se puede determinar con precisión a partir de sus medidas.
+
+Por último, un aprendizaje importante del proyecto es que, cuando se trabaja con bases de datos tan grandes, el p-valor casi siempre es menor a $0{,}05$. Por eso no basta con decir que una diferencia o una correlación es significativa: también hay que revisar el tamaño del efecto o la magnitud del coeficiente para saber si el resultado tiene importancia práctica.

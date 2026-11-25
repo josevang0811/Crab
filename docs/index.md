@@ -1,0 +1,72 @@
+---
+title: "Análisis estadístico de la edad de cangrejos"
+author: "Jairo Hernández Carvajal, Jose Van Strahlen García"
+date: "2026-11-24"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+lang: es
+description: "Proyecto de Métodos Estadísticos con la base Regression with a Crab Age Dataset de Kaggle."
+---
+
+
+
+# Presentación {-}
+
+Este libro reúne el proyecto de la asignatura **Métodos Estadísticos**. El trabajo consiste en aplicar, sobre un conjunto de datos real, los temas vistos en las notas de clase del curso [@deoro2026]: el análisis exploratorio de datos, las pruebas de estadística paramétrica y no paramétrica, las tablas de contingencia, la correlación lineal y los modelos de regresión lineal simple y múltiple. Cada capítulo sigue la misma ruta de trabajo que se usa en las notas, de modo que primero se plantean las hipótesis y los supuestos, luego se hacen los cálculos paso a paso y al final se comparan con las funciones de R.
+
+## Video del proyecto {-}
+
+En el siguiente video se presenta el desarrollo del proyecto y se explican los resultados de cada capítulo.
+
+```{=html}
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1em 0;">
+<iframe src="https://www.youtube.com/embed/wR5VB1-xjlY" title="Video del proyecto" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+```
+
+## Base de datos {-}
+
+La base de datos asignada es *Regression with a Crab Age Dataset*, que corresponde al episodio 16 de la temporada 3 de la serie *Playground* de Kaggle [@kaggle2023crab]. Los datos de esta competencia fueron generados de forma sintética a partir del conjunto *Crab Age Prediction*, por lo que conservan el comportamiento de las mediciones originales de los cangrejos. Se trabaja con el archivo `train.csv`, que es el único que trae registrada la edad de cada cangrejo; el archivo `test.csv` no la incluye porque es el que se usa para la competencia.
+
+La base tiene 74.051 cangrejos y 10 columnas: un identificador, el sexo, tres medidas del caparazón (largo, diámetro y altura), cuatro pesos y la edad en meses, que es la variable respuesta del estudio.
+
+## Objetivo {-}
+
+Analizar la edad de los cangrejos y su relación con el sexo y las medidas físicas, aplicando las técnicas estadísticas del curso para responder preguntas como:
+
+- ¿Cómo se distribuye la edad de los cangrejos y cuáles son las características de las demás variables?
+- ¿Hay diferencia en la edad promedio entre hembras y machos? ¿Esa diferencia tiene importancia práctica?
+- ¿La edad cambia según el sexo cuando se comparan los tres grupos (hembra, macho e indeterminado)?
+- ¿La distribución de los grupos de edad es la misma en los tres sexos? ¿El tamaño del cangrejo está asociado con su grupo de edad?
+- ¿Qué tan fuerte es la relación entre la edad y las medidas físicas?
+- ¿Qué tan bien se puede explicar la edad con un modelo de regresión? ¿Cuál es el mejor modelo y qué variables lo forman?
+
+## Estructura del libro {-}
+
+- **Capítulo \@ref(eda):** análisis exploratorio de datos, desde la carga y limpieza hasta el análisis bivariado.
+- **Capítulo \@ref(estparynopar):** comparación de la edad entre grupos con la prueba *t*, la U de Mann-Whitney, el ANOVA de un factor y la prueba de Kruskal-Wallis.
+- **Capítulo \@ref(tabcontingencia):** pruebas de homogeneidad e independencia con tablas de contingencia.
+- **Capítulo \@ref(correglin):** correlación de Pearson, Spearman y Kendall entre la edad y las medidas físicas.
+- **Capítulo \@ref(rls):** regresión lineal simple de la edad en función del peso del caparazón.
+- **Capítulo \@ref(rlm):** regresión lineal múltiple, variables cualitativas, selección del mejor modelo y validación de supuestos.
+- **Capítulo \@ref(conclusiones):** conclusiones generales del proyecto.
+
+Las secciones de muestras pareadas de las notas de clase no se incluyen, porque en esta base cada cangrejo se mide una sola vez y no hay un diseño antes/después ni observaciones emparejadas.
+
+## Herramientas {-}
+
+Todo el análisis se hace en R con los siguientes paquetes:
+
+
+```r
+install.packages(c("bookdown", "tidyverse", "Amelia", "GGally",
+                   "patchwork", "nortest", "car", "effsize",
+                   "rstatix", "coin", "lmtest", "mctest", "olsrr"))
+```
+
+Como la base tiene más de 5.000 observaciones, la prueba de Shapiro-Wilk no se puede usar (la función `shapiro.test()` solo acepta muestras de hasta 5.000 datos). Por esa razón, la normalidad se verifica con las pruebas de Kolmogorov-Smirnov y Lilliefors, también en los residuales de los modelos de regresión. Además, con un tamaño de muestra tan grande casi cualquier diferencia resulta estadísticamente significativa, así que en cada prueba también se revisa el tamaño del efecto para saber si la diferencia tiene relevancia práctica.
+
+

@@ -23,7 +23,7 @@
 <meta name="author" content="Jairo Hernández Carvajal, Jose Van Strahlen García" />
 
 
-<meta name="date" content="2026-11-21" />
+<meta name="date" content="2026-11-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -164,6 +164,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Presentación</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#video-del-proyecto"><i class="fa fa-check"></i>Video del proyecto</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#base-de-datos"><i class="fa fa-check"></i>Base de datos</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#objetivo"><i class="fa fa-check"></i>Objetivo</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
@@ -636,7 +637,7 @@ H_0: \beta_j = 0 \quad \text{vs} \quad H_1: \beta_j \neq 0, \qquad t_j = \frac{\
 <div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="rlm.html#cb301-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
 <span id="cb301-2"><a href="rlm.html#cb301-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sexo) <span class="sc">%&gt;%</span></span>
 <span id="cb301-3"><a href="rlm.html#cb301-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">promedio =</span> <span class="fu">mean</span>(edad))</span></code></pre></div>
-<pre><code>## # A tibble: 3 × 2
+<pre><code>## # A tibble: 3 x 2
 ##   sexo          promedio
 ##   &lt;fct&gt;            &lt;dbl&gt;
 ## 1 Hembra           11.3 
@@ -879,14 +880,14 @@ H_0: \beta_j = 0 \quad \text{vs} \quad H_1: \beta_j \neq 0, \qquad t_j = \frac{\
 <h3><span class="header-section-number">6.6.1</span> Independencia<a href="rlm.html#independencia" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="rlm.html#cb343-1" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(modelo_final)</span></code></pre></div>
 <pre><code>##  lag Autocorrelation D-W Statistic p-value
-##    1    -0.003491211      2.006979   0.322
+##    1    -0.003491211      2.006979   0.364
 ##  Alternative hypothesis: rho != 0</code></pre>
 <div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="rlm.html#cb345-1" tabindex="-1"></a>r <span class="ot">=</span> <span class="fu">residuals</span>(modelo_final)</span>
 <span id="cb345-2"><a href="rlm.html#cb345-2" tabindex="-1"></a><span class="fu">acf</span>(r, <span class="at">las =</span> <span class="dv">1</span>, <span class="at">main =</span> <span class="st">&quot;&quot;</span>, <span class="at">lag.max =</span> <span class="dv">80</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-25"></span>
-<img src="06-rlm_files/figure-html/unnamed-chunk-25-1.png" alt="Función de autocorrelación de los residuales del modelo final" width="672" />
+<img src="06-rlm_files/figure-html/unnamed-chunk-25-1.png" alt="Funci&lt;U+00F3&gt;n de autocorrelaci&lt;U+00F3&gt;n de los residuales del modelo final" width="672" />
 <p class="caption">
-Figura 1.8: Función de autocorrelación de los residuales del modelo final
+Figura 1.8: Funci&lt;U+00F3&gt;n de autocorrelaci&lt;U+00F3&gt;n de los residuales del modelo final
 </p>
 </div>
 <p>El <span class="math inline">\(p\text{-valor}\)</span> de la prueba de Durbin-Watson es mayor que <span class="math inline">\(0{,}05\)</span> y las barras de la ACF están dentro de las bandas, así que los errores son independientes.</p>
@@ -929,9 +930,9 @@ Figura 1.8: Función de autocorrelación de los residuales del modelo final
 <div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="rlm.html#cb352-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
 <span id="cb352-2"><a href="rlm.html#cb352-2" tabindex="-1"></a><span class="fu">plot</span>(modelo_final, <span class="at">las =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&quot;darkseagreen&quot;</span>, <span class="at">which =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-29"></span>
-<img src="06-rlm_files/figure-html/unnamed-chunk-29-1.png" alt="Gráficos de residuales del modelo final" width="672" />
+<img src="06-rlm_files/figure-html/unnamed-chunk-29-1.png" alt="Gr&lt;U+00E1&gt;ficos de residuales del modelo final" width="672" />
 <p class="caption">
-Figura 6.1: Gráficos de residuales del modelo final
+Figura 6.1: Gr&lt;U+00E1&gt;ficos de residuales del modelo final
 </p>
 </div>
 <p>El <span class="math inline">\(p\text{-valor}\)</span> de la prueba de Breusch-Pagan es menor que <span class="math inline">\(0{,}05\)</span>, así que la varianza no es constante. En el gráfico de residuales contra valores ajustados se ve que la dispersión aumenta con la edad ajustada.</p>
@@ -1020,7 +1021,7 @@ Figura 6.1: Gráficos de residuales del modelo final
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="rlm.html#cb367-1" tabindex="-1"></a>r <span class="ot">=</span> <span class="fu">residuals</span>(modelo_final)</span>
 <span id="cb367-2"><a href="rlm.html#cb367-2" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(modelo_final)</span></code></pre></div>
 <pre><code>##  lag Autocorrelation D-W Statistic p-value
-##    1    -0.003587791      2.007172   0.346
+##    1    -0.003587791      2.007172   0.304
 ##  Alternative hypothesis: rho != 0</code></pre>
 <div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="rlm.html#cb369-1" tabindex="-1"></a><span class="fu">lillie.test</span>(r)</span></code></pre></div>
 <pre><code>## 

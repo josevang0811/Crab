@@ -23,7 +23,7 @@
 <meta name="author" content="Jairo Hernández Carvajal, Jose Van Strahlen García" />
 
 
-<meta name="date" content="2026-11-21" />
+<meta name="date" content="2026-11-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -164,6 +164,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Presentación</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#video-del-proyecto"><i class="fa fa-check"></i>Video del proyecto</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#base-de-datos"><i class="fa fa-check"></i>Base de datos</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#objetivo"><i class="fa fa-check"></i>Objetivo</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
@@ -537,9 +538,9 @@ H_0: \beta_1 = 0 \quad \text{vs} \quad H_1: \beta_1 \neq 0
 <span id="cb239-6"><a href="rls.html#cb239-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Peso del caparazón (onzas)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Edad (meses)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb239-7"><a href="rls.html#cb239-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-14"></span>
-<img src="05-rls_files/figure-html/unnamed-chunk-14-1.png" alt="Relación original entre el peso del caparazón y la edad" width="672" />
+<img src="05-rls_files/figure-html/unnamed-chunk-14-1.png" alt="Relaci&lt;U+00F3&gt;n original entre el peso del caparaz&lt;U+00F3&gt;n y la edad" width="672" />
 <p class="caption">
-Figura 5.1: Relación original entre el peso del caparazón y la edad
+Figura 5.1: Relaci&lt;U+00F3&gt;n original entre el peso del caparaz&lt;U+00F3&gt;n y la edad
 </p>
 </div>
 <p>Ahora con las dos variables en escala logarítmica:</p>
@@ -551,9 +552,9 @@ Figura 5.1: Relación original entre el peso del caparazón y la edad
 <span id="cb240-6"><a href="rls.html#cb240-6" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;log(peso del caparazón)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;log(edad)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb240-7"><a href="rls.html#cb240-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
-<img src="05-rls_files/figure-html/unnamed-chunk-15-1.png" alt="Relación entre el logaritmo del peso del caparazón y el logaritmo de la edad" width="672" />
+<img src="05-rls_files/figure-html/unnamed-chunk-15-1.png" alt="Relaci&lt;U+00F3&gt;n entre el logaritmo del peso del caparaz&lt;U+00F3&gt;n y el logaritmo de la edad" width="672" />
 <p class="caption">
-Figura 1.2: Relación entre el logaritmo del peso del caparazón y el logaritmo de la edad
+Figura 1.2: Relaci&lt;U+00F3&gt;n entre el logaritmo del peso del caparaz&lt;U+00F3&gt;n y el logaritmo de la edad
 </p>
 </div>
 <p>Con la transformación, los puntos siguen mejor la recta. Ajustemos el modelo:</p>
@@ -595,15 +596,15 @@ Figura 1.2: Relación entre el logaritmo del peso del caparazón y el logaritmo 
 <h3><span class="header-section-number">5.7.1</span> Independencia de los errores<a href="rls.html#independencia-de-los-errores" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="rls.html#cb243-1" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(modelo2)</span></code></pre></div>
 <pre><code>##  lag Autocorrelation D-W Statistic p-value
-##    1    -0.005105108      2.010195   0.184
+##    1    -0.005105108      2.010195   0.164
 ##  Alternative hypothesis: rho != 0</code></pre>
 <div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="rls.html#cb245-1" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo2)</span>
 <span id="cb245-2"><a href="rls.html#cb245-2" tabindex="-1"></a><span class="fu">acf</span>(r, <span class="at">main =</span> <span class="st">&quot;Función de Autocorrelación (ACF) de los residuales&quot;</span>,</span>
 <span id="cb245-3"><a href="rls.html#cb245-3" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="st">&quot;Autocorrelación&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Rezago (Lag)&quot;</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-18"></span>
-<img src="05-rls_files/figure-html/unnamed-chunk-18-1.png" alt="Función de autocorrelación de los residuales del modelo transformado" width="672" />
+<img src="05-rls_files/figure-html/unnamed-chunk-18-1.png" alt="Funci&lt;U+00F3&gt;n de autocorrelaci&lt;U+00F3&gt;n de los residuales del modelo transformado" width="672" />
 <p class="caption">
-Figura 5.2: Función de autocorrelación de los residuales del modelo transformado
+Figura 5.2: Funci&lt;U+00F3&gt;n de autocorrelaci&lt;U+00F3&gt;n de los residuales del modelo transformado
 </p>
 </div>
 <p>El <span class="math inline">\(p\text{-valor}\)</span> de la prueba de Durbin-Watson es mayor que <span class="math inline">\(0{,}05\)</span> y las barras de la ACF están dentro de las bandas, así que los errores son independientes.</p>
@@ -623,9 +624,9 @@ H_0: \text{los errores siguen una distribución normal} \quad \text{vs} \quad H_
 <div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="rls.html#cb248-1" tabindex="-1"></a><span class="fu">qqnorm</span>(r, <span class="at">main =</span> <span class="st">&quot;Gráfico Q-Q de los residuales&quot;</span>)</span>
 <span id="cb248-2"><a href="rls.html#cb248-2" tabindex="-1"></a><span class="fu">qqline</span>(r, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-20"></span>
-<img src="05-rls_files/figure-html/unnamed-chunk-20-1.png" alt="Gráfico Q-Q de los residuales del modelo transformado" width="672" />
+<img src="05-rls_files/figure-html/unnamed-chunk-20-1.png" alt="Gr&lt;U+00E1&gt;fico Q-Q de los residuales del modelo transformado" width="672" />
 <p class="caption">
-Figura 1.5: Gráfico Q-Q de los residuales del modelo transformado
+Figura 1.5: Gr&lt;U+00E1&gt;fico Q-Q de los residuales del modelo transformado
 </p>
 </div>
 <p>El <span class="math inline">\(p\text{-valor} &lt; 0{,}05\)</span>, por lo que se rechaza <span class="math inline">\(H_0\)</span>: los errores no siguen una distribución normal. En el gráfico Q-Q los puntos se alejan de la línea en las dos colas.</p>

@@ -23,7 +23,7 @@
 <meta name="author" content="Jairo Hernández Carvajal, Jose Van Strahlen García" />
 
 
-<meta name="date" content="2026-11-21" />
+<meta name="date" content="2026-11-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -164,6 +164,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Presentación</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#video-del-proyecto"><i class="fa fa-check"></i>Video del proyecto</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#base-de-datos"><i class="fa fa-check"></i>Base de datos</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#objetivo"><i class="fa fa-check"></i>Objetivo</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
@@ -300,11 +301,18 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Análisis estadístico de la edad de cangrejos</h1>
 <p class="author"><em>Jairo Hernández Carvajal, Jose Van Strahlen García</em></p>
-<p class="date"><em>2026-11-21</em></p>
+<p class="date"><em>2026-11-24</em></p>
 </div>
 <div id="presentación" class="section level1 unnumbered hasAnchor">
 <h1>Presentación<a href="index.html#presentación" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Este libro reúne el proyecto de la asignatura <strong>Métodos Estadísticos</strong>. El trabajo consiste en aplicar, sobre un conjunto de datos real, los temas vistos en las notas de clase del curso <span class="citation">(<a href="#ref-deoro2026">de Oro Aguado 2026</a>)</span>: el análisis exploratorio de datos, las pruebas de estadística paramétrica y no paramétrica, las tablas de contingencia, la correlación lineal y los modelos de regresión lineal simple y múltiple. Cada capítulo sigue la misma ruta de trabajo que se usa en las notas, de modo que primero se plantean las hipótesis y los supuestos, luego se hacen los cálculos paso a paso y al final se comparan con las funciones de R.</p>
+<div id="video-del-proyecto" class="section level2 unnumbered hasAnchor">
+<h2>Video del proyecto<a href="index.html#video-del-proyecto" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En el siguiente video se presenta el desarrollo del proyecto y se explican los resultados de cada capítulo.</p>
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1em 0;">
+<iframe src="https://www.youtube.com/embed/wR5VB1-xjlY" title="Video del proyecto" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+</div>
 <div id="base-de-datos" class="section level2 unnumbered hasAnchor">
 <h2>Base de datos<a href="index.html#base-de-datos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>La base de datos asignada es <em>Regression with a Crab Age Dataset</em>, que corresponde al episodio 16 de la temporada 3 de la serie <em>Playground</em> de Kaggle <span class="citation">(<a href="#ref-kaggle2023crab">Kaggle 2023</a>)</span>. Los datos de esta competencia fueron generados de forma sintética a partir del conjunto <em>Crab Age Prediction</em>, por lo que conservan el comportamiento de las mediciones originales de los cangrejos. Se trabaja con el archivo <code>train.csv</code>, que es el único que trae registrada la edad de cada cangrejo; el archivo <code>test.csv</code> no la incluye porque es el que se usa para la competencia.</p>

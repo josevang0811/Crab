@@ -25,6 +25,16 @@ knitr::opts_chunk$set(
 
 Este libro reúne el proyecto de la asignatura **Métodos Estadísticos**. El trabajo consiste en aplicar, sobre un conjunto de datos real, los temas vistos en las notas de clase del curso [@deoro2026]: el análisis exploratorio de datos, las pruebas de estadística paramétrica y no paramétrica, las tablas de contingencia, la correlación lineal y los modelos de regresión lineal simple y múltiple. Cada capítulo sigue la misma ruta de trabajo que se usa en las notas, de modo que primero se plantean las hipótesis y los supuestos, luego se hacen los cálculos paso a paso y al final se comparan con las funciones de R.
 
+## Video del proyecto {-}
+
+En el siguiente video se presenta el desarrollo del proyecto y se explican los resultados de cada capítulo.
+
+```{=html}
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1em 0;">
+<iframe src="https://www.youtube.com/embed/wR5VB1-xjlY" title="Video del proyecto" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+```
+
 ## Base de datos {-}
 
 La base de datos asignada es *Regression with a Crab Age Dataset*, que corresponde al episodio 16 de la temporada 3 de la serie *Playground* de Kaggle [@kaggle2023crab]. Los datos de esta competencia fueron generados de forma sintética a partir del conjunto *Crab Age Prediction*, por lo que conservan el comportamiento de las mediciones originales de los cangrejos. Se trabaja con el archivo `train.csv`, que es el único que trae registrada la edad de cada cangrejo; el archivo `test.csv` no la incluye porque es el que se usa para la competencia.

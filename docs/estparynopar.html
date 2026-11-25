@@ -23,7 +23,7 @@
 <meta name="author" content="Jairo Hernández Carvajal, Jose Van Strahlen García" />
 
 
-<meta name="date" content="2026-11-21" />
+<meta name="date" content="2026-11-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -164,6 +164,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Presentación</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#video-del-proyecto"><i class="fa fa-check"></i>Video del proyecto</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#base-de-datos"><i class="fa fa-check"></i>Base de datos</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#objetivo"><i class="fa fa-check"></i>Objetivo</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
@@ -376,7 +377,7 @@ H_0: \mu_1 = \mu_2 \quad \text{vs} \quad H_a: \mu_1 \ne \mu_2
 <span id="cb52-6"><a href="estparynopar.html#cb52-6" tabindex="-1"></a>            <span class="at">p_ks =</span> <span class="fu">ks.test</span>(<span class="fu">scale</span>(edad), <span class="st">&quot;pnorm&quot;</span>)<span class="sc">$</span>p.value,</span>
 <span id="cb52-7"><a href="estparynopar.html#cb52-7" tabindex="-1"></a>            <span class="at">est_lt =</span> <span class="fu">lillie.test</span>(edad)<span class="sc">$</span>statistic,</span>
 <span id="cb52-8"><a href="estparynopar.html#cb52-8" tabindex="-1"></a>            <span class="at">p_lt =</span> <span class="fu">lillie.test</span>(edad)<span class="sc">$</span>p.value)</span></code></pre></div>
-<pre><code>## # A tibble: 2 × 6
+<pre><code>## # A tibble: 2 x 6
 ##   sexo       n est_ks  p_ks est_lt  p_lt
 ##   &lt;fct&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
 ## 1 Hembra 23010  0.189     0  0.189     0
@@ -536,14 +537,14 @@ H_0: P(X &gt; Y) = 0{,}5 \quad \text{vs} \quad H_1: P(X &gt; Y) \neq 0{,}5
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="estparynopar.html#cb70-1" tabindex="-1"></a>df_hm <span class="sc">%&gt;%</span></span>
 <span id="cb70-2"><a href="estparynopar.html#cb70-2" tabindex="-1"></a>  <span class="fu">wilcox_test</span>(edad <span class="sc">~</span> sexo,</span>
 <span id="cb70-3"><a href="estparynopar.html#cb70-3" tabindex="-1"></a>              <span class="at">paired =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 1 × 7
+<pre><code>## # A tibble: 1 x 7
 ##   .y.   group1 group2    n1    n2  statistic        p
 ## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt; &lt;int&gt;      &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 edad  Hembra Macho  23010 27084 341462630. 3.63e-78</code></pre>
 <p>La prueba U de Mann-Whitney muestra que hay evidencia estadísticamente significativa de una diferencia en la edad de los cangrejos hembra y macho (<span class="math inline">\(U = 341.462.630,\ p\text{-valor} &lt; 0{,}001\)</span>). Veamos el tamaño del efecto:</p>
 <div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="estparynopar.html#cb72-1" tabindex="-1"></a>df_hm <span class="sc">%&gt;%</span></span>
 <span id="cb72-2"><a href="estparynopar.html#cb72-2" tabindex="-1"></a>  <span class="fu">wilcox_effsize</span>(edad <span class="sc">~</span> sexo, <span class="at">paired =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 1 × 7
+<pre><code>## # A tibble: 1 x 7
 ##   .y.   group1 group2 effsize    n1    n2 magnitude
 ## * &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;ord&gt;    
 ## 1 edad  Hembra Macho   0.0836 23010 27084 small</code></pre>
@@ -568,7 +569,7 @@ H_1: &amp;\quad \text{Al menos una media difiere de las demás}
 <span id="cb74-5"><a href="estparynopar.html#cb74-5" tabindex="-1"></a>            <span class="at">p_ks =</span> <span class="fu">ks.test</span>(<span class="fu">scale</span>(edad), <span class="st">&quot;pnorm&quot;</span>)<span class="sc">$</span>p.value,</span>
 <span id="cb74-6"><a href="estparynopar.html#cb74-6" tabindex="-1"></a>            <span class="at">est_lt =</span> <span class="fu">lillie.test</span>(edad)<span class="sc">$</span>statistic,</span>
 <span id="cb74-7"><a href="estparynopar.html#cb74-7" tabindex="-1"></a>            <span class="at">p_lt =</span> <span class="fu">lillie.test</span>(edad)<span class="sc">$</span>p.value)</span></code></pre></div>
-<pre><code>## # A tibble: 3 × 6
+<pre><code>## # A tibble: 3 x 6
 ##   sexo              n est_ks  p_ks est_lt  p_lt
 ##   &lt;fct&gt;         &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
 ## 1 Hembra        23010  0.189     0  0.189     0
@@ -734,10 +735,10 @@ HSD = q_{\alpha}(k, N - k) \cdot \sqrt{CME \left( \frac{1}{n_i} + \frac{1}{n_j} 
 <span id="cb102-19"><a href="estparynopar.html#cb102-19" tabindex="-1"></a><span class="fu">names</span>(comparacion_tukey) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Grupo 1&quot;</span>, <span class="st">&quot;Grupo 2&quot;</span>, <span class="st">&quot;Diferencia&quot;</span>, <span class="st">&quot;HSD&quot;</span>, <span class="st">&quot;¿Significativa?&quot;</span>)</span>
 <span id="cb102-20"><a href="estparynopar.html#cb102-20" tabindex="-1"></a></span>
 <span id="cb102-21"><a href="estparynopar.html#cb102-21" tabindex="-1"></a>comparacion_tukey</span></code></pre></div>
-<pre><code>##   Grupo 1       Grupo 2 Diferencia    HSD ¿Significativa?
-## 1  Hembra         Macho     0.4456 0.0806              Sí
-## 2  Hembra Indeterminado     3.7425  0.083              Sí
-## 3   Macho Indeterminado     3.2969 0.0798              Sí</code></pre>
+<pre><code>##   Grupo 1       Grupo 2 Diferencia    HSD &lt;U+00BF&gt;Significativa?
+## 1  Hembra         Macho     0.4456 0.0806              S&lt;U+00ED&gt;
+## 2  Hembra Indeterminado     3.7425  0.083              S&lt;U+00ED&gt;
+## 3   Macho Indeterminado     3.2969 0.0798              S&lt;U+00ED&gt;</code></pre>
 <p>Ahora con la función <code>TukeyHSD()</code>:</p>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="estparynopar.html#cb104-1" tabindex="-1"></a><span class="fu">TukeyHSD</span>(modelo)</span></code></pre></div>
 <pre><code>##   Tukey multiple comparisons of means

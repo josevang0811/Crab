@@ -23,7 +23,7 @@
 <meta name="author" content="Jairo Hernández Carvajal, Jose Van Strahlen García" />
 
 
-<meta name="date" content="2026-11-21" />
+<meta name="date" content="2026-11-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -164,6 +164,7 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Presentación</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#video-del-proyecto"><i class="fa fa-check"></i>Video del proyecto</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#base-de-datos"><i class="fa fa-check"></i>Base de datos</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#objetivo"><i class="fa fa-check"></i>Objetivo</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#estructura-del-libro"><i class="fa fa-check"></i>Estructura del libro</a></li>
@@ -361,10 +362,10 @@ div.csl-indent {
 <div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="tabcontingencia.html#cb120-1" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
 <span id="cb120-2"><a href="tabcontingencia.html#cb120-2" tabindex="-1"></a>  <span class="fu">count</span>(grupo_tamano, <span class="at">name =</span> <span class="st">&quot;Frecuencia&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb120-3"><a href="tabcontingencia.html#cb120-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>))</span></code></pre></div>
-<pre><code>##   grupo_tamano Frecuencia Porcentaje
-## 1      Pequeño      25914      34.99
-## 2      Mediano      23987      32.39
-## 3       Grande      24150      32.61</code></pre>
+<pre><code>##     grupo_tamano Frecuencia Porcentaje
+## 1 Peque&lt;U+00F1&gt;o      25914      34.99
+## 2        Mediano      23987      32.39
+## 3         Grande      24150      32.61</code></pre>
 <p>El grupo <em>Adulto</em> es el más grande, con el <span class="math inline">\(44{,}16\%\)</span> de los cangrejos, mientras que los <em>Jóvenes</em> son el <span class="math inline">\(32{,}65\%\)</span> y los <em>Mayores</em> el <span class="math inline">\(23{,}19\%\)</span>. Los grupos no quedan exactamente en <span class="math inline">\(25\%\)</span>, <span class="math inline">\(50\%\)</span> y <span class="math inline">\(25\%\)</span> porque la edad solo toma valores enteros y hay muchos cangrejos con la misma edad justo en los puntos de corte. Por la misma razón, los grupos de tamaño tampoco tienen exactamente un tercio cada uno (<span class="math inline">\(34{,}99\%\)</span>, <span class="math inline">\(32{,}39\%\)</span> y <span class="math inline">\(32{,}61\%\)</span>), aunque están bastante balanceados.</p>
 </div>
 <div id="prueba-de-homogeneidad" class="section level2 hasAnchor" number="3.2">
@@ -448,7 +449,7 @@ H_1: \text{al menos una de las proporciones es diferente}
 <span id="cb142-4"><a href="tabcontingencia.html#cb142-4" tabindex="-1"></a>  conclusion <span class="ot">&lt;-</span> <span class="st">&quot;No se rechaza H0: no hay evidencia suficiente para afirmar que la distribución de los grupos de edad cambia según el sexo.&quot;</span></span>
 <span id="cb142-5"><a href="tabcontingencia.html#cb142-5" tabindex="-1"></a>}</span>
 <span id="cb142-6"><a href="tabcontingencia.html#cb142-6" tabindex="-1"></a>conclusion</span></code></pre></div>
-<pre><code>## [1] &quot;Se rechaza H0: la distribución de los grupos de edad no es la misma en los tres sexos.&quot;</code></pre>
+<pre><code>## [1] &quot;Se rechaza H0: la distribuci&lt;U+00F3&gt;n de los grupos de edad no es la misma en los tres sexos.&quot;</code></pre>
 <p>Si calculamos el p-valor</p>
 <div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="tabcontingencia.html#cb144-1" tabindex="-1"></a>valor_p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(chi_cuadrado, gl, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb144-2"><a href="tabcontingencia.html#cb144-2" tabindex="-1"></a>valor_p</span></code></pre></div>
@@ -492,10 +493,10 @@ H_1: \text{el grupo de edad y el tamaño no son independientes}
 <div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="tabcontingencia.html#cb148-1" tabindex="-1"></a>observados2 <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Edad =</span> df<span class="sc">$</span>grupo_edad, <span class="at">Tamano =</span> df<span class="sc">$</span>grupo_tamano)</span>
 <span id="cb148-2"><a href="tabcontingencia.html#cb148-2" tabindex="-1"></a>observados2</span></code></pre></div>
 <pre><code>##         Tamano
-## Edad     Pequeño Mediano Grande
-##   Joven    19166    4239    771
-##   Adulto    4996   13548  14155
-##   Mayor     1752    6200   9224</code></pre>
+## Edad     Peque&lt;U+00F1&gt;o Mediano Grande
+##   Joven           19166    4239    771
+##   Adulto           4996   13548  14155
+##   Mayor            1752    6200   9224</code></pre>
 <p>Hallemos los totales y los valores esperados:</p>
 <div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="tabcontingencia.html#cb150-1" tabindex="-1"></a>fila_totales2 <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(observados2)</span>
 <span id="cb150-2"><a href="tabcontingencia.html#cb150-2" tabindex="-1"></a>col_totales2 <span class="ot">&lt;-</span> <span class="fu">colSums</span>(observados2)</span>
@@ -503,10 +504,10 @@ H_1: \text{el grupo de edad y el tamaño no son independientes}
 <span id="cb150-4"><a href="tabcontingencia.html#cb150-4" tabindex="-1"></a></span>
 <span id="cb150-5"><a href="tabcontingencia.html#cb150-5" tabindex="-1"></a>esperados2 <span class="ot">&lt;-</span> <span class="fu">outer</span>(fila_totales2, col_totales2) <span class="sc">/</span> n</span>
 <span id="cb150-6"><a href="tabcontingencia.html#cb150-6" tabindex="-1"></a><span class="fu">round</span>(esperados2, <span class="dv">2</span>)</span></code></pre></div>
-<pre><code>##         Pequeño  Mediano   Grande
-## Joven   8460.34  7831.22  7884.44
-## Adulto 11442.95 10592.04 10664.01
-## Mayor   6010.71  5563.74  5601.55</code></pre>
+<pre><code>##        Peque&lt;U+00F1&gt;o  Mediano   Grande
+## Joven         8460.34  7831.22  7884.44
+## Adulto       11442.95 10592.04 10664.01
+## Mayor         6010.71  5563.74  5601.55</code></pre>
 <div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="tabcontingencia.html#cb152-1" tabindex="-1"></a><span class="fu">all</span>(esperados2 <span class="sc">&gt;=</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Todas las frecuencias esperadas son mayores a <span class="math inline">\(5\)</span> (la menor es <span class="math inline">\(5563{,}74\)</span>). Calculemos el estadístico chi-cuadrado y los grados de libertad:</p>
